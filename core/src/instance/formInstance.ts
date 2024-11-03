@@ -101,6 +101,7 @@ export class FormInstanceBase<T = any> {
         this.callbacks.onValuesChange?.(dataField, values);
       }
     }
+    return this;
   }
 
   /**更新字段是否隐藏*/
@@ -111,6 +112,7 @@ export class FormInstanceBase<T = any> {
       this.hideState = set(this.hideState, key, value[key])
     })
     this.noticeHide(names);
+    return this;
   }
 
   /**更新字段是否隐藏规则*/
@@ -127,6 +129,7 @@ export class FormInstanceBase<T = any> {
         formItemInstance.rule?.updatedMessages?.([])
       }
     })
+    return this;
   }
 
   /**更新字段value值
@@ -155,6 +158,7 @@ export class FormInstanceBase<T = any> {
         formItemInstance.rule?.updatedMessages?.([])
       }
     }
+    return this;
   }
 
   /**
@@ -183,6 +187,7 @@ export class FormInstanceBase<T = any> {
       this.onlyValidate(names);
     }
     this.notice(names);
+    return this;
   }
 
   /**获取 formList 实例或者集合*/
@@ -222,18 +227,21 @@ export class FormInstanceBase<T = any> {
   notice = (dataField?: string | string[]) => {
     /**循环挂载组件*/
     this._bathNotice(this.formItemInstances, dataField)
+    return this;
   }
 
   /**通知组件隐藏*/
   noticeHide = (dataField?: string | string[]) => {
     /**循环挂载组件*/
     this._bathNotice(this.hideItemInstances, dataField)
+    return this;
   }
 
   /**通知监听方法*/
   noticeWatch = (dataField?: string | string[]) => {
     /**循环挂载组件*/
     this._bathNotice(this.formItemInstances, dataField, true)
+    return this;
   }
 
   /**通知组件基础方法*/
@@ -292,6 +300,7 @@ export class FormInstanceBase<T = any> {
         }
       })
     }
+    return this;
   }
 
   /**
@@ -306,8 +315,9 @@ export class FormInstanceBase<T = any> {
         await this.validate([dataField])
       }
     } catch (err) {
-
+      console.log(err)
     }
+    return this;
   }
 
   /**仅用于判断是否存在不通过校验的数据*/
