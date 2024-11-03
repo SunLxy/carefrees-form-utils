@@ -13,8 +13,7 @@
   },
   "files": [
     "src",
-    "lib",
-    "esm"
+    "lib"
   ],
   "keywords": [],
   "author": "",
