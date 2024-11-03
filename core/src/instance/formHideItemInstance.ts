@@ -1,0 +1,25 @@
+
+export class FormHideItemInstanceBase {
+  /**
+   * 字段 ，分割方式与lodash的get和set方法值更新或设置路径一致
+   * @example
+   * 默认："name"
+   * 嵌套字段："name.a.doc"
+   * 嵌套字段："name[1].a.doc"
+   * 嵌套字段："name.a[2].doc"
+  */
+  dataField: string = ''
+  /**更新当前组件方法*/
+  updated?: Function
+  /**依赖更新项*/
+  dependencies?: string[] = []
+  /**是否是 watch */
+  isWatch?: boolean = false
+
+  ctor = (dataField: string, updated: Function, dependencies?: string[]) => {
+    this.dataField = dataField
+    this.updated = updated
+    this.dependencies = dependencies || []
+    return this;
+  }
+}

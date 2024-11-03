@@ -1,0 +1,440 @@
+import { FormListInstanceBase } from "./formListInstance"
+import { FormItemInstanceBase } from "./formItemInstance"
+import { FormHideItemInstanceBase } from "./formHideItemInstance"
+import { Callbacks, ErrorDataField } from "../interface"
+import { get, set, cloneByNamePathList, has } from "./../utils"
+
+/**基础实例*/
+export class FormInstanceBase<T = any> {
+  /**表单数据*/
+  formData: Partial<T> = {};
+  /**表单每一项实例*/
+  formItemInstances: FormItemInstanceBase[] = [];
+  /**表单中List实例集合*/
+  formListInstances: Map<string, FormListInstanceBase> = new Map([]);
+  /** 回调函数 */
+  private callbacks: Callbacks = {}
+
+  // ======================================隐藏组件=====================================
+  /**隐藏组件集合*/
+  hideItemInstances: FormHideItemInstanceBase[] = []
+  /**隐藏组件字段对应的值*/
+  hideState = {}
+
+  /**实例是否初始化*/
+  isMountInstance: boolean = false
+  /**是否保护值(不进行表单项组件卸载重置初始值)*/
+  preserve?: boolean = true
+
+  // ======================================隐藏规则校验=====================================
+  hideRuleState: Record<string, boolean> = {}
+
+  /**初始化*/
+  ctor = (initial: Partial<T> = {}, hideState?: Record<string, boolean>, hideRuleState?: Record<string, boolean>) => {
+    this.formData = initial || {};
+    this.hideState = hideState || {}
+    this.hideRuleState = hideRuleState || {}
+    this.isMountInstance = true;
+    return this;
+  }
+
+  /**
+   * 重置数据值
+  */
+  resetFieldValue = (initial: Partial<T> = {},) => {
+    this.formData = initial || {};
+    const keys = Object.keys(initial || [])
+    this.notice(keys);
+    /**清空验证提示信息*/
+    if (this.formItemInstances && this.formItemInstances.length) {
+      this.formItemInstances.forEach((formItemInstance) => {
+        formItemInstance?.rule?.updatedMessages?.([])
+      })
+    }
+    return this;
+  }
+
+  /**注册一个 formIList 实例*/
+  registerFormList = (name: string, itemInstance: FormListInstanceBase) => {
+    this.formListInstances.set(name, itemInstance);
+    return () => {
+      this.formListInstances.delete(name);
+    }
+  }
+
+  /**注册一个 formItem 实例*/
+  registerFormItem = (itemInstance: FormItemInstanceBase) => {
+    this.formItemInstances.push(itemInstance)
+    return () => {
+      this.formItemInstances = this.formItemInstances.filter(ite => ite !== itemInstance);
+      let preserve = this.preserve;
+      if (itemInstance.preserve === false) {
+        preserve = itemInstance.preserve
+      }
+
+      const dataField = `${itemInstance.dataField}`
+      // 判断路径是否存在
+      if (dataField && has(this.formData, dataField) && !preserve) {
+        this.formData = set(this.formData, itemInstance.dataField, undefined);
+      }
+    }
+  }
+
+  /**注册一个 form hide item 实例*/
+  registerFormHideItem = (hideItemInstance: FormHideItemInstanceBase) => {
+    this.hideItemInstances.push(hideItemInstance)
+    return () => {
+      this.hideItemInstances = this.hideItemInstances.filter(ite => ite !== hideItemInstance);
+      /**需要处理默认值问题*/
+    }
+  }
+
+  /**把数据传递出去*/
+  private transferChangeValue = (dataField: string | Object) => {
+    if (this.callbacks.onValuesChange) {
+      /**触发传递的 onValuesChange 事件*/
+      const values = this.getFieldValue()
+      if (typeof dataField === "string") {
+        const newValue = cloneByNamePathList(values, [dataField])
+        this.callbacks.onValuesChange?.(newValue, values);
+      } else {
+        this.callbacks.onValuesChange?.(dataField, values);
+      }
+    }
+  }
+
+  /**更新字段是否隐藏*/
+  updatedFieldHideValue = (value: Record<string, boolean>) => {
+    // 字段对应的 form item 进行更新
+    const names = Object.keys(value || {});
+    names.forEach((key) => {
+      this.hideState = set(this.hideState, key, value[key])
+    })
+    this.noticeHide(names);
+  }
+
+  /**更新字段是否隐藏规则*/
+  updatedFieldHideRulesValue = (value: Record<string, boolean>) => {
+    // 字段对应的 form item 进行更新
+    const names = Object.keys(value || {});
+    names.forEach((key) => {
+      this.hideRuleState = set(this.hideRuleState, key, value[key])
+    })
+    this.noticeHide(names);
+    names.forEach((dataField) => {
+      const formItemInstance = this.formItemInstances.find(ite => ite.dataField === dataField);
+      if (formItemInstance && formItemInstance?.rule) {
+        formItemInstance.rule?.updatedMessages?.([])
+      }
+    })
+  }
+
+  /**更新字段value值
+   * 
+   * @param dataField 字段
+   * @param value 字段值
+   * @param validateType 校验规则处理
+   * @param isOnlySave 仅用于存储
+   * 
+  */
+  updatedFieldValue = (dataField: string, value: any, validateType: "validate" | "clear" | "none" = 'validate', isOnlySave: boolean = false) => {
+    // 字段对应的 form item 进行更新
+    this.formData = set(this.formData, dataField, value);
+    if (isOnlySave === true) {
+      return;
+    }
+    this.transferChangeValue(dataField);
+    this.notice(dataField);
+    /**验证数据 */
+    if (validateType === "validate") {
+      this.onlyValidate(dataField);
+    } else if (validateType === 'clear') {
+      /**清空验证提示信息*/
+      const formItemInstance = this.formItemInstances.find(ite => ite.dataField === dataField);
+      if (formItemInstance && formItemInstance?.rule) {
+        formItemInstance.rule?.updatedMessages?.([])
+      }
+    }
+  }
+
+  /**
+   * 批量更新字段value值
+   * 
+   * @param value 更新值
+   * @param isTransfer 是否触发 onValuesChange 事件
+   * @param isValidate 是否进行验证
+   * @param isOnlySave 仅用于存储
+   * 
+  */
+  bathUpdatedFieldValue = (value: any, isTransfer = true, isValidate = true, isOnlySave: boolean = false) => {
+    // 字段对应的 form item 进行更新
+    const names = Object.keys(value || {});
+    names.forEach((key) => {
+      this.formData = set(this.formData, key, value[key])
+    })
+    if (isOnlySave === true) {
+      return
+    }
+    if (isTransfer) {
+      this.transferChangeValue(value);
+    }
+    /**验证数据 */
+    if (isValidate) {
+      this.onlyValidate(names);
+    }
+    this.notice(names);
+  }
+
+  /**获取 formList 实例或者集合*/
+  getFormListInstance = (name: string) => {
+    return this.formListInstances.get(name);
+  }
+
+  /**获取字段值*/
+  getFieldValue = (dataField?: string) => {
+    if (dataField) {
+      if (has(this.formData, dataField)) {
+        return get(this.formData, dataField)
+      }
+      return undefined
+    }
+    return this.formData;
+  }
+
+  /**获取字段隐藏规则值*/
+  getFieldHideRulesValue = (dataField?: string) => {
+    if (dataField) {
+      return get(this.hideRuleState, dataField)
+    }
+    return this.hideRuleState;
+  }
+
+
+  /**获取字段隐藏值*/
+  getFieldHideValue = (dataField?: string) => {
+    if (dataField) {
+      return get(this.hideState, dataField)
+    }
+    return this.hideState;
+  }
+
+  /**通知组件更新*/
+  notice = (dataField?: string | string[]) => {
+    /**循环挂载组件*/
+    this._bathNotice(this.formItemInstances, dataField)
+  }
+
+  /**通知组件隐藏*/
+  noticeHide = (dataField?: string | string[]) => {
+    /**循环挂载组件*/
+    this._bathNotice(this.hideItemInstances, dataField)
+  }
+
+  /**通知监听方法*/
+  noticeWatch = (dataField?: string | string[]) => {
+    /**循环挂载组件*/
+    this._bathNotice(this.formItemInstances, dataField, true)
+  }
+
+  /**通知组件基础方法*/
+  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase)[], dataField?: string | string[], isWatch?: boolean) => {
+    if (typeof dataField === "string") {
+      /**循环挂载组件*/
+      list.forEach((item) => {
+        if (item.dataField === dataField) {
+          if (isWatch) {
+            if (item.isWatch) {
+              item.updated?.({})
+            }
+          } else {
+            item.updated?.({})
+          }
+        } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
+          const findx = item.dependencies.find(ite => ite === dataField)
+          if (findx) {
+            if (isWatch) {
+              if (item.isWatch) {
+                item.updated?.({})
+              }
+            } else {
+              item.updated?.({})
+            }
+          }
+        }
+      })
+    } else if (Array.isArray(dataField)) {
+      /**循环挂载组件*/
+      list.forEach((item) => {
+        if (dataField.includes(item.dataField)) {
+          item.updated?.({})
+        } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
+          const findx = item.dependencies.find(ite => dataField.includes(ite))
+          if (findx) {
+            if (isWatch) {
+              if (item.isWatch) {
+                item.updated?.({})
+              }
+            } else {
+              item.updated?.({})
+            }
+          }
+        }
+      })
+    } else {
+      /**循环挂载组件*/
+      list.forEach((item) => {
+        if (isWatch) {
+          if (item.isWatch) {
+            item.updated?.({})
+          }
+        } else {
+          item.updated?.({})
+        }
+      })
+    }
+  }
+
+  /**
+   * 只进行验证，没有返回值
+   * */
+  onlyValidate = async (dataField: string | string[]) => {
+    try {
+      /**校验数据*/
+      if (Array.isArray(dataField)) {
+        await this.validate(dataField)
+      } else {
+        await this.validate([dataField])
+      }
+    } catch (err) {
+
+    }
+  }
+
+  /**仅用于判断是否存在不通过校验的数据*/
+  onlyValidateRulesMessage = (names?: string[]): Promise<{ errorFields: ErrorDataField[] }> => {
+    return new Promise(async (resolve, reject) => {
+      const errorFields: ErrorDataField[] = []
+      const notErrorFields: ErrorDataField[] = []
+      /**去除 watch 字段*/
+      const newFormItemInstances = this.formItemInstances.filter((ite) => !ite.isWatch)
+      const lg = newFormItemInstances.length;
+      const isNames = Array.isArray(names) && names.length
+
+      for (let index = 0; index < lg; index++) {
+        const instanceItem = newFormItemInstances[index];
+        /**如果是监听则跳出循环*/
+        if (instanceItem.isWatch) {
+          /**跳出本次循环*/
+          continue;
+        }
+        /**判断实例是否存在 & 是否需要验证规则*/
+        if (instanceItem.rule && instanceItem.rule.isValidate()) {
+          let isValidate = true
+          if (isNames) {
+            /**判断是否存在当前需要验证的项*/
+            const findx = names.find((name) => name === instanceItem.dataField);
+            if (!findx) {
+              isValidate = false
+            }
+          }
+          try {
+            /**判断是否需要进行验证*/
+            if (isValidate) {
+              await instanceItem.rule.validate(true)
+              notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+            }
+          } catch (errors: any) {
+            if (errors) {
+              errorFields.push({ errors, sort: instanceItem.sort, dataField: instanceItem.dataField })
+              break;
+            }
+          }
+        } else {
+          notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+        }
+      }
+      /**判断是否存在验证失败的*/
+      if (errorFields.length) {
+        reject({ errorFields, })
+      } else {
+        resolve({ errorFields: [] })
+      }
+    })
+  }
+
+  /**规则验证 ，默认不传递验证所有 */
+  validate = (names?: string[]) => {
+    return new Promise(async (resolve, reject) => {
+      const errorFields: ErrorDataField[] = []
+      const notErrorFields: ErrorDataField[] = []
+
+      /**去除 watch 字段*/
+      const newFormItemInstances = this.formItemInstances.filter((ite) => !ite.isWatch)
+      const nameListPath = newFormItemInstances.map((item) => item.dataField);
+      const lg = newFormItemInstances.length;
+
+      const isNames = Array.isArray(names) && names.length
+
+      for (let index = 0; index < lg; index++) {
+        const instanceItem = newFormItemInstances[index];
+        /**如果是监听则跳出循环*/
+        if (instanceItem.isWatch) {
+          /**跳出本次循环*/
+          continue;
+        }
+        /**判断实例是否存在 & 是否需要验证规则*/
+        if (instanceItem.rule && instanceItem.rule.isValidate()) {
+          let isValidate = true
+          if (isNames) {
+            /**判断是否存在当前需要验证的项*/
+            const findx = names.find((name) => name === instanceItem.dataField);
+            if (!findx) {
+              isValidate = false
+            }
+          }
+          try {
+            /**判断是否需要进行验证*/
+            if (isValidate) {
+              await instanceItem.rule.validate()
+              notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+            }
+          } catch (errors: any) {
+            if (errors)
+              errorFields.push({ errors, sort: instanceItem.sort, dataField: instanceItem.dataField })
+          }
+        } else {
+          notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+        }
+      }
+      /**所有值*/
+      const values = cloneByNamePathList(this.getFieldValue(), nameListPath);
+      /**判断是否存在验证失败的*/
+      if (errorFields.length) {
+        reject({ errorFields, values: values })
+      } else {
+        resolve(values)
+      }
+    })
+  }
+
+  /**
+   * 设置回调函数
+  */
+  setCallbacks = (callbacks: Callbacks) => {
+    this.callbacks = callbacks
+  }
+
+  /**
+   * 提交
+  */
+  submit = async () => {
+    try {
+      const result = await this.validate()
+      if (result) {
+        this.callbacks?.onFinish?.(result)
+      }
+    } catch (error: any) {
+      this.callbacks.onFinishFailed?.(error)
+    }
+  }
+}
