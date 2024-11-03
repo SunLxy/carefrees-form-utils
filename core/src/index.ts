@@ -1,3 +1,3 @@
-import { ref } from "vue"
-
-export const a = ref(2)
+export * from "./interface"
+export * from "./utils"
+export * from "./instance"
