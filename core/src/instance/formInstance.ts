@@ -1,6 +1,7 @@
 import { FormListInstanceBase } from "./formListInstance"
 import { FormItemInstanceBase } from "./formItemInstance"
 import { FormHideItemInstanceBase } from "./formHideItemInstance"
+import { FormEmptyItemInstanceBase } from "./formEmptyItemInstance"
 import { Callbacks, ErrorDataField } from "../interface"
 import { get, set, cloneByNamePathList, has } from "./../utils"
 
@@ -21,6 +22,12 @@ export class FormInstanceBase<T = any> {
   /**隐藏组件字段对应的值*/
   hideState = {}
 
+  // ======================================不显示组件，只占位=====================================
+  /**占位组件集合*/
+  emptyItemInstances: FormEmptyItemInstanceBase[] = []
+  /**占位组件字段对应的值*/
+  emptyState = {}
+
   /**实例是否初始化*/
   isMountInstance: boolean = false
   /**是否保护值(不进行表单项组件卸载重置初始值)*/
@@ -30,20 +37,28 @@ export class FormInstanceBase<T = any> {
   hideRuleState: Record<string, boolean> = {}
 
   /**初始化*/
-  ctor = (initial: Partial<T> = {}, hideState?: Record<string, boolean>, hideRuleState?: Record<string, boolean>) => {
+  ctor = (initial: Partial<T> = {}, hideState?: Record<string, boolean>, hideRuleState?: Record<string, boolean>, emptyState?: Record<string, boolean>) => {
     this.formData = initial || {};
     this.hideState = hideState || {}
     this.hideRuleState = hideRuleState || {}
+    this.emptyState = emptyState || {}
     this.isMountInstance = true;
     return this;
   }
 
+  private dispatch_resetFieldValueCount = 0;
   /**
-   * 重置数据值
-  */
-  resetFieldValue = (initial: Partial<T> = {},) => {
+  * 重置数据值
+ */
+  resetFieldValue = (initial: Partial<T> = {}) => {
+    /**初始化第一次不进行重置*/
+    if (this.dispatch_resetFieldValueCount === 0) {
+      this.dispatch_resetFieldValueCount++;
+      return;
+    }
+    this.dispatch_resetFieldValueCount++;
+    const keys = Object.keys({ ...initial, ...this.formData })
     this.formData = initial || {};
-    const keys = Object.keys(initial || [])
     this.notice(keys);
     /**清空验证提示信息*/
     if (this.formItemInstances && this.formItemInstances.length) {
@@ -89,6 +104,15 @@ export class FormInstanceBase<T = any> {
     }
   }
 
+  /**注册一个 form Empty item 实例*/
+  registerFormEmptyItem = (emptyItemInstance: FormEmptyItemInstanceBase) => {
+    this.emptyItemInstances.push(emptyItemInstance)
+    return () => {
+      this.emptyItemInstances = this.emptyItemInstances.filter(ite => ite !== emptyItemInstance);
+      /**需要处理默认值问题*/
+    }
+  }
+
   /**把数据传递出去*/
   private transferChangeValue = (dataField: string | Object) => {
     if (this.callbacks.onValuesChange) {
@@ -113,6 +137,17 @@ export class FormInstanceBase<T = any> {
     })
     this.noticeHide(names);
     return this;
+  }
+
+
+  /**更新字段是否占位*/
+  updatedFieldEmptyValue = (value: Record<string, boolean>) => {
+    // 字段对应的 form item 进行更新
+    const names = Object.keys(value || {});
+    names.forEach((key) => {
+      this.emptyState = set(this.emptyState, key, value[key])
+    })
+    this.noticeEmpty(names);
   }
 
   /**更新字段是否隐藏规则*/
@@ -214,13 +249,20 @@ export class FormInstanceBase<T = any> {
     return this.hideRuleState;
   }
 
-
   /**获取字段隐藏值*/
   getFieldHideValue = (dataField?: string) => {
     if (dataField) {
       return get(this.hideState, dataField)
     }
     return this.hideState;
+  }
+
+  /**获取字段隐藏值*/
+  getFieldEmptyValue = (dataField?: string) => {
+    if (dataField) {
+      return get(this.emptyState, dataField)
+    }
+    return this.emptyState;
   }
 
   /**通知组件更新*/
@@ -237,6 +279,12 @@ export class FormInstanceBase<T = any> {
     return this;
   }
 
+  /**通知组件*/
+  noticeEmpty = (dataField?: string | string[]) => {
+    /**循环挂载组件*/
+    this._bathNotice(this.emptyItemInstances, dataField)
+  }
+
   /**通知监听方法*/
   noticeWatch = (dataField?: string | string[]) => {
     /**循环挂载组件*/
@@ -244,29 +292,29 @@ export class FormInstanceBase<T = any> {
     return this;
   }
 
+  /**进行实例更新渲染*/
+  private _bathNotice_judge = (item: FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase, isWatch?: boolean) => {
+    if (isWatch) {
+      if (item.isWatch) {
+        item.updated?.({})
+      }
+    } else {
+      item.updated?.({})
+    }
+  }
+
+
   /**通知组件基础方法*/
-  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase)[], dataField?: string | string[], isWatch?: boolean) => {
+  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase)[], dataField?: string | string[], isWatch?: boolean) => {
     if (typeof dataField === "string") {
       /**循环挂载组件*/
       list.forEach((item) => {
         if (item.dataField === dataField) {
-          if (isWatch) {
-            if (item.isWatch) {
-              item.updated?.({})
-            }
-          } else {
-            item.updated?.({})
-          }
+          this._bathNotice_judge(item, isWatch)
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
           const findx = item.dependencies.find(ite => ite === dataField)
           if (findx) {
-            if (isWatch) {
-              if (item.isWatch) {
-                item.updated?.({})
-              }
-            } else {
-              item.updated?.({})
-            }
+            this._bathNotice_judge(item, isWatch)
           }
         }
       })
@@ -274,30 +322,18 @@ export class FormInstanceBase<T = any> {
       /**循环挂载组件*/
       list.forEach((item) => {
         if (dataField.includes(item.dataField)) {
-          item.updated?.({})
+          this._bathNotice_judge(item, isWatch)
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
           const findx = item.dependencies.find(ite => dataField.includes(ite))
           if (findx) {
-            if (isWatch) {
-              if (item.isWatch) {
-                item.updated?.({})
-              }
-            } else {
-              item.updated?.({})
-            }
+            this._bathNotice_judge(item, isWatch)
           }
         }
       })
     } else {
       /**循环挂载组件*/
       list.forEach((item) => {
-        if (isWatch) {
-          if (item.isWatch) {
-            item.updated?.({})
-          }
-        } else {
-          item.updated?.({})
-        }
+        this._bathNotice_judge(item, isWatch)
       })
     }
     return this;

@@ -15,10 +15,6 @@ export interface ErrorDataField {
   errors: MessageType[]
 }
 
-export interface HideItemInstanceType extends Omit<FormItemInstanceBase, 'rule'> {
-
-}
-
 export interface ValidateErrorEntity<Values = any> {
   /*值*/
   values: Values;

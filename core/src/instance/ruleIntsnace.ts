@@ -37,7 +37,6 @@ export class RuleInstanceBase {
     const findItem = (this.rules || []).find(item => item?.required)
     return !!findItem
   }
-
   /**初始化*/
   ctor = (dataField: string, rules: RuleItem[], instance: FormInstanceBase) => {
     this.dataField = dataField

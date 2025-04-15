@@ -1,28 +1,10 @@
 import { FormInstanceBase } from "./formInstance"
-export class FormListInstanceBase {
-  /**
-    * 顺序
-    * @example
-    * "0"
-    * "0-0"
-    * "0-0-0"
-    */
-  sort?: string;
+import { FormItemBaseInstance } from "./formItemBaseInstance"
+export class FormListInstanceBase extends FormItemBaseInstance {
   /**表单实例*/
   instance?: FormInstanceBase
-  /**
-   * 字段 ，分割方式与lodash的get和set方法值更新或设置路径一致
-   * @example
-   * 默认："name"
-   * 嵌套字段："name.a.doc"
-   * 嵌套字段："name[1].a.doc"
-   * 嵌套字段："name.a[2].doc"
-  */
-  dataField: string = '';
   /**父级字段*/
   parentDataField?: string
-  /**更新当前组件方法*/
-  updated?: Function;
   /**记录key值*/
   keys: number[] = []
   /**累加数据，唯一性*/
@@ -88,6 +70,14 @@ export class FormListInstanceBase {
     const toItem = newList[to]
     newList[from] = toItem
     newList[to] = fromItem
+    this.instance?.updatedFieldValue?.(this.dataField, [...newList])
+  }
+
+  /**更新某个item数据*/
+  updatedItem = (index: number, item: any) => {
+    const newList = this.getLastValue()
+    const newItem = newList[index]
+    newList[index] = { ...newItem, ...item }
     this.instance?.updatedFieldValue?.(this.dataField, [...newList])
   }
 
