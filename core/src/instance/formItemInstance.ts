@@ -22,8 +22,8 @@ export class FormItemInstanceBase extends FormItemBaseInstance {
   preserve?: boolean = true
   /**触发数据更新之后触发（用于数据联动之类的）*/
   onAfterUpdate?: (value: any, instance: FormInstanceBase, instanceAttr: FormItemInstanceBase, event: any) => void
-  ctor = (dataField: string, rule: RuleInstanceBase, updated: Function, sort: string, dependencies?: string[]) => {
-    this.dataField = dataField
+  ctor = (name: string, rule: RuleInstanceBase, updated: Function, sort: string, dependencies?: string[]) => {
+    this.name = name
     this.rule = rule
     this.updated = updated
     this.sort = sort

@@ -87,10 +87,10 @@ export class FormInstanceBase<T = any> {
         preserve = itemInstance.preserve
       }
 
-      const dataField = `${itemInstance.dataField}`
+      const name = `${itemInstance.name}`
       // 判断路径是否存在
-      if (dataField && has(this.formData, dataField) && !preserve) {
-        this.formData = set(this.formData, itemInstance.dataField, undefined);
+      if (name && has(this.formData, name) && !preserve) {
+        this.formData = set(this.formData, itemInstance.name, undefined);
       }
     }
   }
@@ -114,15 +114,15 @@ export class FormInstanceBase<T = any> {
   }
 
   /**把数据传递出去*/
-  private transferChangeValue = (dataField: string | Object) => {
+  private transferChangeValue = (name: string | Object) => {
     if (this.callbacks.onValuesChange) {
       /**触发传递的 onValuesChange 事件*/
       const values = this.getFieldValue()
-      if (typeof dataField === "string") {
-        const newValue = cloneByNamePathList(values, [dataField])
+      if (typeof name === "string") {
+        const newValue = cloneByNamePathList(values, [name])
         this.callbacks.onValuesChange?.(newValue, values);
       } else {
-        this.callbacks.onValuesChange?.(dataField, values);
+        this.callbacks.onValuesChange?.(name, values);
       }
     }
     return this;
@@ -158,8 +158,8 @@ export class FormInstanceBase<T = any> {
       this.hideRuleState = set(this.hideRuleState, key, value[key])
     })
     this.noticeHide(names);
-    names.forEach((dataField) => {
-      const formItemInstance = this.formItemInstances.find(ite => ite.dataField === dataField);
+    names.forEach((name) => {
+      const formItemInstance = this.formItemInstances.find(ite => ite.name === name);
       if (formItemInstance && formItemInstance?.rule) {
         formItemInstance.rule?.updatedMessages?.([])
       }
@@ -169,26 +169,26 @@ export class FormInstanceBase<T = any> {
 
   /**更新字段value值
    * 
-   * @param dataField 字段
+   * @param name 字段
    * @param value 字段值
    * @param validateType 校验规则处理
    * @param isOnlySave 仅用于存储
    * 
   */
-  updatedFieldValue = (dataField: string, value: any, validateType: "validate" | "clear" | "none" = 'validate', isOnlySave: boolean = false) => {
+  updatedFieldValue = (name: string, value: any, validateType: "validate" | "clear" | "none" = 'validate', isOnlySave: boolean = false) => {
     // 字段对应的 form item 进行更新
-    this.formData = set(this.formData, dataField, value);
+    this.formData = set(this.formData, name, value);
     if (isOnlySave === true) {
       return;
     }
-    this.transferChangeValue(dataField);
-    this.notice(dataField);
+    this.transferChangeValue(name);
+    this.notice(name);
     /**验证数据 */
     if (validateType === "validate") {
-      this.onlyValidate(dataField);
+      this.onlyValidate(name);
     } else if (validateType === 'clear') {
       /**清空验证提示信息*/
-      const formItemInstance = this.formItemInstances.find(ite => ite.dataField === dataField);
+      const formItemInstance = this.formItemInstances.find(ite => ite.name === name);
       if (formItemInstance && formItemInstance?.rule) {
         formItemInstance.rule?.updatedMessages?.([])
       }
@@ -231,10 +231,10 @@ export class FormInstanceBase<T = any> {
   }
 
   /**获取字段值*/
-  getFieldValue = (dataField?: string) => {
-    if (dataField) {
-      if (has(this.formData, dataField)) {
-        return get(this.formData, dataField)
+  getFieldValue = (name?: string) => {
+    if (name) {
+      if (has(this.formData, name)) {
+        return get(this.formData, name)
       }
       return undefined
     }
@@ -242,53 +242,53 @@ export class FormInstanceBase<T = any> {
   }
 
   /**获取字段隐藏规则值*/
-  getFieldHideRulesValue = (dataField?: string) => {
-    if (dataField) {
-      return get(this.hideRuleState, dataField)
+  getFieldHideRulesValue = (name?: string) => {
+    if (name) {
+      return get(this.hideRuleState, name)
     }
     return this.hideRuleState;
   }
 
   /**获取字段隐藏值*/
-  getFieldHideValue = (dataField?: string) => {
-    if (dataField) {
-      return get(this.hideState, dataField)
+  getFieldHideValue = (name?: string) => {
+    if (name) {
+      return get(this.hideState, name)
     }
     return this.hideState;
   }
 
   /**获取字段隐藏值*/
-  getFieldEmptyValue = (dataField?: string) => {
-    if (dataField) {
-      return get(this.emptyState, dataField)
+  getFieldEmptyValue = (name?: string) => {
+    if (name) {
+      return get(this.emptyState, name)
     }
     return this.emptyState;
   }
 
   /**通知组件更新*/
-  notice = (dataField?: string | string[]) => {
+  notice = (name?: string | string[]) => {
     /**循环挂载组件*/
-    this._bathNotice(this.formItemInstances, dataField)
+    this._bathNotice(this.formItemInstances, name)
     return this;
   }
 
   /**通知组件隐藏*/
-  noticeHide = (dataField?: string | string[]) => {
+  noticeHide = (name?: string | string[]) => {
     /**循环挂载组件*/
-    this._bathNotice(this.hideItemInstances, dataField)
+    this._bathNotice(this.hideItemInstances, name)
     return this;
   }
 
   /**通知组件*/
-  noticeEmpty = (dataField?: string | string[]) => {
+  noticeEmpty = (name?: string | string[]) => {
     /**循环挂载组件*/
-    this._bathNotice(this.emptyItemInstances, dataField)
+    this._bathNotice(this.emptyItemInstances, name)
   }
 
   /**通知监听方法*/
-  noticeWatch = (dataField?: string | string[]) => {
+  noticeWatch = (name?: string | string[]) => {
     /**循环挂载组件*/
-    this._bathNotice(this.formItemInstances, dataField, true)
+    this._bathNotice(this.formItemInstances, name, true)
     return this;
   }
 
@@ -305,26 +305,26 @@ export class FormInstanceBase<T = any> {
 
 
   /**通知组件基础方法*/
-  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase)[], dataField?: string | string[], isWatch?: boolean) => {
-    if (typeof dataField === "string") {
+  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase)[], name?: string | string[], isWatch?: boolean) => {
+    if (typeof name === "string") {
       /**循环挂载组件*/
       list.forEach((item) => {
-        if (item.dataField === dataField) {
+        if (item.name === name) {
           this._bathNotice_judge(item, isWatch)
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
-          const findx = item.dependencies.find(ite => ite === dataField)
+          const findx = item.dependencies.find(ite => ite === name)
           if (findx) {
             this._bathNotice_judge(item, isWatch)
           }
         }
       })
-    } else if (Array.isArray(dataField)) {
+    } else if (Array.isArray(name)) {
       /**循环挂载组件*/
       list.forEach((item) => {
-        if (dataField.includes(item.dataField)) {
+        if (name.includes(item.name)) {
           this._bathNotice_judge(item, isWatch)
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
-          const findx = item.dependencies.find(ite => dataField.includes(ite))
+          const findx = item.dependencies.find(ite => name.includes(ite))
           if (findx) {
             this._bathNotice_judge(item, isWatch)
           }
@@ -342,13 +342,13 @@ export class FormInstanceBase<T = any> {
   /**
    * 只进行验证，没有返回值
    * */
-  onlyValidate = async (dataField: string | string[]) => {
+  onlyValidate = async (name: string | string[]) => {
     try {
       /**校验数据*/
-      if (Array.isArray(dataField)) {
-        await this.validate(dataField)
+      if (Array.isArray(name)) {
+        await this.validate(name)
       } else {
-        await this.validate([dataField])
+        await this.validate([name])
       }
     } catch (err) {
       console.log(err)
@@ -378,7 +378,7 @@ export class FormInstanceBase<T = any> {
           let isValidate = true
           if (isNames) {
             /**判断是否存在当前需要验证的项*/
-            const findx = names.find((name) => name === instanceItem.dataField);
+            const findx = names.find((name) => name === instanceItem.name);
             if (!findx) {
               isValidate = false
             }
@@ -387,16 +387,16 @@ export class FormInstanceBase<T = any> {
             /**判断是否需要进行验证*/
             if (isValidate) {
               await instanceItem.rule.validate(true)
-              notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+              notErrorFields.push({ errors: [], sort: instanceItem.sort, name: instanceItem.name })
             }
           } catch (errors: any) {
             if (errors) {
-              errorFields.push({ errors, sort: instanceItem.sort, dataField: instanceItem.dataField })
+              errorFields.push({ errors, sort: instanceItem.sort, name: instanceItem.name })
               break;
             }
           }
         } else {
-          notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+          notErrorFields.push({ errors: [], sort: instanceItem.sort, name: instanceItem.name })
         }
       }
       /**判断是否存在验证失败的*/
@@ -416,7 +416,7 @@ export class FormInstanceBase<T = any> {
 
       /**去除 watch 字段*/
       const newFormItemInstances = this.formItemInstances.filter((ite) => !ite.isWatch)
-      const nameListPath = newFormItemInstances.map((item) => item.dataField);
+      const nameListPath = newFormItemInstances.map((item) => item.name);
       const lg = newFormItemInstances.length;
 
       const isNames = Array.isArray(names) && names.length
@@ -433,7 +433,7 @@ export class FormInstanceBase<T = any> {
           let isValidate = true
           if (isNames) {
             /**判断是否存在当前需要验证的项*/
-            const findx = names.find((name) => name === instanceItem.dataField);
+            const findx = names.find((name) => name === instanceItem.name);
             if (!findx) {
               isValidate = false
             }
@@ -442,14 +442,14 @@ export class FormInstanceBase<T = any> {
             /**判断是否需要进行验证*/
             if (isValidate) {
               await instanceItem.rule.validate()
-              notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+              notErrorFields.push({ errors: [], sort: instanceItem.sort, name: instanceItem.name })
             }
           } catch (errors: any) {
             if (errors)
-              errorFields.push({ errors, sort: instanceItem.sort, dataField: instanceItem.dataField })
+              errorFields.push({ errors, sort: instanceItem.sort, name: instanceItem.name })
           }
         } else {
-          notErrorFields.push({ errors: [], sort: instanceItem.sort, dataField: instanceItem.dataField })
+          notErrorFields.push({ errors: [], sort: instanceItem.sort, name: instanceItem.name })
         }
       }
       /**所有值*/

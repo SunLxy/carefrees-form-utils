@@ -1,0 +1,29 @@
+{
+  "name": "@carefrees/form-utils-react",
+  "author": "SunLxy <1011771396@qq.com>",
+  "description": "",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "esm/index.js",
+  "scripts": {
+    "build": "carefrees-rslib build",
+    "watch": "carefrees-rslib build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "lib",
+    "esm"
+  ],
+  "dependencies": {
+    "@carefrees/form-utils": "0.0.0",
+    "antd-style": "~3.7.1"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "@types/react": "18.2.21"
+  }
+}

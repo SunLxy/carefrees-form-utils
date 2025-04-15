@@ -11,18 +11,18 @@ export class FormListInstanceBase extends FormItemBaseInstance {
   id: number = 0
   /**
    * 初始化
-   * @param dataField 字段
+   * @param name 字段
    * @param instance 表单实例
   */
-  ctor = (dataField: string, instance: FormInstanceBase) => {
-    this.dataField = dataField
+  ctor = (name: string, instance: FormInstanceBase) => {
+    this.name = name
     this.instance = instance
     return this;
   }
 
   /**获取值*/
   getLastValue = () => {
-    const value = this.instance?.getFieldValue?.(this.dataField)
+    const value = this.instance?.getFieldValue?.(this.name)
     /**对值进行处理*/
     const lastValue = Array.isArray(value) ? value : []
     return lastValue
@@ -40,12 +40,12 @@ export class FormListInstanceBase extends FormItemBaseInstance {
       const listData = [initialValue || {}, ...value,]
       this.keys = [this.id, ...this.keys];
       this.id++;// 累加
-      this.instance?.updatedFieldValue?.(this.dataField, listData)
+      this.instance?.updatedFieldValue?.(this.name, listData)
     } else {
       const listData = [...value, initialValue || {}]
       this.keys = [...this.keys, this.id];
       this.id++;// 累加
-      this.instance?.updatedFieldValue?.(this.dataField, listData)
+      this.instance?.updatedFieldValue?.(this.name, listData)
     }
   }
 
@@ -59,7 +59,7 @@ export class FormListInstanceBase extends FormItemBaseInstance {
     const newIndexs = Array.isArray(index) ? index : [index];
     this.keys = this.keys.filter((_, index) => !newIndexs.includes(index));
     const listData = value.filter((_, index) => !newIndexs.includes(index));
-    this.instance?.updatedFieldValue?.(this.dataField, listData)
+    this.instance?.updatedFieldValue?.(this.name, listData)
   }
 
   /**移动*/
@@ -70,7 +70,7 @@ export class FormListInstanceBase extends FormItemBaseInstance {
     const toItem = newList[to]
     newList[from] = toItem
     newList[to] = fromItem
-    this.instance?.updatedFieldValue?.(this.dataField, [...newList])
+    this.instance?.updatedFieldValue?.(this.name, [...newList])
   }
 
   /**更新某个item数据*/
@@ -78,7 +78,7 @@ export class FormListInstanceBase extends FormItemBaseInstance {
     const newList = this.getLastValue()
     const newItem = newList[index]
     newList[index] = { ...newItem, ...item }
-    this.instance?.updatedFieldValue?.(this.dataField, [...newList])
+    this.instance?.updatedFieldValue?.(this.name, [...newList])
   }
 
   /**获取渲染 list 字段拼接*/
@@ -92,7 +92,7 @@ export class FormListInstanceBase extends FormItemBaseInstance {
         this.id++;// 累加
       }
       return {
-        dataField: index,
+        name: index,
         key,
       };
     })

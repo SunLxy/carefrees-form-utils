@@ -16,7 +16,7 @@ export class FormItemBaseInstance {
    * 嵌套字段："name[1].a.doc"
    * 嵌套字段："name.a[2].doc"
   */
-  dataField: string = ''
+  name: string = ''
   /**更新当前组件方法*/
   updated?: Function
   /**依赖更新项*/

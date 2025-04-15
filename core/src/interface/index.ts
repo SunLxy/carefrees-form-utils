@@ -8,7 +8,7 @@ export interface MessageType {
 
 export interface ErrorDataField {
   /**字段*/
-  dataField: string;
+  name: string;
   /**排序*/
   sort?: string;
   /**错误信息*/

@@ -21,7 +21,7 @@ export class RuleInstanceBase {
    * 嵌套字段："name[1].a.doc"
    * 嵌套字段："name.a[2].doc"
   */
-  dataField: string = ''
+  name: string = ''
   /**规则*/
   rules?: RuleItem[] = []
   /**错误提示内容*/
@@ -31,22 +31,22 @@ export class RuleInstanceBase {
 
   /**判断是否必填*/
   isRequired = () => {
-    if (this.instance?.getFieldHideRulesValue?.(this.dataField)) {
+    if (this.instance?.getFieldHideRulesValue?.(this.name)) {
       return false
     }
     const findItem = (this.rules || []).find(item => item?.required)
     return !!findItem
   }
   /**初始化*/
-  ctor = (dataField: string, rules: RuleItem[], instance: FormInstanceBase) => {
-    this.dataField = dataField
+  ctor = (name: string, rules: RuleItem[], instance: FormInstanceBase) => {
+    this.name = name
     this.rules = rules || []
     this.instance = instance
     return this;
   }
   /**判断是否需要验证*/
   isValidate = () => {
-    if (this.instance?.getFieldHideRulesValue?.(this.dataField)) {
+    if (this.instance?.getFieldHideRulesValue?.(this.name)) {
       return false
     }
     return Array.isArray(this.rules) && this.rules.length
@@ -70,13 +70,13 @@ export class RuleInstanceBase {
   */
   validate = (isOnly: boolean = false) => {
     return new Promise((resolve, reject) => {
-      const value = this.instance?.getFieldValue?.(this.dataField)
-      if (this.instance?.getFieldHideRulesValue?.(this.dataField)) {
+      const value = this.instance?.getFieldValue?.(this.name)
+      if (this.instance?.getFieldHideRulesValue?.(this.name)) {
         this.updatedMessages([])
-        resolve({ [this.dataField]: value })
+        resolve({ [this.name]: value })
       }
-      new AsyncValidator({ [this.dataField]: this.rules || [] })
-        .validate({ [this.dataField]: value })
+      new AsyncValidator({ [this.name]: this.rules || [] })
+        .validate({ [this.name]: value })
         .then((values) => {
           if (!isOnly)
             this.updatedMessages([])
