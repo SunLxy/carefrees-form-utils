@@ -27,10 +27,11 @@
     "*.{js,jsx,tsx,ts,less,md,json}": "prettier --write"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "workspaces": [
     "core",
-    "examples"
+    "packages/*",
+    "examples/*"
   ]
 }

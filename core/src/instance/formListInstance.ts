@@ -1,8 +1,11 @@
-import { FormInstanceBase } from "./formInstance"
 import { FormItemBaseInstance } from "./formItemBaseInstance"
+import { RuleInstanceBase } from "./ruleIntsnace"
+import { FormItemInstanceBase } from "./formItemInstance"
+
 export class FormListInstanceBase extends FormItemBaseInstance {
-  /**表单实例*/
-  instance?: FormInstanceBase
+  /**规则*/
+  rule?: RuleInstanceBase
+  formItemInstance?: FormItemInstanceBase
   /**父级字段*/
   parentDataField?: string
   /**记录key值*/
@@ -14,9 +17,8 @@ export class FormListInstanceBase extends FormItemBaseInstance {
    * @param name 字段
    * @param instance 表单实例
   */
-  ctor = (name: string, instance: FormInstanceBase) => {
+  ctor = (name: string) => {
     this.name = name
-    this.instance = instance
     return this;
   }
 

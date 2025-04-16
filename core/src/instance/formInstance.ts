@@ -157,7 +157,6 @@ export class FormInstanceBase<T = any> {
     names.forEach((key) => {
       this.hideRuleState = set(this.hideRuleState, key, value[key])
     })
-    this.noticeHide(names);
     names.forEach((name) => {
       const formItemInstance = this.formItemInstances.find(ite => ite.name === name);
       if (formItemInstance && formItemInstance?.rule) {

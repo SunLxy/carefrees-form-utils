@@ -38,10 +38,9 @@ export class RuleInstanceBase {
     return !!findItem
   }
   /**初始化*/
-  ctor = (name: string, rules: RuleItem[], instance: FormInstanceBase) => {
+  ctor = (name: string, rules: RuleItem[]) => {
     this.name = name
     this.rules = rules || []
-    this.instance = instance
     return this;
   }
   /**判断是否需要验证*/
@@ -93,5 +92,13 @@ export class RuleInstanceBase {
     })
   }
 
-
+  /**获取校验结果*/
+  getValidateResult = () => {
+    const tip = Array.isArray(this.messages) ? this.messages.map((it) => it.message) : ''
+    const isInvalid = Array.isArray(tip) ? !!tip.length : !!tip
+    return {
+      tip,
+      isInvalid
+    }
+  }
 }

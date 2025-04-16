@@ -1,4 +1,4 @@
-
+import { FormInstanceBase } from "./formInstance"
 export class FormItemBaseInstance {
   /**
     * 顺序
@@ -23,4 +23,6 @@ export class FormItemBaseInstance {
   dependencies?: string[] = []
   /**是否是 watch */
   isWatch?: boolean = false
+  /**表单实例*/
+  instance?: FormInstanceBase
 }
