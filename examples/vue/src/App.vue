@@ -1,39 +1,15 @@
 <script setup>
-import { instanceDemo } from "./utils/index"
-import { computed, watch, ref } from "vue"
-
-const store = new instanceDemo()
-
-// const value = computed(() => {
-//   console.log(23)
-//   return store.store.a
-// })
-
-// watch(store.store, () => {
-//   console.log(123232)
-// })
-
-
-// computed(() => {
-//   console.log(12)
-//   return store.value.store
-// })
-
-store.register(() => {
-  console.log(value)
-})
+import { Button } from "@carefrees/form-utils-vue"
 
 const onClik = () => {
   console.log(2121)
-  store.value.updated({ a: new Date().getTime() })
 }
-
 
 </script>
 
 <template>
   <div>
-    <button @click='onClik'>点击</button>
+    <Button @click='onClik'>点击</Button>
   </div>
 </template>
 

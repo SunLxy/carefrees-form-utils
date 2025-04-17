@@ -1,0 +1,29 @@
+{
+  "name": "@carefrees/form-utils-vue",
+  "author": "SunLxy <1011771396@qq.com>",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "esm/index.mjs",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "saqu-vue build",
+    "watch": "saqu-vue build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "lib",
+    "esm"
+  ],
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@saqu-vue/core": "^0.0.8"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  }
+}
