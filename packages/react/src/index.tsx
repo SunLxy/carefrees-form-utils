@@ -48,7 +48,7 @@ export interface FormProps<T = any> extends Omit<FormLayoutProps, 'title' | 'ext
   isAutoUpdatedFormData?: boolean
 }
 
-export const Form = (props: FormProps) => {
+export function Form<T = any>(props: FormProps<T>) {
   const {
     children,
     form,
