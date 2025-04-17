@@ -1,6 +1,6 @@
 import { LayoutFormItem, LayoutFormItemProps } from "./../layout/layout.formItem"
 import { useFormItemAttr, FormItemAttrOptions } from "../hooks/attr/attr.FormItem"
-import { FormItemParentNameContext, FormItemParentNameProvider } from "../hooks/useFormItemParentName"
+import { FormItemParentNameProvider } from "../hooks/useFormItemParentName"
 import { useRegisterFormHideItem } from "../hooks/register/register.FormHideItem"
 import { Fragment } from "react"
 
