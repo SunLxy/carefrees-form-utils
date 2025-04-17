@@ -23,6 +23,14 @@
     "tsbb": "~4.2.5",
     "typescript": "~5.8.3"
   },
+  "overrides": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7"
+  },
+  "resolutions": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7"
+  },
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": "prettier --write"
   },

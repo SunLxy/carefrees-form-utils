@@ -1,7 +1,6 @@
 import { FormListInstanceBase } from "./formListInstance"
 import { FormItemInstanceBase } from "./formItemInstance"
 import { FormHideItemInstanceBase } from "./formHideItemInstance"
-import { FormEmptyItemInstanceBase } from "./formEmptyItemInstance"
 import { Callbacks, ErrorDataField } from "../interface"
 import { get, set, cloneByNamePathList, has } from "./../utils"
 
@@ -22,12 +21,6 @@ export class FormInstanceBase<T = any> {
   /**隐藏组件字段对应的值*/
   hideState = {}
 
-  // ======================================不显示组件，只占位=====================================
-  /**占位组件集合*/
-  emptyItemInstances: FormEmptyItemInstanceBase[] = []
-  /**占位组件字段对应的值*/
-  emptyState = {}
-
   /**实例是否初始化*/
   isMountInstance: boolean = false
   /**是否保护值(不进行表单项组件卸载重置初始值)*/
@@ -37,11 +30,10 @@ export class FormInstanceBase<T = any> {
   hideRuleState: Record<string, boolean> = {}
 
   /**初始化*/
-  ctor = (initial: Partial<T> = {}, hideState?: Record<string, boolean>, hideRuleState?: Record<string, boolean>, emptyState?: Record<string, boolean>) => {
+  ctor = (initial: Partial<T> = {}, hideState?: Record<string, boolean>, hideRuleState?: Record<string, boolean>) => {
     this.formData = initial || {};
     this.hideState = hideState || {}
     this.hideRuleState = hideRuleState || {}
-    this.emptyState = emptyState || {}
     this.isMountInstance = true;
     return this;
   }
@@ -104,14 +96,6 @@ export class FormInstanceBase<T = any> {
     }
   }
 
-  /**注册一个 form Empty item 实例*/
-  registerFormEmptyItem = (emptyItemInstance: FormEmptyItemInstanceBase) => {
-    this.emptyItemInstances.push(emptyItemInstance)
-    return () => {
-      this.emptyItemInstances = this.emptyItemInstances.filter(ite => ite !== emptyItemInstance);
-      /**需要处理默认值问题*/
-    }
-  }
 
   /**把数据传递出去*/
   private transferChangeValue = (name: string | Object) => {
@@ -137,17 +121,6 @@ export class FormInstanceBase<T = any> {
     })
     this.noticeHide(names);
     return this;
-  }
-
-
-  /**更新字段是否占位*/
-  updatedFieldEmptyValue = (value: Record<string, boolean>) => {
-    // 字段对应的 form item 进行更新
-    const names = Object.keys(value || {});
-    names.forEach((key) => {
-      this.emptyState = set(this.emptyState, key, value[key])
-    })
-    this.noticeEmpty(names);
   }
 
   /**更新字段是否隐藏规则*/
@@ -256,13 +229,6 @@ export class FormInstanceBase<T = any> {
     return this.hideState;
   }
 
-  /**获取字段隐藏值*/
-  getFieldEmptyValue = (name?: string) => {
-    if (name) {
-      return get(this.emptyState, name)
-    }
-    return this.emptyState;
-  }
 
   /**通知组件更新*/
   notice = (name?: string | string[]) => {
@@ -278,12 +244,6 @@ export class FormInstanceBase<T = any> {
     return this;
   }
 
-  /**通知组件*/
-  noticeEmpty = (name?: string | string[]) => {
-    /**循环挂载组件*/
-    this._bathNotice(this.emptyItemInstances, name)
-  }
-
   /**通知监听方法*/
   noticeWatch = (name?: string | string[]) => {
     /**循环挂载组件*/
@@ -292,7 +252,7 @@ export class FormInstanceBase<T = any> {
   }
 
   /**进行实例更新渲染*/
-  private _bathNotice_judge = (item: FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase, isWatch?: boolean) => {
+  private _bathNotice_judge = (item: FormItemInstanceBase | FormHideItemInstanceBase, isWatch?: boolean) => {
     if (isWatch) {
       if (item.isWatch) {
         item.updated?.({})
@@ -304,7 +264,7 @@ export class FormInstanceBase<T = any> {
 
 
   /**通知组件基础方法*/
-  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase | FormEmptyItemInstanceBase)[], name?: string | string[], isWatch?: boolean) => {
+  private _bathNotice = (list: (FormItemInstanceBase | FormHideItemInstanceBase)[], name?: string | string[], isWatch?: boolean) => {
     if (typeof name === "string") {
       /**循环挂载组件*/
       list.forEach((item) => {

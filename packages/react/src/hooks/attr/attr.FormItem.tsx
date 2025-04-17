@@ -1,5 +1,5 @@
 import { RuleInstanceBase, FormInstanceBase, FormItemInstanceBase, get } from "@carefrees/form-utils"
-import { useRegisterFormItem, RegisterFormItemOptions } from "../register/FormItem"
+import { useRegisterFormItem, RegisterFormItemOptions } from "../register/register.FormItem"
 import { useHtmlFor } from "../useHtmlFor"
 import React, { cloneElement, isValidElement, useMemo } from "react"
 
@@ -36,6 +36,7 @@ export interface FormItemAttrOptions extends RegisterFormItemOptions {
   children?: React.ReactNode
 }
 
+/**表单项参数*/
 export const useFormItemAttr = (options: FormItemAttrOptions) => {
   const {
     trigger = "onChange",
@@ -72,7 +73,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
       if (typeof getValueFromEvent === 'function') {
         value = getValueFromEvent(event, form, formItemInstance)
       } else if (event && event.target && typeof event.target === 'object' && getValuePath in event.target) {
-        value = get(event, getValuePath)
+        value = get(event.target, getValuePath)
       }
       if (typeof formatValue === 'function') {
         value = formatValue(value, form, formItemInstance, event)

@@ -3,12 +3,12 @@
 */
 
 import { useEffect, useMemo, useRef } from "react"
-import { RuleInstanceBase, FormItemInstanceBase } from "@carefrees/form-utils"
+import { RuleInstanceBase } from "@carefrees/form-utils"
 import type { RuleItem } from "async-validator"
-import { useUpdate } from "./../useUpdate"
+import { useUpdate } from "../useUpdate"
 import { useFormInstance } from "../useForm"
-import { useFormListName } from "../useFormList"
 import { useFormItem } from "../useFormItem"
+import { useFormItemParentName } from "../useFormItemParentName"
 
 export interface RegisterFormItemOptions {
   /**字段*/
@@ -21,11 +21,11 @@ export interface RegisterFormItemOptions {
   isJoinParentField?: boolean
 }
 
-/**注册表单项*/
+/**注册表单项到表单实例中*/
 export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   const { name, rules, sort, isJoinParentField = true } = options
   const form = useFormInstance()
-  const { newName, newSort, parentName } = useFormListName({ name, sort, isJoinParentField });
+  const { newName, newSort, parentName } = useFormItemParentName({ name, sort, isJoinParentField });
   // 注册规则
   // 注册单个实例
   const ruleInstance = useRef(new RuleInstanceBase()).current;

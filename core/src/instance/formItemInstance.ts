@@ -22,7 +22,7 @@ export class FormItemInstanceBase extends FormItemBaseInstance {
   onAfterUpdate?: (value: any, instance: FormInstanceBase, instanceAttr: FormItemInstanceBase, event: any) => void
   /**更新方法*/
   onChange?: (event: any) => void
-  ctor = (name: string, rule: RuleInstanceBase,) => {
+  ctor = (name: string, rule?: RuleInstanceBase,) => {
     this.name = name
     this.rule = rule
     return this;

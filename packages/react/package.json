@@ -6,6 +6,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "module": "esm/index.js",
+  "license": "ISC",
   "scripts": {
     "build": "carefrees-rslib build",
     "watch": "carefrees-rslib build --watch"
@@ -19,8 +20,9 @@
     "esm"
   ],
   "dependencies": {
+    "classnames": "2.5.1",
     "@carefrees/form-utils": "0.0.0",
-    "antd-style": "~3.7.1"
+    "styled-components": "~6.1.17"
   },
   "devDependencies": {
     "react": "^18.2.0",
