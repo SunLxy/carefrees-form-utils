@@ -13,6 +13,7 @@ import {
   FormItemLabelWarpBaseStyled,
 
 } from "../styles/styles.formItem"
+import { useAttrs } from "../hooks/useAttrs"
 
 export interface LayoutFormItemProps {
   /**规则校验失败错误提示位置*/
@@ -61,19 +62,26 @@ const preCls = 'carefrees-form-item'
 /**布局组件 表单项*/
 export const LayoutFormItem = (props: LayoutFormItemProps) => {
   const {
+    formItemClassName, formItemLabelClassName, formItemLabelStyle, formItemStyle, labelMode: p_labelMode = 'top',
+    errorLayout: p_errorLayout = 'left-bottom',
+    showColon: p_showColon = true,
+    colCount = 4
+  } = useAttrs()
+
+  const {
     children,
-    labelMode = 'top',
+    labelMode = p_labelMode,
     onlyRuleStyle,
     label,
     helpText,
     extra,
-    showColon = true,
+    showColon = p_showColon,
     colSpan = 1,
     rowSpan = 1,
     validateResult,
     htmlFor,
     required,
-    errorLayout = 'left-bottom',
+    errorLayout = p_errorLayout,
     style,
     className,
     labelClassName,
@@ -81,23 +89,24 @@ export const LayoutFormItem = (props: LayoutFormItemProps) => {
   } = props
   const tip = validateResult?.tip
   const isInvalid = validateResult?.isInvalid
-  const cls = clx(preCls, className, { 'dx-invalid': !!validateResult?.isInvalid })
+  const cls = clx(preCls, className, formItemClassName, { 'dx-invalid': !!validateResult?.isInvalid })
 
-  const labelWarpCls = clx(`${preCls}-label-warp`, labelClassName)
+  const labelWarpCls = clx(`${preCls}-label-warp`, labelClassName, formItemLabelClassName)
 
   const errorCls = clx(`${preCls}-body-error`, {
     [errorLayout]: !!errorLayout
   })
 
   return (<FormItemBaseStyled
-    style={style}
+    style={{ ...style, ...formItemStyle }}
     className={cls}
     $colSpan={colSpan}
     $rowSpan={rowSpan}
     $onlyRuleStyle={onlyRuleStyle}
+    $colCount={colCount}
   >
     <FormItemContainerBaseStyled $labelMode={labelMode} className={`${preCls}-container`} >
-      {label ? <FormItemLabelWarpBaseStyled style={labelStyle} className={labelWarpCls} >
+      {label ? <FormItemLabelWarpBaseStyled style={{ ...labelStyle, ...formItemLabelStyle }} className={labelWarpCls} >
         <FormItemLabelBaseStyled $required={required} $showColon={showColon} htmlFor={htmlFor} className={`${preCls}-label`} >
           {label}
         </FormItemLabelBaseStyled>
@@ -109,7 +118,7 @@ export const LayoutFormItem = (props: LayoutFormItemProps) => {
         {helpText ? <FormItemBodyHelpBaseStyled className={`${preCls}-body-help`}>
           {helpText}
         </FormItemBodyHelpBaseStyled> : <Fragment />}
-        {isInvalid ? <FormItemBodyErrorBaseStyled $layout={errorLayout} className={errorCls}>error</FormItemBodyErrorBaseStyled> : <Fragment />}
+        {isInvalid ? <FormItemBodyErrorBaseStyled $layout={errorLayout} className={errorCls}>{tip}</FormItemBodyErrorBaseStyled> : <Fragment />}
       </FormItemBodyBaseStyled>
     </FormItemContainerBaseStyled>
     {extra ? <FormItemExtraBaseStyled className={`${preCls}-extra`}>

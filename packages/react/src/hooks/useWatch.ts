@@ -37,6 +37,7 @@ export const useWatch = (name: string, form: FormInstanceBase, callBack?: (value
   const formInstance = form || useFormInstance()
   const [oldValue, setValue] = useState(formInstance.getFieldValue(name))
   const watch = useRef(new WatchInstanceBase()).current;
+  watch.name = name
   watch.oldValue = oldValue;
   watch.dispatch = setValue
   watch.callBack = callBack
