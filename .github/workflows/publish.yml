@@ -52,11 +52,11 @@ jobs:
           ${{ steps.changelog.outputs.compareurl }}
           ${{ steps.changelog.outputs.changelog }}
 
-    # - name: Publish 🚀
-    #   uses: SunLxy/npm-publish@main
-    #   with:
-    #     token: ${{ secrets.NPM_TOKEN }}
-    #     workspaces: |
-    #       core
+    - name: Publish 🚀
+      uses: SunLxy/npm-publish@main
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+        workspaces: |
+          core
 
   
