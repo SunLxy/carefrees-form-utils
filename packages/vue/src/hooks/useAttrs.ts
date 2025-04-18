@@ -23,6 +23,7 @@ export interface AttrsOptions {
 
 const attrsProvideSymbol = Symbol("carefrees-attrs")
 
+/**公共属性 Context */
 export function useAttrsProvide(options: AttrsOptions) {
   const { colCount = 4, errorLayout = 'left-bottom', labelMode = 'top', showColon = true, formItemClassName, formItemStyle, formItemLabelClassName, formItemLabelStyle } = options
   const data = computed(() => {
@@ -30,9 +31,8 @@ export function useAttrsProvide(options: AttrsOptions) {
   })
   provide(attrsProvideSymbol, reactive(data))
 }
-/**子项中获取表单项实例*/
+/**子项中获取公共属性*/
 export function useAttrsInject() {
-
   const attrs = inject<AttrsOptions>(attrsProvideSymbol, reactive({
     colCount: 4,
     errorLayout: "left-bottom",

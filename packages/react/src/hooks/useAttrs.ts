@@ -21,7 +21,7 @@ export interface AttrsOptions {
   formItemLabelStyle?: React.CSSProperties
 }
 
-/**表单项实例 Context */
+/**公共属性 Context */
 export const AttrsContext = createContext<AttrsOptions>({
   colCount: 4,
   errorLayout: "left-bottom",
@@ -29,6 +29,6 @@ export const AttrsContext = createContext<AttrsOptions>({
   showColon: true,
 })
 
-/**子项中获取表单项实例*/
+/**子项中获取公共属性*/
 export const useAttrs = () => useContext(AttrsContext)
 
