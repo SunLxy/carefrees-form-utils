@@ -1,16 +1,16 @@
-import { LayoutFormItem, LayoutFormItemProps } from "./../layout/layout.formItem"
-import { useFormItemAttr, FormItemAttrOptions } from "../hooks/attr/attr.FormItem"
-import { FormItemParentNameProvider } from "../hooks/useFormItemParentName"
-import { useRegisterFormHideItem } from "../hooks/register/register.FormHideItem"
-import { Fragment } from "react"
+import { LayoutFormItem, LayoutFormItemProps } from './../layout/layout.formItem';
+import { useFormItemAttr, FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
+import { FormItemParentNameProvider } from '../hooks/useFormItemParentName';
+import { useRegisterFormHideItem } from '../hooks/register/register.FormHideItem';
+import React, { Fragment } from 'react';
 
 export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps {
   /**不进行样式渲染*/
-  noStyle?: boolean
+  noStyle?: boolean;
 }
 
 /**表单项基础实例*/
-const FormItemInstance = (props: FormItemProps) => {
+const FormItemInstance = React.memo((props: FormItemProps) => {
   const {
     labelMode,
     noStyle,
@@ -24,36 +24,42 @@ const FormItemInstance = (props: FormItemProps) => {
     colSpan,
     rowSpan,
     ...rest
-  } = props
-  const { children, ruleInstance, formItemInstance, htmlFor, validateResult } = useFormItemAttr({ ...rest })
+  } = props;
+  const { children, ruleInstance, formItemInstance, htmlFor, validateResult } = useFormItemAttr({ ...rest });
   if (noStyle) {
-    return <FormItemParentNameProvider name={formItemInstance.name} sort={formItemInstance.sort} >{children}</FormItemParentNameProvider>
+    return (
+      <FormItemParentNameProvider name={formItemInstance.name} sort={formItemInstance.sort}>
+        {children}
+      </FormItemParentNameProvider>
+    );
   }
-  return <FormItemParentNameProvider name={formItemInstance.name} sort={formItemInstance.sort} >
-    <LayoutFormItem
-      labelMode={labelMode}
-      onlyRuleStyle={onlyRuleStyle}
-      required={required || ruleInstance?.isRequired?.()}
-      label={label}
-      helpText={helpText}
-      extra={extra}
-      errorLayout={errorLayout}
-      showColon={showColon}
-      colSpan={colSpan}
-      rowSpan={rowSpan}
-      htmlFor={htmlFor}
-      validateResult={validateResult}
-    >
-      {children}
-    </LayoutFormItem>
-  </FormItemParentNameProvider>
-}
+  return (
+    <FormItemParentNameProvider name={formItemInstance.name} sort={formItemInstance.sort}>
+      <LayoutFormItem
+        labelMode={labelMode}
+        onlyRuleStyle={onlyRuleStyle}
+        required={required || ruleInstance?.isRequired?.()}
+        label={label}
+        helpText={helpText}
+        extra={extra}
+        errorLayout={errorLayout}
+        showColon={showColon}
+        colSpan={colSpan}
+        rowSpan={rowSpan}
+        htmlFor={htmlFor}
+        validateResult={validateResult}
+      >
+        {children}
+      </LayoutFormItem>
+    </FormItemParentNameProvider>
+  );
+});
 
 /**表单项*/
-export const FormItem = (props: Partial<FormItemProps>) => {
-  const { name } = props
+export const FormItem = React.memo((props: Partial<FormItemProps>) => {
+  const { name } = props;
   if (name) {
-    return <FormItemInstance {...props} name={name} />
+    return <FormItemInstance {...props} name={name} />;
   }
   const {
     labelMode,
@@ -67,29 +73,31 @@ export const FormItem = (props: Partial<FormItemProps>) => {
     colSpan,
     rowSpan,
     children,
-  } = props
-  return <LayoutFormItem
-    labelMode={labelMode}
-    onlyRuleStyle={onlyRuleStyle}
-    required={required}
-    label={label}
-    helpText={helpText}
-    extra={extra}
-    errorLayout={errorLayout}
-    showColon={showColon}
-    colSpan={colSpan}
-    rowSpan={rowSpan}
-  >
-    {children}
-  </LayoutFormItem>
-}
+  } = props;
+  return (
+    <LayoutFormItem
+      labelMode={labelMode}
+      onlyRuleStyle={onlyRuleStyle}
+      required={required}
+      label={label}
+      helpText={helpText}
+      extra={extra}
+      errorLayout={errorLayout}
+      showColon={showColon}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+    >
+      {children}
+    </LayoutFormItem>
+  );
+});
 
 /**隐藏表单项*/
-export const FormHideItem = (props: FormItemProps) => {
-  const { name, sort, isJoinParentField } = props
-  const { isHide } = useRegisterFormHideItem({ name, sort: sort, isJoinParentField })
+export const FormHideItem = React.memo((props: FormItemProps) => {
+  const { name, sort, isJoinParentField } = props;
+  const { isHide } = useRegisterFormHideItem({ name, sort: sort, isJoinParentField });
   if (isHide) {
-    return <Fragment />
+    return <Fragment />;
   }
-  return <FormItemInstance {...props} />
-}
+  return <FormItemInstance {...props} />;
+});

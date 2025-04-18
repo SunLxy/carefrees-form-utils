@@ -26,29 +26,56 @@ function App() {
     <div>
       <button onClick={onSubmit}>打印</button>
       <Demo form={form} />
-      <Form title="222" colCount={4} form={form} formData={{ a: '', b: '', c: '', d: '', e: '', f: '' }}>
-        <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
-          <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem name="c" label="测试3">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem name="d" label="测试4">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem name="e" label="测试5">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem name="f" label="测试6">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
+      <Form gap={14} colCount={4} form={form} formData={{ a: '', b: '', c: '', d: '', e: '', f: '' }}>
+        <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="222">
+          <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
+            <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="c" label="测试3">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="d" label="测试4">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="e" label="测试5">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="f" label="测试6">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
 
-        <FormItem name="g" label="测试7">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
+          <FormItem name="g" label="测试7">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+        </FormLayout>
+
+        <FormLayout isAllColSpan labelMode="top" bordered title="4">
+          <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
+            <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="c" label="测试3">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="d" label="测试4">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="e" label="测试5">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="f" label="测试6">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+
+          <FormItem name="g" label="测试7">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+        </FormLayout>
       </Form>
     </div>
   );

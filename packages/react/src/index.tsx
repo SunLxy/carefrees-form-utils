@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { FormInstanceBase, ValidateErrorEntity } from '@carefrees/form-utils';
 import clx from 'classnames';
 import { FormLayout, FormLayoutProps } from './layout';
@@ -69,8 +69,12 @@ export function Form<T = any>(props: FormProps<T>) {
 
   const formInstance = useForm(form);
   useRegisterForm(formInstance, name);
-  const cls = clx('carefrees-form', className);
+  const cls = useMemo(() => clx('carefrees-form', className), []);
   useMemo(() => formInstance.ctor(formData, hideData, hideRuleData), []);
+
+  formInstance.onFinish = onFinish;
+  formInstance.onValuesChange = onValuesChange;
+  formInstance.onFinishFailed = onFinishFailed;
 
   useEffect(() => {
     if (isAutoUpdatedFormData) {
@@ -78,7 +82,6 @@ export function Form<T = any>(props: FormProps<T>) {
     }
   }, [isAutoUpdatedFormData, formData]);
 
-  formInstance.setCallbacks({ onFinish, onFinishFailed, onValuesChange });
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
