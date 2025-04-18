@@ -3,7 +3,7 @@
   "author": "SunLxy <1011771396@qq.com>",
   "description": "",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "module": "esm/index.js",
@@ -21,12 +21,12 @@
     "esm"
   ],
   "dependencies": {
+    "@carefrees/form-utils": "^0.0.1",
     "classnames": "2.5.1",
-    "@carefrees/form-utils": "0.0.0",
     "styled-components": "~6.1.17"
   },
   "devDependencies": {
-    "react": "^18.2.0",
-    "@types/react": "18.2.21"
+    "@types/react": "18.2.21",
+    "react": "^18.2.0"
   }
 }
