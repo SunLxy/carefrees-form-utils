@@ -1,15 +1,27 @@
 <script setup>
-import { Button } from "@carefrees/form-utils-vue"
+// import { Button } from "@carefrees/form-utils-vue"
+import { provide, computed, ref } from "vue"
+import Child from "./Child.vue"
+
+const a = ref(1)
+
+// const data = computed(() => {
+//   return { a: a.value, b: 2 }
+// })
+// provide('form', data)
 
 const onClik = () => {
   console.log(2121)
+  a.value++
+  console.log(a.value)
 }
 
 </script>
 
 <template>
   <div>
-    <Button @click='onClik'>点击</Button>
+    <button @click='onClik'>设置</button>
+    <Child :a='a' />
   </div>
 </template>
 

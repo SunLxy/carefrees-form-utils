@@ -1,4 +1,3 @@
-
 <template>
   <button class="button" :class="buttonStyle">
     <slot />
@@ -26,4 +25,3 @@ button {
   color: red;
 }
 </style>
-  
