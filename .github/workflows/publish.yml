@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 18
 
     - name: Generate changelog
       uses: jaywcjlove/changelog-generator@main
@@ -54,15 +54,16 @@ jobs:
         body: |
           ```bash
           npm i @carefrees-vue/form-util@${{ steps.create_tag.outputs.version }}
+          npm i @carefrees-vue/form-util-react@${{ steps.create_tag.outputs.version }}
           ```
           ${{ steps.changelog.outputs.compareurl }}
           ${{ steps.changelog.outputs.changelog }}
 
-    - name: Publish 🚀
-      uses: SunLxy/npm-publish@main
-      with:
-        token: ${{ secrets.NPM_TOKEN }}
-        workspaces: |
-          core
+    # - name: Publish 🚀
+    #   uses: SunLxy/npm-publish@main
+    #   with:
+    #     token: ${{ secrets.NPM_TOKEN }}
+    #     workspaces: |
+    #       core
 
   
