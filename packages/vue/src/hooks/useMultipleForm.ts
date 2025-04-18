@@ -25,5 +25,5 @@ export function useMultipleForm(multipleForm?: MultipleInstanceBase) {
       refForm.value = new MultipleInstanceBase()
     }
   }
-  return refForm
+  return refForm.value
 }

@@ -1,10 +1,10 @@
 import { FormInstanceBase } from "@carefrees/form-utils"
-import { provide, inject, ref, Ref } from "vue"
+import { provide, inject, ref } from "vue"
 
 const formProvideSymbol = Symbol("carefrees-form")
 
 /**表单实例 Context */
-export function useFormProvide<T = any>(form: Ref<FormInstanceBase<T>>) {
+export function useFormProvide<T = any>(form: FormInstanceBase<T>) {
   provide(formProvideSymbol, form)
 }
 
@@ -24,5 +24,5 @@ export function useForm<T = any>(form?: FormInstanceBase<T>) {
       refForm.value = new FormInstanceBase<T>()
     }
   }
-  return refForm
+  return refForm.value
 }

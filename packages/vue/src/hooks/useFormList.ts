@@ -24,5 +24,5 @@ export function useFormList(formList?: FormListInstanceBase) {
       refForm.value = new FormListInstanceBase()
     }
   }
-  return refForm
+  return refForm.value
 }

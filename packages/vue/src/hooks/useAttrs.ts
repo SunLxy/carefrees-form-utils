@@ -1,6 +1,6 @@
 
 /**公共属性*/
-import { provide, inject, computed, StyleValue } from "vue"
+import { provide, inject, computed, StyleValue, reactive } from "vue"
 
 export interface AttrsOptions {
   /**列数据*/
@@ -28,16 +28,16 @@ export function useAttrsProvide(options: AttrsOptions) {
   const data = computed(() => {
     return { colCount, errorLayout, labelMode, showColon, formItemClassName, formItemStyle, formItemLabelClassName, formItemLabelStyle }
   })
-  provide(attrsProvideSymbol, data)
+  provide(attrsProvideSymbol, reactive(data))
 }
 /**子项中获取表单项实例*/
 export function useAttrsInject() {
 
-  const attrs = inject<AttrsOptions>(attrsProvideSymbol, {
+  const attrs = inject<AttrsOptions>(attrsProvideSymbol, reactive({
     colCount: 4,
     errorLayout: "left-bottom",
     labelMode: "top",
     showColon: true,
-  })
+  }))
   return attrs
 }

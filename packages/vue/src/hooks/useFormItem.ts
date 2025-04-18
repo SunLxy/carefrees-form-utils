@@ -24,5 +24,5 @@ export function useForItem(formItem?: FormItemInstanceBase) {
       refForm.value = new FormItemInstanceBase()
     }
   }
-  return refForm
+  return refForm.value
 }
