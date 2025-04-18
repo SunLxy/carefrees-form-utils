@@ -17,15 +17,8 @@ jobs:
       with:
         node-version: 18
 
-    - name: Generate changelog
-      uses: jaywcjlove/changelog-generator@main
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        filter-author: (SunLxy|dependabot\[bot\]|Renovate Bot)
-        filter: '[R|r]elease[d]\s+[v|V]d(\.\d+){0,2}'
-
-    - run: npm install
-    - run: npm run build
+    - run: yarn install
+    - run: yarn run build
 
     - name: Create Tag
       id: create_tag
@@ -37,7 +30,7 @@ jobs:
     - name: Generate changelog
       id: changelog
       uses: jaywcjlove/changelog-generator@main
-      if: steps.create_tag.outputs.successful
+      if: steps.create_tag.outputs.successful == 'true'
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         head-ref: ${{ steps.create_tag.outputs.version }}
@@ -46,7 +39,7 @@ jobs:
 
     - name: Create Release
       uses: ncipollo/release-action@v1
-      if: steps.create_tag.outputs.successful
+      if: steps.create_tag.outputs.successful == 'true'
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         name: ${{ steps.create_tag.outputs.version }}
