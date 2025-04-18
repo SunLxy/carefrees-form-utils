@@ -18,7 +18,7 @@ jobs:
         node-version: 18
 
     - run: yarn install
-    - run: yarn run build
+    - run: yarn run build:all
 
     - name: Create Tag
       id: create_tag
