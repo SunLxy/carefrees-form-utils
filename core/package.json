@@ -5,16 +5,18 @@
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "module": "esm/index.js",
   "scripts": {
-    "build": "tsbb build",
-    "watch": "tsbb watch"
+    "build": "carefrees-rslib build --node",
+    "watch": "carefrees-rslib build --watch --node"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "src",
-    "lib"
+    "lib",
+    "esm"
   ],
   "keywords": [],
   "author": "",

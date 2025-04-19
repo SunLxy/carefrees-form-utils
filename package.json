@@ -12,18 +12,15 @@
     "start:vue": "npm run-script start --workspace example_vue",
     "start:react": "npm run-script start --workspace example_react",
     "version": "lerna version --force-publish=* --no-changelog --no-git-tag-version --no-push",
-    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
-    "remove": "lerna exec \"rm -rf node_modules build  package-lock.json\"",
-    "clean": "lerna clean --yes && npm run remove"
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\""
   },
   "dependencies": {
-    "@carefrees/rslib": "~0.0.5",
+    "@carefrees/rslib": "~0.0.7",
     "husky": "~8.0.0",
     "lerna": "~5.4.0",
     "prettier": "~2.7.0",
     "pretty-quick": "~3.1.3",
     "lint-staged": "~13.0.0",
-    "tsbb": "~4.2.5",
     "typescript": "~5.8.3"
   },
   "overrides": {
