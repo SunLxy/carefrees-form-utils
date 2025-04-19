@@ -68,6 +68,7 @@ export const LayoutBaseStyled = styled.div<{ $isAllColSpan?: boolean; $bordered?
   box-sizing: border-box;
   border-radius: 4px;
   padding-bottom: 8px;
+  position: relative;
   ${(props) => {
     if (props.$isAllColSpan) {
       return css`

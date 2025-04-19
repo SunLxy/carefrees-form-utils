@@ -75,6 +75,30 @@ function App() {
           <FormItem name="g" label="测试7">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
+          <FormItem name="h" label="测试8">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="j" label="测试8">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="k" label="测试8">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          {/* <FormItem name="l" label="测试8">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem>
+          <FormItem name="m" label="测试8">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormItem> */}
+          <div
+            style={{
+              gridColumn: 4,
+              gridRowStart: -1,
+              gridRowEnd: -1,
+            }}
+          >
+            2123
+          </div>
         </FormLayout>
       </Form>
     </div>
