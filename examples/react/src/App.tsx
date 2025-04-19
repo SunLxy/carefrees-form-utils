@@ -2,6 +2,7 @@
 // import { LayoutBaseStyled } from "@carefrees/form-utils-react/esm/styles/styles.layout"
 import { Form, FormItem, useForm, useWatch, FormLayout } from '@carefrees/form-utils-react';
 import { FormInstanceBase } from '@carefrees/form-utils';
+import { useState } from 'react';
 
 const Demo = (props: { form: FormInstanceBase }) => {
   const [value] = useWatch('a', props.form);
@@ -11,6 +12,7 @@ const Demo = (props: { form: FormInstanceBase }) => {
 
 function App() {
   const form = useForm();
+  const [state, setState] = useState<{ row?: number; col?: number }>({ row: undefined, col: undefined });
 
   const onSubmit = async () => {
     try {
@@ -26,7 +28,25 @@ function App() {
     <div>
       <button onClick={onSubmit}>打印</button>
       <Demo form={form} />
-      <Form gap={14} colCount={4} form={form} formData={{ a: '', b: '', c: '', d: '', e: '', f: '' }}>
+      <Form
+        gap={14}
+        colCount={4}
+        form={form}
+        formData={{
+          a: '',
+          b: '',
+          c: '',
+          d: '',
+          e: '',
+          f: '',
+          g: '',
+          h: '',
+          j: '',
+          k: '',
+          l: '',
+          m: '',
+        }}
+      >
         <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="222">
           <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
             <input style={{ width: '100%' }} placeholder="请输入" />
@@ -51,8 +71,16 @@ function App() {
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
         </FormLayout>
-
-        <FormLayout isAllColSpan labelMode="top" bordered title="4">
+        <FormLayout
+          onGapRow={(row, col) => {
+            console.log(row, col);
+            setState({ row, col });
+          }}
+          isAllColSpan
+          labelMode="top"
+          bordered
+          title="4"
+        >
           <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
@@ -71,33 +99,22 @@ function App() {
           <FormItem name="f" label="测试6">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
-
           <FormItem name="g" label="测试7">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
           <FormItem name="h" label="测试8">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
-          <FormItem name="j" label="测试8">
+          <FormItem name="j" label="测试9">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
-          <FormItem name="k" label="测试8">
+          <FormItem name="k" label="测试10">
             <input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>
-          {/* <FormItem name="l" label="测试8">
-            <input style={{ width: '100%' }} placeholder="请输入" />
-          </FormItem>
-          <FormItem name="m" label="测试8">
-            <input style={{ width: '100%' }} placeholder="请输入" />
-          </FormItem> */}
-          <div
-            style={{
-              gridColumn: 4,
-              gridRowStart: -1,
-              gridRowEnd: -1,
-            }}
-          >
-            2123
+          <div style={{ gridColumn: state.col, gridRow: state.row, padding: 8 }}>
+            <button type="button" onClick={onSubmit}>
+              验😁😝证
+            </button>
           </div>
         </FormLayout>
       </Form>

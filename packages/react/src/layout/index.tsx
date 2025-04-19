@@ -1,17 +1,14 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useMemo, useRef } from 'react';
 import {
   LayoutBaseStyled,
-  LayoutBodyBaseStyled,
   LayoutHeaderBaseStyled,
   LayoutHeaderExtraBaseStyled,
   LayoutHeaderTextBaseStyled,
 } from '../styles/styles.layout';
 import clx from 'classnames';
 import { AttrsOptions, AttrsContext, useAttrs } from '../hooks/useAttrs';
-
-export interface FormLayoutProps extends AttrsOptions {
-  /**列数据*/
-  colCount?: number;
+import { FormLayoutBody, FormLayoutBodyProps } from './layout.body';
+export interface FormLayoutProps extends AttrsOptions, FormLayoutBodyProps {
   /**标题*/
   title?: React.ReactNode;
   /**额外内容*/
@@ -20,13 +17,11 @@ export interface FormLayoutProps extends AttrsOptions {
   children?: React.ReactNode;
   /**是否占据整行*/
   isAllColSpan?: boolean;
-
   className?: string;
   /**头部ClassName*/
   headerClassName?: string;
   /**内容ClassName*/
   bodyClassName?: string;
-
   style?: React.CSSProperties;
   /**头部样式*/
   headerStyle?: React.CSSProperties;
@@ -34,10 +29,6 @@ export interface FormLayoutProps extends AttrsOptions {
   bodyStyle?: React.CSSProperties;
   /**是否添加边框*/
   bordered?: boolean;
-  /**
-   * @description gap 属性是用来设置网格行与列之间的间隙，该属性是row-gap and column-gap的简写形式。
-   */
-  gap?: string | number;
 }
 
 const preCls = 'carefrees-form-layout';
@@ -54,7 +45,6 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
     formItemLabelClassName: p_formItemLabelClassName,
     formItemLabelStyle: p_formItemLabelStyle,
   } = useAttrs();
-
   const {
     colCount = p_colCount,
     title,
@@ -76,7 +66,11 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
     formItemLabelStyle = p_formItemLabelStyle,
     bordered = false,
     gap,
+    onResize,
+    onGapRow,
   } = props;
+  const propsRef = useRef(props);
+  propsRef.current = props;
 
   const cls = useMemo(() => clx(preCls, className), [className]);
   const bodyCls = useMemo(() => clx(`${preCls}-body`, bodyClassName), [bodyClassName]);
@@ -117,9 +111,16 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
         ) : (
           <Fragment />
         )}
-        <LayoutBodyBaseStyled $gap={gap} style={bodyStyle} className={bodyCls} $colCount={colCount}>
+        <FormLayoutBody
+          onResize={onResize}
+          onGapRow={onGapRow}
+          gap={gap}
+          style={bodyStyle}
+          className={bodyCls}
+          colCount={colCount}
+        >
           {children}
-        </LayoutBodyBaseStyled>
+        </FormLayoutBody>
       </LayoutBaseStyled>
     </AttrsContext.Provider>
   );
