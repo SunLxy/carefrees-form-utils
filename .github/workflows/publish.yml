@@ -46,8 +46,8 @@ jobs:
         tag: ${{ steps.create_tag.outputs.version }}
         body: |
           ```bash
-          npm i @carefrees-vue/form-util@${{ steps.create_tag.outputs.version }}
-          npm i @carefrees-vue/form-util-react@${{ steps.create_tag.outputs.version }}
+          npm i @carefrees-vue/form-utils@${{ steps.create_tag.outputs.version }}
+          npm i @carefrees-vue/form-utils-react@${{ steps.create_tag.outputs.version }}
           ```
           ${{ steps.changelog.outputs.compareurl }}
           ${{ steps.changelog.outputs.changelog }}
