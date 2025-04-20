@@ -1,0 +1,32 @@
+{
+  "name": "@carefrees/form-utils-react-taro",
+  "author": "SunLxy <1011771396@qq.com>",
+  "description": "taro react 表单组件",
+  "homepage": "https://github.com/SunLxy/carefrees-form-utils",
+  "version": "0.0.4",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "esm/index.js",
+  "license": "ISC",
+  "scripts": {
+    "build": "carefrees-rslib build",
+    "watch": "carefrees-rslib build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "lib",
+    "esm"
+  ],
+  "dependencies": {
+    "@carefrees/form-utils": "^0.0.4",
+    "classnames": "2.5.1"
+  },
+  "devDependencies": {
+    "@tarojs/components": "4.0.5",
+    "@types/react": "18.2.21",
+    "react": "^18.2.0"
+  }
+}

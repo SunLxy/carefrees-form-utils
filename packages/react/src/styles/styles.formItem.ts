@@ -77,7 +77,7 @@ export const FormItemBodyErrorBaseStyled = styled.div<{
   ${(props) =>
     props.$layout === 'right-bottom'
       ? css`
-          justify-content: end;
+          justify-content: flex-end;
           top: auto;
           left: 0;
           right: 0;
@@ -97,7 +97,7 @@ export const FormItemBodyErrorBaseStyled = styled.div<{
   ${(props) =>
     props.$layout === 'top-right'
       ? css`
-          justify-content: end;
+          justify-content: flex-end;
           top: -16px;
           left: 0px;
           right: 0px;

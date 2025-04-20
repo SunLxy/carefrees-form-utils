@@ -1,17 +1,6 @@
-import React, { Fragment, useMemo } from 'react';
+import { View, Label } from '@tarojs/components';
+import React, { Fragment, useMemo, memo } from 'react';
 import clx from 'classnames';
-
-import {
-  FormItemBaseStyled,
-  FormItemContainerBaseStyled,
-  FormItemLabelBaseStyled,
-  FormItemBodyBaseStyled,
-  FormItemBodyInputBaseStyled,
-  FormItemBodyErrorBaseStyled,
-  FormItemExtraBaseStyled,
-  FormItemBodyHelpBaseStyled,
-  FormItemLabelWarpBaseStyled,
-} from '../styles/styles.formItem';
 import { useAttrs } from '../hooks/useAttrs';
 
 export interface LayoutFormItemProps {
@@ -20,7 +9,7 @@ export interface LayoutFormItemProps {
   /**必填样式*/
   required?: boolean;
   /**label显示模式*/
-  labelMode?: 'left' | 'top' | 'hide';
+  labelMode?: 'left' | 'top' | 'between' | 'hide';
   /**内容*/
   children?: React.ReactNode;
   /**只进行规则样式*/
@@ -54,12 +43,13 @@ export interface LayoutFormItemProps {
   className?: string;
   labelStyle?: React.CSSProperties;
   labelClassName?: string;
+  /**底部边框*/
+  inputBordered?: boolean;
 }
 
 const preCls = 'carefrees-form-item';
-
 /**布局组件 表单项*/
-export const LayoutFormItem = React.memo((props: LayoutFormItemProps) => {
+export const LayoutFormItem = memo((props: LayoutFormItemProps) => {
   const {
     formItemClassName,
     formItemLabelClassName,
@@ -68,7 +58,8 @@ export const LayoutFormItem = React.memo((props: LayoutFormItemProps) => {
     labelMode: p_labelMode = 'top',
     errorLayout: p_errorLayout = 'left-bottom',
     showColon: p_showColon = true,
-    colCount = 4,
+    colCount = 1,
+    inputBordered: p_inputBordered = true,
   } = useAttrs();
 
   const {
@@ -89,62 +80,73 @@ export const LayoutFormItem = React.memo((props: LayoutFormItemProps) => {
     className,
     labelClassName,
     labelStyle,
+    inputBordered = p_inputBordered,
   } = props;
   const tip = validateResult?.tip;
   const isInvalid = !!validateResult?.isInvalid;
+  const _errorLayout = labelMode === 'between' ? 'right-bottom' : errorLayout;
 
   const cls = useMemo(() => clx(preCls, className, formItemClassName, { 'dx-invalid': isInvalid }), [isInvalid]);
+  const containerCls = useMemo(() => clx(`${preCls}-container`, { [`${labelMode}`]: !!labelMode }), [labelMode]);
+  const labelCls = useMemo(
+    () =>
+      clx(`${preCls}-label`, {
+        required: required,
+        'show-colon': showColon && (labelMode === 'left' || labelMode === 'between'),
+      }),
+    [labelMode, required, showColon],
+  );
 
   const labelWarpCls = useMemo(
     () => clx(`${preCls}-label-warp`, labelClassName, formItemLabelClassName),
     [labelClassName, formItemLabelClassName],
   );
-  const errorCls = useMemo(() => clx(`${preCls}-body-error`, { [errorLayout]: !!errorLayout }), [errorLayout]);
 
-  const _showColon = useMemo(() => showColon && labelMode === 'left', [showColon, labelMode]);
+  const inputCls = useMemo(
+    () =>
+      clx(`${preCls}-body-input`, {
+        'input-bordered': inputBordered,
+      }),
+    [inputBordered],
+  );
+
+  const errorCls = useMemo(() => clx(`${preCls}-body-error`, { [_errorLayout]: !!_errorLayout }), [_errorLayout]);
   const _isLabel = useMemo(() => label && labelMode !== 'hide', [label, labelMode]);
 
+  const styleBase = useMemo(() => {
+    const css: React.CSSProperties = {};
+    if (onlyRuleStyle) {
+      css.padding = '0px';
+    }
+    if (colSpan) {
+      const end = colCount > colSpan ? colSpan : colCount;
+      css.gridColumnEnd = `span ${end}`;
+    }
+    if (rowSpan) {
+      css.gridRowEnd = `span ${rowSpan}`;
+    }
+    return css;
+  }, [onlyRuleStyle, colSpan, rowSpan, colCount]);
+
   return (
-    <FormItemBaseStyled
-      style={{ ...formItemStyle, ...style }}
-      className={cls}
-      $colSpan={colSpan}
-      $rowSpan={rowSpan}
-      $onlyRuleStyle={onlyRuleStyle}
-      $colCount={colCount}
-    >
-      <FormItemContainerBaseStyled $labelMode={labelMode} className={`${preCls}-container`}>
+    <View style={{ ...formItemStyle, ...styleBase, ...style }} className={cls}>
+      <View className={containerCls}>
         {_isLabel ? (
-          <FormItemLabelWarpBaseStyled style={{ ...formItemLabelStyle, ...labelStyle }} className={labelWarpCls}>
-            <FormItemLabelBaseStyled
-              $required={required}
-              $showColon={_showColon}
-              htmlFor={htmlFor}
-              className={`${preCls}-label`}
-            >
+          <View style={{ ...formItemLabelStyle, ...labelStyle }} className={labelWarpCls}>
+            <Label for={htmlFor} className={labelCls}>
               {label}
-            </FormItemLabelBaseStyled>
-          </FormItemLabelWarpBaseStyled>
+            </Label>
+          </View>
         ) : (
           <Fragment />
         )}
-        <FormItemBodyBaseStyled className={`${preCls}-body`}>
-          <FormItemBodyInputBaseStyled className={`${preCls}-body-input`}>{children}</FormItemBodyInputBaseStyled>
-          {helpText ? (
-            <FormItemBodyHelpBaseStyled className={`${preCls}-body-help`}>{helpText}</FormItemBodyHelpBaseStyled>
-          ) : (
-            <Fragment />
-          )}
-          {isInvalid ? (
-            <FormItemBodyErrorBaseStyled $layout={errorLayout} className={errorCls}>
-              {tip}
-            </FormItemBodyErrorBaseStyled>
-          ) : (
-            <Fragment />
-          )}
-        </FormItemBodyBaseStyled>
-      </FormItemContainerBaseStyled>
-      {extra ? <FormItemExtraBaseStyled className={`${preCls}-extra`}>{extra}</FormItemExtraBaseStyled> : <Fragment />}
-    </FormItemBaseStyled>
+        <View className={`${preCls}-body`}>
+          <View className={inputCls}>{children}</View>
+          {helpText ? <View className={`${preCls}-body-help`}>{helpText}</View> : <Fragment />}
+          {isInvalid ? <View className={errorCls}>{tip}</View> : <Fragment />}
+        </View>
+      </View>
+      {extra ? <View className={`${preCls}-extra`}>{extra}</View> : <Fragment />}
+    </View>
   );
 });

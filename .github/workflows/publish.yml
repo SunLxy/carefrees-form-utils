@@ -48,6 +48,7 @@ jobs:
           ```bash
           npm i @carefrees/form-utils@${{ steps.create_tag.outputs.version }}
           npm i @carefrees/form-utils-react@${{ steps.create_tag.outputs.version }}
+          npm i @carefrees/form-utils-react-taro@${{ steps.create_tag.outputs.version }}
           ```
           ${{ steps.changelog.outputs.compareurl }}
           ${{ steps.changelog.outputs.changelog }}
