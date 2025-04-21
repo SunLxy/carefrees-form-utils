@@ -1,9 +1,12 @@
-import { useRegisterFormList, RegisterFormListOptions } from './../hooks/register/register.FormList';
-import { FormListInstanceContext } from '../hooks/useFormList';
-import { FormItemParentNameProvider } from './../hooks/useFormItemParentName';
 import { RuleInstanceBase, FormItemInstanceBase, FormListInstanceBase } from '@carefrees/form-utils';
-import { useRegisterFormHideItem } from './../hooks/register/register.FormHideItem';
 import React, { Fragment } from 'react';
+import {
+  useRegisterFormHideItem,
+  FormItemParentNameProvider,
+  FormListInstanceContext,
+  useRegisterFormList,
+  RegisterFormListOptions,
+} from '@carefrees/form-utils-react-hooks';
 
 export interface FormListChildrenProps {
   /**数据集合*/

@@ -1,7 +1,8 @@
 import React, { Fragment, useMemo, useRef, memo } from 'react';
 import { View, ViewProps } from '@tarojs/components';
 import clx from 'classnames';
-import { AttrsOptions, AttrsContext, useAttrs } from '../hooks/useAttrs';
+import { AttrsOptions, AttrsContext, useAttrs } from '@carefrees/form-utils-react-hooks';
+
 export interface FormLayoutProps extends AttrsOptions {
   /**标题*/
   title?: React.ReactNode;

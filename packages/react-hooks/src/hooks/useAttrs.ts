@@ -1,13 +1,15 @@
 /**公共属性*/
 import { createContext, useContext } from 'react';
-import type { LayoutFormItemProps } from '../layout/layout.formItem';
 export interface AttrsOptions {
   /**列数据*/
   colCount?: number;
   /**规则校验失败错误提示位置*/
-  errorLayout?: LayoutFormItemProps['errorLayout'];
-  /**label显示模式*/
-  labelMode?: LayoutFormItemProps['labelMode'];
+  errorLayout?: 'left-bottom' | 'right-bottom' | 'top-right' | 'top-left';
+  /**
+   * label显示模式
+   * @platform taro 支持 between
+   */
+  labelMode?: 'left' | 'top' | 'between' | 'hide';
   /**是否显示label后的冒号*/
   showColon?: boolean;
   /**表单项 className*/
@@ -18,7 +20,10 @@ export interface AttrsOptions {
   formItemLabelClassName?: string;
   /**表单项 label  style*/
   formItemLabelStyle?: React.CSSProperties;
-  /**输入框底部边框*/
+  /**
+   * 输入框底部边框
+   * @platform taro
+   */
   inputBordered?: boolean;
 }
 

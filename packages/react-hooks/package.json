@@ -1,7 +1,7 @@
 {
-  "name": "@carefrees/form-utils-react",
+  "name": "@carefrees/form-utils-react-hooks",
   "author": "SunLxy <1011771396@qq.com>",
-  "description": "表单组件",
+  "description": "表单组件公共hooks",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
   "version": "0.0.4",
   "main": "lib/index.js",
@@ -21,10 +21,7 @@
     "esm"
   ],
   "dependencies": {
-    "@carefrees/form-utils-react-hooks": "^0.0.4",
-    "@carefrees/form-utils": "^0.0.4",
-    "classnames": "2.5.1",
-    "styled-components": "~6.1.17"
+    "@carefrees/form-utils": "^0.0.4"
   },
   "devDependencies": {
     "@types/react": "18.2.21",

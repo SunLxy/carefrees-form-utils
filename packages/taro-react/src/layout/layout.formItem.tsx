@@ -1,7 +1,7 @@
 import { View, Label } from '@tarojs/components';
 import React, { Fragment, useMemo, memo } from 'react';
 import clx from 'classnames';
-import { useAttrs } from '../hooks/useAttrs';
+import { useAttrs } from '@carefrees/form-utils-react-hooks';
 
 export interface LayoutFormItemProps {
   /**规则校验失败错误提示位置*/

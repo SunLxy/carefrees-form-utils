@@ -1,8 +1,7 @@
 import { LayoutFormItem, LayoutFormItemProps } from './../layout/layout.formItem';
 import { useFormItemAttr, FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
-import { FormItemParentNameProvider } from '../hooks/useFormItemParentName';
-import { useRegisterFormHideItem } from '../hooks/register/register.FormHideItem';
 import React, { Fragment } from 'react';
+import { useRegisterFormHideItem, FormItemParentNameProvider } from '@carefrees/form-utils-react-hooks';
 
 export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps {
   /**不进行样式渲染*/

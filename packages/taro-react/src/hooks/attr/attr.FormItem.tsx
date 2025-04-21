@@ -1,6 +1,5 @@
 import { RuleInstanceBase, FormInstanceBase, FormItemInstanceBase, get } from '@carefrees/form-utils';
-import { useRegisterFormItem, RegisterFormItemOptions } from '../register/register.FormItem';
-import { useHtmlFor } from '../useHtmlFor';
+import { useRegisterFormItem, RegisterFormItemOptions, useHtmlFor } from '@carefrees/form-utils-react-hooks';
 import React, { cloneElement, isValidElement, useMemo } from 'react';
 
 export interface FormItemAttrOptions extends RegisterFormItemOptions {

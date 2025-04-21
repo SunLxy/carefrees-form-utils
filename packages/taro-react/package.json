@@ -21,6 +21,7 @@
     "esm"
   ],
   "dependencies": {
+    "@carefrees/form-utils-react-hooks": "^0.0.4",
     "@carefrees/form-utils": "^0.0.4",
     "classnames": "2.5.1"
   },
