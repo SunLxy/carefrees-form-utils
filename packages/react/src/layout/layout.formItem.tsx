@@ -12,7 +12,7 @@ import {
   FormItemBodyHelpBaseStyled,
   FormItemLabelWarpBaseStyled,
 } from '../styles/styles.formItem';
-import { useAttrs } from '../hooks/useAttrs';
+import { useAttrs } from '@carefrees/form-utils-react-hooks';
 
 export interface LayoutFormItemProps {
   /**规则校验失败错误提示位置*/
@@ -20,7 +20,7 @@ export interface LayoutFormItemProps {
   /**必填样式*/
   required?: boolean;
   /**label显示模式*/
-  labelMode?: 'left' | 'top' | 'hide';
+  labelMode?: 'left' | 'top' | 'between' | 'hide';
   /**内容*/
   children?: React.ReactNode;
   /**只进行规则样式*/
@@ -101,7 +101,7 @@ export const LayoutFormItem = React.memo((props: LayoutFormItemProps) => {
   );
   const errorCls = useMemo(() => clx(`${preCls}-body-error`, { [errorLayout]: !!errorLayout }), [errorLayout]);
 
-  const _showColon = useMemo(() => showColon && labelMode === 'left', [showColon, labelMode]);
+  const _showColon = useMemo(() => showColon && (labelMode === 'left' || label == 'between'), [showColon, labelMode]);
   const _isLabel = useMemo(() => label && labelMode !== 'hide', [label, labelMode]);
 
   return (

@@ -6,7 +6,7 @@ import {
   LayoutHeaderTextBaseStyled,
 } from '../styles/styles.layout';
 import clx from 'classnames';
-import { AttrsOptions, AttrsContext, useAttrs } from '../hooks/useAttrs';
+import { AttrsOptions, AttrsContext, useAttrs } from '@carefrees/form-utils-react-hooks';
 import { FormLayoutBody, FormLayoutBodyProps } from './layout.body';
 export interface FormLayoutProps extends AttrsOptions, FormLayoutBodyProps {
   /**标题*/

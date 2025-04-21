@@ -118,7 +118,7 @@ export const FormItemExtraBaseStyled = styled.div`
 `;
 
 /**表单项容器样式基础组件*/
-export const FormItemContainerBaseStyled = styled.div<{ $labelMode?: 'left' | 'top' | 'hide' }>`
+export const FormItemContainerBaseStyled = styled.div<{ $labelMode?: 'left' | 'top' | 'between' | 'hide' }>`
   flex: 1;
   height: 100%;
   display: flex;
@@ -131,6 +131,18 @@ export const FormItemContainerBaseStyled = styled.div<{ $labelMode?: 'left' | 't
         flex-direction: row;
         gap: 8px;
         ${FormItemLabelWarpBaseStyled} {
+          text-align: right;
+        }
+      `;
+    }
+    if (props.$labelMode === 'between') {
+      return css`
+        gap: 8px;
+        text-align: left;
+        flex-direction: row;
+        justify-content: space-between;
+        ${FormItemBodyBaseStyled},${FormItemBodyInputBaseStyled} {
+          justify-content: flex-end;
           text-align: right;
         }
       `;
