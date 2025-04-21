@@ -1,4 +1,4 @@
-import { LayoutFormItem, LayoutFormItemProps } from './../layout/layout.formItem';
+import { LayoutFormItem, LayoutFormItemProps } from '../layout/layout.formItem';
 import { useFormItemAttr, FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
 import { Fragment, memo } from 'react';
 import { useRegisterFormHideItem, FormItemParentNameProvider } from '@carefrees/form-utils-react-hooks';
