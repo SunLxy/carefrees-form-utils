@@ -19,6 +19,13 @@ jobs:
 
     - run: yarn install
     - run: yarn run build:all
+    - run: yarn build:docs
+
+    - name: Create Doc
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/doc_build
 
     - name: Create Tag
       id: create_tag
