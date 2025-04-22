@@ -9,5 +9,4 @@ export * from './hooks/useFormItemParentName';
 export * from './hooks/useFormList';
 export * from './hooks/useHtmlFor';
 export * from './hooks/useMultipleForm';
-export * from './hooks/useUpdate';
 export * from './hooks/useWatch';

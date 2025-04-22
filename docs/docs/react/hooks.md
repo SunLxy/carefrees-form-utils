@@ -20,7 +20,6 @@ npm install @carefrees/form-utils-react-hooks # yarn add @carefrees/form-utils-r
 - useAttrs: 获取布局公共属性
 - useFormItemParentName: 获取表单父级name
 - useHtmlFor: 获取表单for属性
-- useUpdate: 强制更新
 
 ### 注册
 
@@ -197,13 +196,6 @@ export declare const useFormItemParentName: (options: FormItemParentNamOptions) 
 
 ```ts
 export declare const useHtmlFor: (suffix: string) => string;
-```
-
-### useUpdate
-
-```ts
-/**更新页面状态*/
-export declare const useUpdate: () => import("react").MutableRefObject<Function>;
 ```
 
 ### useRegisterForm
