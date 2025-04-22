@@ -2,18 +2,18 @@
 pageType: home
 
 hero:
-  name: My Site
-  text: A cool website!
-  tagline: This is the tagline
+  name: Form表单工具
+  # text: A cool website!
+  # tagline: This is the tagline
   actions:
     - theme: brand
-      text: Quick Start
+      text: 快速开始
       link: /guide/
     - theme: alt
       text: GitHub
-      link: https://github.com/web-infra-dev/rspress
+      link: https://github.com/SunLxy/carefrees-form-utils
   image:
-    src: /rspress-icon.png
+    src: /logo.png
     alt: Logo
 features:
   - title: Blazing fast build speed
