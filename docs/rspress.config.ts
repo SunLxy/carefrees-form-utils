@@ -5,10 +5,10 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/carefrees-form-utils/' : '/',
   root: path.join(__dirname, 'docs'),
   title: 'Form表单工具',
-  icon: '/light-logo.png',
+  icon: '/logo.jpg',
   logo: {
-    light: '/light-logo.png',
-    dark: '/light-logo.png',
+    light: '/logo.jpg',
+    dark: '/logo.jpg',
   },
   themeConfig: {
     socialLinks: [
