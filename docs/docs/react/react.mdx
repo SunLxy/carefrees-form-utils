@@ -1,9 +1,9 @@
-# taro中使用
+# React中使用
 
 ## 安装
 
 ```bash
-npm install @carefrees/form-utils-react-taro # yarn add @carefrees/form-utils-react-taro # pnpm add @carefrees/form-utils-react-taro
+npm install @carefrees/form-utils-react # yarn add @carefrees/form-utils-react # pnpm add @carefrees/form-utils-react
 ```
 
 ## 使用
@@ -11,9 +11,8 @@ npm install @carefrees/form-utils-react-taro # yarn add @carefrees/form-utils-re
 ### 基本使用
 
 ```ts
-import { Form, FormItem } from '@carefrees/form-utils-react-taro';
+import { Form, FormItem } from '@carefrees/form-utils-react';
 import React ,{ useState } from 'react';
-import { View, Button, Input } from '@tarojs/components';
 
 const Demo = ()=>{
   const [formData]= useState({ name: '张三', age: 18 })
@@ -30,15 +29,15 @@ const Demo = ()=>{
   }
 
   return (<Form formData={formData} form={form} >
-        <FormItem trigger="onInput" rules={[{ required: true, message: '必填' }]} name="name" label="name">
-          <Input style={{ width: '100%' }} placeholder="请输入" />
+        <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+          <input style={{ width: '100%' }} placeholder="请输入" />
         </FormItem>
-        <FormItem trigger="onInput" name="age" label="age">
-          <Input style={{ width: '100%' }} placeholder="请输入" />
+        <FormItem name="age" label="age">
+          <input style={{ width: '100%' }} placeholder="请输入" />
         </FormItem>  
-        <Button onClick={onSubmit}>
+        <button type="button" onClick={onSubmit}>
            验😁😝证
-        </Button>
+        </button>
   </Form>)
 }
 
@@ -63,7 +62,8 @@ const Demo = ()=>{
 ```ts
 import React from 'react';
 import { FormInstanceBase, ValidateErrorEntity } from '@carefrees/form-utils';
-import { FormLayoutProps } from '@carefrees/form-utils-react-taro/esm/layout';
+import { FormLayoutProps } from '@carefrees/form-utils-react/esm/layout';
+
 export interface FormProps<T = any> extends FormLayoutProps {
     children?: React.ReactNode;
     form?: FormInstanceBase;
@@ -95,16 +95,17 @@ export declare function Form<T = any>(props: FormProps<T>): import("react/jsx-ru
 ### FormItem表单项
 
 ```ts
-import { LayoutFormItemProps } from '@carefrees/form-utils-react-taro/esm/layout/layout.formItem';
-import { FormItemAttrOptions } from '@carefrees/form-utils-react-taro/esm/hooks/attr/attr.FormItem';
+import { LayoutFormItemProps } from '@carefrees/form-utils-react/esm/layout/layout.formItem';
+import { FormItemAttrOptions } from '@carefrees/form-utils-react/esm/hooks/attr/attr.FormItem';
+import React from 'react';
 export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps {
     /**不进行样式渲染*/
     noStyle?: boolean;
 }
 /**表单项*/
-export declare const FormItem: import("react").MemoExoticComponent<(props: Partial<FormItemProps>) => import("react/jsx-runtime").JSX.Element>;
+export declare const FormItem: React.MemoExoticComponent<(props: Partial<FormItemProps>) => import("react/jsx-runtime").JSX.Element>;
 /**隐藏表单项*/
-export declare const FormHideItem: import("react").MemoExoticComponent<(props: FormItemProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const FormHideItem: React.MemoExoticComponent<(props: FormItemProps) => import("react/jsx-runtime").JSX.Element>;
 
 ```
 
@@ -145,9 +146,9 @@ export declare const FormHideList: React.MemoExoticComponent<(props: FormListPro
 
 ```ts
 import React from 'react';
-import { ViewProps } from '@tarojs/components';
 import { AttrsOptions } from '@carefrees/form-utils-react-hooks';
-export interface FormLayoutProps extends AttrsOptions {
+import { FormLayoutBodyProps } from '@carefrees/form-utils-react/esm/layout/layout.body';
+export interface FormLayoutProps extends AttrsOptions, FormLayoutBodyProps {
     /**标题*/
     title?: React.ReactNode;
     /**额外内容*/
@@ -168,17 +169,41 @@ export interface FormLayoutProps extends AttrsOptions {
     bodyStyle?: React.CSSProperties;
     /**是否添加边框*/
     bordered?: boolean;
+}
+/**布局组件*/
+export declare const FormLayout: React.MemoExoticComponent<(props: FormLayoutProps) => import("react/jsx-runtime").JSX.Element>;
+export interface FormLayoutRowsProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+}
+/**布局组件 占据一整行*/
+export declare const FormLayoutRows: React.ForwardRefExoticComponent<Omit<FormLayoutRowsProps, "ref"> & React.RefAttributes<HTMLDivElement>>;
+
+```
+
+### 布局组件内容 类型
+
+```ts
+import React from 'react';
+import { SizeInfo } from '@carefrees/form-utils-react/esm/hooks/useResizeObserver';
+export interface FormLayoutBodyProps {
+    className?: string;
+    style?: React.CSSProperties;
     /**列数据*/
     colCount?: number;
     /**
      * @description gap 属性是用来设置网格行与列之间的间隙，该属性是row-gap and column-gap的简写形式。
      */
     gap?: string | number;
+    /**
+     * 获取多少行
+     */
+    onGapRow?: (row: number, col: number, target: HTMLDivElement) => void;
+    /**内容大小变化*/
+    onResize?: (size: SizeInfo, target: HTMLDivElement) => void;
+    /**内容*/
+    children?: React.ReactNode;
 }
-/**布局组件*/
-export declare const FormLayout: React.MemoExoticComponent<(props: FormLayoutProps) => import("react/jsx-runtime").JSX.Element>;
-/**布局组件 占据一整行*/
-export declare const FormLayoutRows: (props: ViewProps) => import("react/jsx-runtime").JSX.Element;
+/**布局组件-内容区域*/
+export declare const FormLayoutBody: React.MemoExoticComponent<(props: FormLayoutBodyProps) => import("react/jsx-runtime").JSX.Element>;
 ```
 
 ### 表单项布局组件类型
@@ -223,10 +248,7 @@ export interface LayoutFormItemProps {
     className?: string;
     labelStyle?: React.CSSProperties;
     labelClassName?: string;
-    /**底部边框*/
-    inputBordered?: boolean;
 }
 /**布局组件 表单项*/
 export declare const LayoutFormItem: React.MemoExoticComponent<(props: LayoutFormItemProps) => import("react/jsx-runtime").JSX.Element>;
-
 ```

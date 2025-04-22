@@ -10,6 +10,7 @@
     "preview": "rspress preview"
   },
   "dependencies": {
+    "@rspress/plugin-preview": "~1.43.11",
     "rspress": "^1.40.2"
   },
   "devDependencies": {
