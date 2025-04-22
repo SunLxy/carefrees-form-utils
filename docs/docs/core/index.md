@@ -261,6 +261,23 @@ export declare class FormListInstanceBase extends FormItemBaseInstance {
 }
 ```
 
+## FormHideItemInstanceBase 实例
+
+```ts
+import { FormItemBaseInstance } from "@carefrees/form-utils/esm/instance/formItemBaseInstance";
+export declare class FormHideItemInstanceBase extends FormItemBaseInstance {
+    /**初始化方法*/
+    ctor: (name: string) => this;
+    /**上次是否隐藏值*/
+    preHideValue?: boolean;
+    /**更新当前组件方法*/
+    updatedItem?: Function;
+    /**判读更新是否隐藏还是显示*/
+    updated: Function;
+}
+
+```
+
 ## MultipleInstanceBase 实例
 
 ```ts

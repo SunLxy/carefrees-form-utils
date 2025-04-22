@@ -15,9 +15,9 @@ export const useRegisterFormHideItem = (options: RegisterFormHideItemOptions) =>
   const { newName, newSort } = useFormItemParentName({ name, sort, isJoinParentField });
   const hideItemInstance = useRef(new FormHideItemInstanceBase().ctor(newName)).current;
   const isHide = form.getFieldHideValue(newName);
-
+  hideItemInstance.preHideValue = isHide;
   hideItemInstance.instance = form;
-  hideItemInstance.updated = _update.current;
+  hideItemInstance.updatedItem = _update.current;
   hideItemInstance.sort = newSort;
 
   useEffect(() => {

@@ -46,7 +46,108 @@ const Demo = ()=>{
 
 ### 控制隐藏
 
+```ts
+import { Form, FormItem, FormHideItem } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
+import { View, Button, Input } from '@tarojs/components';
+
+const Demo = () => {
+  const [formData] = useState({ name: '张三', age: 18 });
+  const form = useForm();
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onValuesChange = (item: any) => {
+    console.log("item", item)
+    if (Reflect.has(item, 'age')) {
+      if (item.age === '18') {
+        form.updatedFieldHideValue({ address: false })
+      } else {
+        form.updatedFieldHideValue({ address: true })
+      }
+    }
+  }
+
+  return (
+    <Form 
+      formData={formData} 
+      form={form} 
+      onValuesChange={onValuesChange}
+      hideData={{ address: true }}
+    >
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <Input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <Input style={{ width: '100%' }}  placeholder="请输入18,显示address表单项" />
+      </FormItem>
+      <FormHideItem name="address" label="address">
+        <Input style={{ width: '100%' }} placeholder="请输入" />
+      </FormHideItem>
+      <Button onClick={onSubmit}>
+        验😁😝证
+      </Button>
+    </Form>
+  );
+};
+```
+
 ### 表单字段监听
+
+```ts
+import { Form, FormItem ,useWatch } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
+import { View, Button, Input } from '@tarojs/components';
+
+// 子节点
+const Child = ()=>{
+  // 第一次监听可以获取到值
+  const [value] = useWatch("name")
+  return <View>name值：{value}</View>
+}
+
+const Demo = () => {
+  const [formData] = useState({ name: '张三', age: 18 });
+  const form = useForm();
+
+  // 在表单包裹内,第一次监听获取不到值
+  const [age] = useWatch("age", form)
+  console.log(age)
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <Input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <Input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <Child />
+      <Button onClick={onSubmit}>
+        验😁😝证
+      </Button>
+    </Form>
+  );
+};
+```
 
 ### list表单项
 

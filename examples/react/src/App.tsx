@@ -1,6 +1,6 @@
 // import { LayoutFormItem } from "@carefrees/form-utils-react/esm/layout/layout.formItem"
 // import { LayoutBaseStyled } from "@carefrees/form-utils-react/esm/styles/styles.layout"
-import { Form, FormItem, useForm, useWatch, FormLayout } from '@carefrees/form-utils-react';
+import { Form, FormItem, useForm, useWatch, FormLayout, FormHideItem } from '@carefrees/form-utils-react';
 import { FormInstanceBase } from '@carefrees/form-utils';
 import { useState } from 'react';
 
@@ -24,6 +24,17 @@ function App() {
     }
   };
 
+  const onValuesChange = (item: any) => {
+    console.log('item', item);
+    if (Reflect.has(item, 'a')) {
+      if (item.a === '18') {
+        form.updatedFieldHideValue({ address: false });
+      } else {
+        form.updatedFieldHideValue({ address: true });
+      }
+    }
+  };
+
   return (
     <div>
       <button onClick={onSubmit}>打印</button>
@@ -32,6 +43,8 @@ function App() {
         gap={14}
         colCount={4}
         form={form}
+        onValuesChange={onValuesChange}
+        hideData={{ address: true }}
         formData={{
           a: '',
           b: '',
@@ -48,9 +61,12 @@ function App() {
         }}
       >
         <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="222">
-          <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
-            <input style={{ width: '100%' }} placeholder="请输入" />
+          <FormItem rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+            <input style={{ width: '100%' }} placeholder="请输入18,显示address表单项" />
           </FormItem>
+          <FormHideItem name="address" label="address">
+            <input style={{ width: '100%' }} placeholder="请输入" />
+          </FormHideItem>
           <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
             <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
           </FormItem>
