@@ -18,7 +18,7 @@ hero:
 features:
   - title: React 多平台支持
     details: 支持 taro、react、react-native 平台
-    icon: 📦
+    icon: 🎨
   - title: 开箱即用
     details: 直接进行使用，无需额外配置
     icon: 📦
