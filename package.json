@@ -13,6 +13,8 @@
     "build:react:taro": "npm run-script build --workspace @carefrees/form-utils-react-taro",
     "watch:react:taro": "npm run-script watch --workspace @carefrees/form-utils-react-taro",
     "build:all": "npm run build &&  npm run build:react:hooks && npm run build:react && npm run build:react:taro",
+    "build:docs": "npm run-script build --workspace @carefrees/form-utils",
+    "start:docs": "npm run-script watch --workspace @carefrees/form-utils",
     "start:vue": "npm run-script start --workspace example_vue",
     "start:react": "npm run-script start --workspace example_react",
     "version": "lerna version --force-publish=* --no-changelog --no-git-tag-version --no-push",
@@ -43,6 +45,7 @@
   },
   "workspaces": [
     "core",
+    "docs",
     "packages/*",
     "examples/*"
   ]
