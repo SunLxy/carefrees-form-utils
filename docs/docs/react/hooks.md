@@ -19,7 +19,7 @@ npm install @carefrees/form-utils-react-hooks # yarn add @carefrees/form-utils-r
 - useWatch: 监听表单某个值变化
 - useAttrs: 获取布局公共属性
 - useFormItemParentName: 获取表单父级name
-- useHtmlFor: 获取表单for属性
+- useHtmlFor: 生成label标签的for属性
 
 ### 注册
 
