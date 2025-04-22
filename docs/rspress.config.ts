@@ -2,9 +2,7 @@ import * as path from 'node:path';
 import { defineConfig } from 'rspress/config';
 
 export default defineConfig({
-  // base: "./",
   base: process.env.NODE_ENV === 'production' ? '/carefrees-form-utils/' : '/',
-  // publicPath: process.env.NODE_ENV === 'production' ? '/carefrees-form-utils/' : '/',
   root: path.join(__dirname, 'docs'),
   title: 'Form表单工具',
   icon: '/light-logo.png',
