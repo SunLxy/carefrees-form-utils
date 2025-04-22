@@ -1,12 +1,17 @@
 [
   {
-    "text": "Guide",
+    "text": "指南",
     "link": "/guide/",
     "activeMatch": "/guide/"
   },
   {
-    "text": "Hello world",
-    "link": "/hello/",
-    "activeMatch": "/hello/"
+    "text": "实体类",
+    "link": "/core/",
+    "activeMatch": "/core/"
+  },
+  {
+    "text": "React",
+    "link": "/react/",
+    "activeMatch": "/react/"
   }
 ]
