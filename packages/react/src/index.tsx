@@ -68,7 +68,7 @@ export function Form<T = any>(props: FormProps<T>) {
 
   useEffect(() => {
     if (isAutoUpdatedFormData) {
-      formInstance.resetFieldValue(formData);
+      formInstance.resetFormValues(formData);
     }
   }, [isAutoUpdatedFormData, formData]);
 

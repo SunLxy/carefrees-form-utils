@@ -1,7 +1,8 @@
 import { FormListInstanceBase } from './formListInstance';
 import { FormItemInstanceBase } from './formItemInstance';
 import { FormHideItemInstanceBase } from './formHideItemInstance';
-import { Callbacks, ErrorDataField, ValidateErrorEntity } from '../interface';
+import { RuleInstanceBase } from './ruleIntsnace';
+import { ErrorDataField, ValidateErrorEntity, UpdatedOptType } from '../interface';
 import { get, set, cloneByNamePathList, has } from './../utils';
 
 /**基础实例*/
@@ -46,9 +47,9 @@ export class FormInstanceBase<T = any> {
 
   private dispatch_resetFieldValueCount = 0;
   /**
-   * 重置数据值
+   * 重置表单数据值
    */
-  resetFieldValue = (initial: Partial<T> = {}) => {
+  resetFormValues = (initial: Partial<T> = {}) => {
     /**初始化第一次不进行重置*/
     if (this.dispatch_resetFieldValueCount === 0) {
       this.dispatch_resetFieldValueCount++;
@@ -57,13 +58,17 @@ export class FormInstanceBase<T = any> {
     this.dispatch_resetFieldValueCount++;
     const keys = Object.keys({ ...initial, ...this.formData });
     this.formData = initial || {};
-    this.notice(keys);
-    /**清空验证提示信息*/
-    if (this.formItemInstances && this.formItemInstances.length) {
-      this.formItemInstances.forEach((formItemInstance) => {
-        formItemInstance?.rule?.updatedMessages?.([]);
-      });
-    }
+    this.notice(keys, 'restValues');
+    return this;
+  };
+
+  /**
+   * 重置字段数据值
+   */
+  resetFieldsValue = (initial: Partial<T> = {}) => {
+    const keys = Object.keys({ ...initial });
+    this.formData = Object.assign(this.formData, initial);
+    this.notice(keys, 'restValues');
     return this;
   };
 
@@ -240,9 +245,9 @@ export class FormInstanceBase<T = any> {
   };
 
   /**通知组件更新*/
-  notice = (name?: string | string[]) => {
+  notice = (name?: string | string[], type?: UpdatedOptType) => {
     /**循环挂载组件*/
-    this._bathNotice(this.formItemInstances, name);
+    this._bathNotice(this.formItemInstances, name, false, type);
     return this;
   };
 
@@ -261,13 +266,27 @@ export class FormInstanceBase<T = any> {
   };
 
   /**进行实例更新渲染*/
-  private _bathNotice_judge = (item: FormItemInstanceBase | FormHideItemInstanceBase, isWatch?: boolean) => {
+  private _bathNotice_judge = (
+    item: FormItemInstanceBase | FormHideItemInstanceBase,
+    isWatch?: boolean,
+    optType?: UpdatedOptType,
+  ) => {
     if (isWatch) {
       if (item.isWatch) {
         item.updated?.({});
       }
     } else {
-      item.updated?.({});
+      const _item = item as FormItemInstanceBase;
+      const ruleInstance = _item?.rule;
+      try {
+        if (optType === 'restValues' && ruleInstance && ruleInstance instanceof RuleInstanceBase) {
+          _item?.rule?.updatedMessages?.([]);
+        } else {
+          item.updated?.({});
+        }
+      } catch (error) {
+        item.updated?.({});
+      }
     }
   };
 
@@ -276,16 +295,17 @@ export class FormInstanceBase<T = any> {
     list: (FormItemInstanceBase | FormHideItemInstanceBase)[],
     name?: string | string[],
     isWatch?: boolean,
+    optType?: UpdatedOptType,
   ) => {
     if (typeof name === 'string') {
       /**循环挂载组件*/
       list.forEach((item) => {
         if (item.name === name) {
-          this._bathNotice_judge(item, isWatch);
+          this._bathNotice_judge(item, isWatch, optType);
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
           const findx = item.dependencies.find((ite) => ite === name);
           if (findx) {
-            this._bathNotice_judge(item, isWatch);
+            this._bathNotice_judge(item, isWatch, optType);
           }
         }
       });
@@ -293,18 +313,18 @@ export class FormInstanceBase<T = any> {
       /**循环挂载组件*/
       list.forEach((item) => {
         if (name.includes(item.name)) {
-          this._bathNotice_judge(item, isWatch);
+          this._bathNotice_judge(item, isWatch, optType);
         } else if (Array.isArray(item.dependencies) && item.dependencies.length) {
           const findx = item.dependencies.find((ite) => name.includes(ite));
           if (findx) {
-            this._bathNotice_judge(item, isWatch);
+            this._bathNotice_judge(item, isWatch, optType);
           }
         }
       });
     } else {
       /**循环挂载组件*/
       list.forEach((item) => {
-        this._bathNotice_judge(item, isWatch);
+        this._bathNotice_judge(item, isWatch, optType);
       });
     }
     return this;

@@ -1,9 +1,9 @@
-import { FormItemInstanceBase } from "./../instance/formItemInstance"
+import { FormItemInstanceBase } from './../instance/formItemInstance';
 
 export interface MessageType {
   /**信息*/
-  message?: string
-  [s: string]: unknown
+  message?: string;
+  [s: string]: unknown;
 }
 
 export interface ErrorDataField {
@@ -12,7 +12,7 @@ export interface ErrorDataField {
   /**排序*/
   sort?: string;
   /**错误信息*/
-  errors: MessageType[]
+  errors: MessageType[];
 }
 
 export interface ValidateErrorEntity<Values = any> {
@@ -30,3 +30,5 @@ export interface Callbacks<Values = any> {
   /**提交保存 验证失败*/
   onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }
+/**更新表单项操作类型*/
+export type UpdatedOptType = 'restValues';
