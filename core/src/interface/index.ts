@@ -1,5 +1,3 @@
-import { FormItemInstanceBase } from './../instance/formItemInstance';
-
 export interface MessageType {
   /**信息*/
   message?: string;
