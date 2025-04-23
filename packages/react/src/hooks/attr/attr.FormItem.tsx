@@ -64,7 +64,6 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   formItemInstance.preserve = preserve;
   /**获取值*/
   const oldValue = form.getFieldValue(newName);
-  console.log(oldValue, newName, form, formItemInstance);
 
   const onValueChange = (event: any) => {
     try {

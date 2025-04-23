@@ -220,7 +220,6 @@ export class FormInstanceBase<T = any> {
   /**获取字段值*/
   getFieldValue = (name?: string) => {
     if (name) {
-      console.log(name, has(this.formData, name));
       if (has(this.formData, name)) {
         return get(this.formData, name);
       }
