@@ -10,6 +10,20 @@ const Demo = (props: { form: FormInstanceBase }) => {
   return <div>监听a的值：{value}</div>;
 };
 
+const Upload = (props: any) => {
+  return (
+    <input
+      type="file"
+      placeholder="请上传"
+      onChange={(event) => {
+        const files = event.target?.files;
+        console.log(files);
+        props.onChange(files);
+      }}
+    />
+  );
+};
+
 function App() {
   const form = useForm();
   const [state, setState] = useState<{ row?: number; col?: number }>({ row: undefined, col: undefined });
@@ -24,8 +38,8 @@ function App() {
     }
   };
 
-  const onValuesChange = (item: any) => {
-    console.log('item', item);
+  const onValuesChange = (item: any, allValues: any) => {
+    console.log('item', item, allValues);
     if (Reflect.has(item, 'a')) {
       if (item.a === '18') {
         form.updatedFieldHideValue({ address: false });
@@ -71,7 +85,7 @@ function App() {
             <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
           </FormItem>
           <FormItem name="c" label="测试3">
-            <input style={{ width: '100%' }} placeholder="请输入" />
+            <Upload />
           </FormItem>
           <FormItem name="d" label="测试4">
             <input style={{ width: '100%' }} placeholder="请输入" />
