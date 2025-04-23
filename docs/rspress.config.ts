@@ -25,4 +25,27 @@ export default defineConfig({
       defaultRenderMode: 'pure',
     }),
   ],
+  builderConfig: {
+    html: {
+      tags: [
+        {
+          tag: 'script',
+          head: true,
+          append: false,
+          attrs: {
+            src: 'https://fastly.jsdelivr.net/npm/live2d-widgets@0/autoload.js',
+          },
+        },
+        {
+          tag: 'style',
+          children: `
+          #waifu{ z-index:999999 } 
+          #waifu-toggle{ z-index:999999;position:absolute; }
+          `,
+          head: true,
+          append: false,
+        },
+      ],
+    },
+  },
 });
