@@ -10,10 +10,13 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "@rspress/plugin-preview": "~1.43.11",
-    "rspress": "^1.40.2"
+    "@carefrees/form-utils-react-hooks": "0.0.6",
+    "@carefrees/form-utils-react": "0.0.6",
+    "@carefrees/form-utils": "0.0.6"
   },
   "devDependencies": {
+    "@rspress/plugin-preview": "~1.43.11",
+    "rspress": "^1.40.2",
     "@types/node": "^18.11.17"
   }
 }

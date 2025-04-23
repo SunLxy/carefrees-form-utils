@@ -87,6 +87,8 @@ export interface FormProps<T = any> extends FormLayoutProps {
     hideRuleData?: Record<string, boolean>;
     /**自动重置更新formData数据*/
     isAutoUpdatedFormData?: boolean;
+    /**背景颜色*/
+    bgcolor?: string
 }
 export declare function Form<T = any>(props: FormProps<T>): import("react/jsx-runtime").JSX.Element;
 

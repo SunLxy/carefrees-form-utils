@@ -36,6 +36,8 @@ export interface FormProps<T = any> extends FormLayoutProps {
   hideRuleData?: Record<string, boolean>;
   /**自动重置更新formData数据*/
   isAutoUpdatedFormData?: boolean;
+  /**背景颜色*/
+  bgcolor?: string;
 }
 
 export function Form<T = any>(props: FormProps<T>) {
@@ -54,6 +56,7 @@ export function Form<T = any>(props: FormProps<T>) {
     onValuesChange,
     layoutStyle,
     layoutClassName,
+    bgcolor,
     ...rest
   } = props;
 
@@ -80,7 +83,7 @@ export function Form<T = any>(props: FormProps<T>) {
 
   return (
     <FormInstanceContext.Provider value={formInstance}>
-      <FormBaseStyled className={cls} style={style} onSubmit={onSubmit}>
+      <FormBaseStyled $bgcolor={bgcolor} className={cls} style={style} onSubmit={onSubmit}>
         <FormLayout {...rest} className={layoutClassName} style={layoutStyle}>
           {children}
         </FormLayout>

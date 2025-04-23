@@ -35,7 +35,7 @@ export const LayoutBodyBaseStyled = styled.div<{ $colCount?: number; $gap?: stri
 export const LayoutHeaderExtraBaseStyled = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #1d2129;
+  color: var(--form-header-color, #1d2129);
   box-sizing: border-box;
 `;
 
@@ -43,7 +43,7 @@ export const LayoutHeaderExtraBaseStyled = styled.div`
 export const LayoutHeaderTextBaseStyled = styled.div`
   font-size: 14px;
   font-weight: 600;
-  color: #1d2129;
+  color: var(--form-header-color, #1d2129);
   box-sizing: border-box;
 `;
 
@@ -53,7 +53,7 @@ export const LayoutHeaderBaseStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--form-border-color, #e0e0e0);
   padding-top: 5px;
   padding-bottom: 5px;
   margin-block-end: 4px;
@@ -80,7 +80,7 @@ export const LayoutBaseStyled = styled.div<{ $isAllColSpan?: boolean; $bordered?
   ${(props) => {
     if (props.$bordered) {
       return css`
-        border: 1px solid #e0e0e0;
+        border: 1px solid var(--form-border-color, #e0e0e0);
         ${LayoutHeaderBaseStyled} {
           padding-inline-start: 8px;
           padding-inline-end: 8px;

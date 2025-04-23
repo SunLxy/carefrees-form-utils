@@ -5,7 +5,7 @@ export const FormItemLabelBaseStyled = styled.label<{ $required?: boolean; $show
   box-sizing: border-box;
   position: relative;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--form-color, rgba(0, 0, 0, 0.88));
   ${(props) =>
     props.$showColon
       ? css`
@@ -170,7 +170,7 @@ export const FormItemBaseStyled = styled.div<{
   align-items: flex-start;
   padding: 8px;
   box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--form-color, rgba(0, 0, 0, 0.88));
   ${(props) =>
     props.$onlyRuleStyle
       ? css`
