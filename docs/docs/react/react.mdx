@@ -11,7 +11,7 @@ npm install @carefrees/form-utils-react # yarn add @carefrees/form-utils-react #
 ### 基本使用
 
 ```tsx preview
-import { Form, FormItem,useForm } from '@carefrees/form-utils-react';
+import { Form, FormItem, useForm } from '@carefrees/form-utils-react';
 import React, { useState } from 'react';
 
 const Demo = () => {
@@ -38,7 +38,7 @@ const Demo = () => {
       <FormItem name="address" label="address">
         <input style={{ width: '100%' }} placeholder="请输入" />
       </FormItem>
-      <div style={{display:"flex",alignItems:"flex-end",padding:8}} >
+      <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
         <button type="button" onClick={onSubmit}>
           验😁😝证
         </button>
@@ -47,14 +47,13 @@ const Demo = () => {
   );
 };
 
-export default Demo
-
+export default Demo;
 ```
 
 ### 控制隐藏
 
 ```tsx preview
-import { Form, FormItem, FormHideItem ,useForm} from '@carefrees/form-utils-react';
+import { Form, FormItem, FormHideItem, useForm } from '@carefrees/form-utils-react';
 import React, { useState } from 'react';
 
 const Demo = () => {
@@ -72,33 +71,28 @@ const Demo = () => {
   };
 
   const onValuesChange = (item: any) => {
-    console.log("item", item)
+    console.log('item', item);
     if (Reflect.has(item, 'age')) {
       if (item.age === '18') {
-        form.updatedFieldHideValue({ address: false })
+        form.updatedFieldHideValue({ address: false });
       } else {
-        form.updatedFieldHideValue({ address: true })
+        form.updatedFieldHideValue({ address: true });
       }
     }
-  }
+  };
 
   return (
-    <Form 
-      formData={formData} 
-      form={form} 
-      onValuesChange={onValuesChange}
-      hideData={{ address: true }}
-    >
+    <Form formData={formData} form={form} onValuesChange={onValuesChange} hideData={{ address: true }}>
       <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
         <input style={{ width: '100%' }} placeholder="请输入" />
       </FormItem>
       <FormItem name="age" label="age">
-        <input style={{ width: '100%' }}  placeholder="请输入18,显示address表单项" />
+        <input style={{ width: '100%' }} placeholder="请输入18,显示address表单项" />
       </FormItem>
       <FormHideItem name="address" label="address">
         <input style={{ width: '100%' }} placeholder="请输入" />
       </FormHideItem>
-      <div style={{display:"flex",alignItems:"flex-end",padding:8}} >
+      <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
         <button type="button" onClick={onSubmit}>
           验😁😝证
         </button>
@@ -106,29 +100,29 @@ const Demo = () => {
     </Form>
   );
 };
-export default Demo
+export default Demo;
 ```
 
 ### 表单字段监听
 
 ```tsx preview
-import { Form, FormItem ,useWatch,useForm,FormLayoutRows } from '@carefrees/form-utils-react';
+import { Form, FormItem, useWatch, useForm, FormLayoutRows } from '@carefrees/form-utils-react';
 import React, { useState } from 'react';
 
 // 子节点
-const Child = ()=>{
+const Child = () => {
   // 第一次监听可以获取到值
-  const [value] = useWatch("name")
-  return <div>表单内部监听name值：{value}</div>
-}
+  const [value] = useWatch('name');
+  return <div>表单内部监听name值：{value}</div>;
+};
 
 const Demo = () => {
   const [formData] = useState({ name: '张三', age: 18 });
   const form = useForm();
 
   // 在表单包裹内,第一次监听获取不到值
-  const [age] = useWatch("age", form)
-  console.log(age)
+  const [age] = useWatch('age', form);
+  console.log(age);
 
   const onSubmit = async () => {
     try {
@@ -150,7 +144,7 @@ const Demo = () => {
       </FormItem>
       <FormLayoutRows>
         <Child />
-        <div style={{display:"flex",alignItems:"flex-end",padding:8}} >
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
           <button type="button" onClick={onSubmit}>
             表单外部监听age字段值:{age}
           </button>
@@ -159,18 +153,28 @@ const Demo = () => {
     </Form>
   );
 };
-export default Demo
+export default Demo;
 ```
 
 ### list 表单项
 
-
 ```tsx preview
-import { Form, FormItem ,useWatch,useForm,FormList,FormLayoutRows,FormLayout } from '@carefrees/form-utils-react';
+import { Form, FormItem, useWatch, useForm, FormList, FormLayoutRows, FormLayout } from '@carefrees/form-utils-react';
 import React, { useState } from 'react';
 
+// 子节点
+const Child = () => {
+  // 第一次监听可以获取到值
+  const [value] = useWatch('list');
+  return <div>list值：{JSON.stringify(value)}</div>;
+};
+
 const Demo = () => {
-  const [formData] = useState({ name: '张三', age: 18 ,list:[{name:'张三'},{name:'李四'}]});
+  const [formData] = useState({
+    name: '张三',
+    age: 18,
+    list: [{ name: '张三' }, { name: '李四' }],
+  });
   const form = useForm();
 
   const onSubmit = async () => {
@@ -192,27 +196,43 @@ const Demo = () => {
         <input style={{ width: '100%' }} placeholder="请输入" />
       </FormItem>
       <FormLayoutRows>
-        <FormList name='list' >
-          {(options)=>{
-            const fields = options.fields
-            return (<div>
-              <button type="button" onClick={()=>options.onAdd({})}>添加一项数据</button>
-              {fields.map((item,index)=>{
-                return <FormLayout key={item.key} >
-                  <FormItem name={`${item.name}.name`} label="子项name">
-                      <input style={{ width: '100%' }} placeholder="请输入" />
-                  </FormItem>
-                  <div style={{display:"flex",alignItems:"flex-end",padding:8}} >
-                    <button type="button" onClick={()=>options.onDelete(index)}>删除数据</button>
-                  </div>
-                </FormLayout>
-              })}
-              </div>)
+        <FormList name="list">
+          {(options) => {
+            const fields = options.fields;
+            console.log(fields);
+            return (
+              <div>
+                <button type="button" onClick={() => options.onAdd({})}>
+                  添加一项数据
+                </button>
+                {fields.map((item, index) => {
+                  return (
+                    <FormLayout key={item.key}>
+                      <FormItem name={`[${item.name}].name`} label="子项name">
+                        <input style={{ width: '100%' }} placeholder="请输入" />
+                      </FormItem>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-end',
+                          padding: 8,
+                        }}
+                      >
+                        <button type="button" onClick={() => options.onDelete(index)}>
+                          删除数据
+                        </button>
+                      </div>
+                    </FormLayout>
+                  );
+                })}
+              </div>
+            );
           }}
         </FormList>
       </FormLayoutRows>
       <FormLayoutRows>
-        <div style={{display:"flex",alignItems:"flex-end",padding:8}} >
+        <Child />
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
           <button type="button" onClick={onSubmit}>
             提交
           </button>
@@ -221,7 +241,7 @@ const Demo = () => {
     </Form>
   );
 };
-export default Demo
+export default Demo;
 ```
 
 ### 表单项之间联动校验
@@ -263,7 +283,7 @@ export interface FormProps<T = any> extends FormLayoutProps {
   /**自动重置更新formData数据*/
   isAutoUpdatedFormData?: boolean;
   /**背景颜色*/
-  bgcolor?: string
+  bgcolor?: string;
 }
 export declare function Form<T = any>(props: FormProps<T>): import('react/jsx-runtime').JSX.Element;
 ```
