@@ -1,5 +1,8 @@
-import { castPath, toKey } from './utils'
-import { PropertyPath } from "./interface"
+/**
+ * @description [从lodash中搬了部分需要的代码块](https://www.lodashjs.com/)
+ */
+import { castPath, toKey } from './utils';
+import { PropertyPath } from './interface';
 
 /**
  * The base implementation of `get` without support for default values.
@@ -10,16 +13,15 @@ import { PropertyPath } from "./interface"
  * @returns {*} Returns the resolved value.
  */
 function baseGet(object: any, path: PropertyPath) {
-  path = castPath(path, object)
-  let index = 0
-  const length = path.length
+  path = castPath(path, object);
+  let index = 0;
+  const length = path.length;
 
   while (object != null && index < length) {
-    object = object[toKey(path[index++])]
+    object = object[toKey(path[index++])];
   }
-  return (index && index === length) ? object : undefined
+  return index && index === length ? object : undefined;
 }
-
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -48,4 +50,4 @@ function baseGet(object: any, path: PropertyPath) {
 export const get = (object: Object, path: PropertyPath, defaultValue?: any) => {
   const result = object == null ? undefined : baseGet(object, path);
   return result === undefined ? defaultValue : result;
-}
+};

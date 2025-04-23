@@ -1,3 +1,7 @@
+/**
+ * @description [从lodash中搬了部分需要的代码块](https://www.lodashjs.com/)
+ */
+
 import { PropertyPath } from './interface';
 
 const charCodeOfDot = '.'.charCodeAt(0);

@@ -1,5 +1,7 @@
 # 工具方法
 
+从[`lodash`](https://www.lodashjs.com/)中搬了部分需要的代码块
+
 ## get
 
 根据 object对象的path路径获取值。 如果解析 value 是 undefined 会以 defaultValue 取代。

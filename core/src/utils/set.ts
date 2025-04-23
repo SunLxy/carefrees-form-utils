@@ -1,6 +1,9 @@
+/**
+ * @description [从lodash中搬了部分需要的代码块](https://www.lodashjs.com/)
+ */
 
-import { toKey, isObject, castPath, assignValue, isIndex } from "./utils"
-import { PropertyPath } from "./interface"
+import { toKey, isObject, castPath, assignValue, isIndex } from './utils';
+import { PropertyPath } from './interface';
 
 /**
  * The base implementation of `set`.
@@ -14,33 +17,31 @@ import { PropertyPath } from "./interface"
  */
 function baseSet(object: any, path: PropertyPath, value: any, customizer?: Function) {
   if (!isObject(object)) {
-    return object
+    return object;
   }
-  path = castPath(path, object)
+  path = castPath(path, object);
 
-  const length = path.length
-  const lastIndex = length - 1
+  const length = path.length;
+  const lastIndex = length - 1;
 
-  let index = -1
-  let nested = object
+  let index = -1;
+  let nested = object;
 
   while (nested != null && ++index < length) {
-    const key = toKey(path[index])
-    let newValue = value
+    const key = toKey(path[index]);
+    let newValue = value;
 
     if (index !== lastIndex) {
-      const objValue = nested[key]
-      newValue = customizer ? customizer(objValue, key, nested) : undefined
+      const objValue = nested[key];
+      newValue = customizer ? customizer(objValue, key, nested) : undefined;
       if (newValue === undefined) {
-        newValue = isObject(objValue)
-          ? objValue
-          : (isIndex(path[index + 1]) ? [] : {})
+        newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
       }
     }
-    assignValue(nested, key, newValue)
-    nested = nested[key]
+    assignValue(nested, key, newValue);
+    nested = nested[key];
   }
-  return object
+  return object;
 }
 
 /**
