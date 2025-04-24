@@ -286,7 +286,7 @@ const Demo = () => {
       <FormItem name="b" label="b">
         <input type="number" style={{ width: '100%' }} placeholder="请输入" />
       </FormItem>
-      <FormItem dependencies={['a', 'b']} name="c" label="c">
+      <FormItem dependencies={['a', 'b']} name="c" label="请输入a和b">
         <ChildInput />
       </FormItem>
       <FormLayoutRows>
