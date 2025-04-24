@@ -10,9 +10,11 @@
     "watch:react:hooks": "npm run-script watch --workspace @carefrees/form-utils-react-hooks",
     "build:react": "npm run-script build --workspace @carefrees/form-utils-react",
     "watch:react": "npm run-script watch --workspace @carefrees/form-utils-react",
+    "build:react-native": "npm run-script build --workspace @carefrees/form-utils-react-native",
+    "watch:react-native": "npm run-script watch --workspace @carefrees/form-utils-react-native",
     "build:react:taro": "npm run-script build --workspace @carefrees/form-utils-react-taro",
     "watch:react:taro": "npm run-script watch --workspace @carefrees/form-utils-react-taro",
-    "build:all": "npm run build &&  npm run build:react:hooks && npm run build:react && npm run build:react:taro",
+    "build:all": "npm run build &&  npm run build:react:hooks && npm run build:react && npm run build:react-native && npm run build:react:taro",
     "build:docs": "npm run-script build --workspace docs",
     "start:docs": "npm run-script dev --workspace docs",
     "start:vue": "npm run-script start --workspace example_vue",
@@ -21,7 +23,7 @@
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\""
   },
   "dependencies": {
-    "@carefrees/rslib": "~0.0.7",
+    "@carefrees/rslib": "~0.0.8",
     "husky": "~8.0.0",
     "lerna": "~5.4.0",
     "prettier": "~2.7.0",
