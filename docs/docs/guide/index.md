@@ -2,7 +2,7 @@
 
 用于`react`技术相关的表单组件
 
-整体布局使用`display: grid`进行布局，使其可以进行跨行渲染。
+整体布局使用`display: grid`(除react-native使用flex布局)进行布局，使其可以进行跨行渲染。
 
 ## 安装
 
