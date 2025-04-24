@@ -6,7 +6,7 @@
 
 ## 安装
 
-### pc或者h5
+### pc&h5
 
 ```bash
 npm install @carefrees/form-utils-react # yarn add @carefrees/form-utils-react # pnpm add @carefrees/form-utils-react
@@ -20,7 +20,9 @@ npm install @carefrees/form-utils-react-taro # yarn add @carefrees/form-utils-re
 
 ### React-Native
 
-待开发
+```bash
+npm install @carefrees/form-utils-react-native # yarn add @carefrees/form-utils-react-native # pnpm add @carefrees/form-utils-react-native
+```
 
 ## 其他
 

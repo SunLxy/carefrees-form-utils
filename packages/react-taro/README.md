@@ -313,7 +313,6 @@ const Demo = () => {
     address: '',
   });
   const form = useForm();
-  const [state, setState] = useState<{ row?: number; col?: number }>({ row: undefined, col: undefined });
 
   const onSubmit = async () => {
     try {
@@ -336,10 +335,6 @@ const Demo = () => {
         </FormItem>
       </FormLayout>
       <FormLayout
-        onGapRow={(row, col) => {
-          console.log(row, col);
-          setState({ row, col });
-        }}
         isAllColSpan
         labelMode="top"
         bordered
@@ -375,7 +370,7 @@ const Demo = () => {
         <FormItem name="k" label="测试10">
           <Input style={{ width: '100%' }} placeholder="请输入" />
         </FormItem>
-        <View style={{ gridColumn: state.col, gridRow: state.row, padding: 8 }}>
+        <View>
           <Button onClick={onSubmit}>验😁😝证</Button>
         </View>
       </FormLayout>
