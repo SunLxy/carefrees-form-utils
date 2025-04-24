@@ -65,7 +65,6 @@ export declare function has<T = any>(object: T, key: string | number): boolean;
 
 ```ts
 const object = { 'a': { 'b': 2 } };
-const other = _.create({ 'a': _.create({ 'b': 2 }) });
  
 has(object, 'a');
 // => true
@@ -76,8 +75,6 @@ has(object, 'a.b');
 has(object, ['a', 'b']);
 // => true
  
-has(other, 'a');
-// => false
 ```
 
 ## cloneByNamePathList
