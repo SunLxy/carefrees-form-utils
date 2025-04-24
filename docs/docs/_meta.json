@@ -10,8 +10,8 @@
     "activeMatch": "/core/"
   },
   {
-    "text": "React",
-    "link": "/react/",
+    "text": "pc或h5",
+    "link": "/react/react",
     "activeMatch": "/react/"
   }
 ]
