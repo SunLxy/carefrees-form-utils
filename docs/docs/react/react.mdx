@@ -122,7 +122,7 @@ const Demo = () => {
 
   // 在表单包裹内,第一次监听获取不到值
   const [age] = useWatch('age', form);
-  console.log(age);
+  // console.log(age);
 
   const onSubmit = async () => {
     try {
@@ -199,7 +199,6 @@ const Demo = () => {
         <FormList name="list">
           {(options) => {
             const fields = options.fields;
-            console.log(fields);
             return (
               <div>
                 <button type="button" onClick={() => options.onAdd({})}>
@@ -244,11 +243,177 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 表单项之间联动校验
+### 表单项依赖更新(dependencies 参数)
 
-### 表单输入框属性联动设置
+```tsx preview
+import { Form, FormItem, useWatch, useForm, FormLayoutRows, useFormInstance } from '@carefrees/form-utils-react';
+import React, { useState, useMemo } from 'react';
+
+// 子节点
+const ChildInput = () => {
+  const form = useFormInstance();
+  const a = form.getFieldValue('a');
+  const b = form.getFieldValue('b');
+  const value = useMemo(() => {
+    if (a && b) {
+      return a * b;
+    }
+    return 0;
+  }, [a, b]);
+  // 第一次监听可以获取到值
+  return <input placeholder="请输入a和b" disabled value={value} />;
+};
+
+const Demo = () => {
+  const [formData] = useState({ a: 0, b: 0 });
+  const form = useForm();
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem name="a" label="a">
+        <input type="number" style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="b" label="b">
+        <input type="number" style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem dependencies={['a', 'b']} name="c" label="c">
+        <ChildInput />
+      </FormItem>
+      <FormLayoutRows>
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            提交
+          </button>
+        </div>
+      </FormLayoutRows>
+    </Form>
+  );
+};
+export default Demo;
+```
 
 ### 布局组件
+
+```tsx preview
+import {
+  Form,
+  FormItem,
+  useWatch,
+  useForm,
+  FormLayoutRows,
+  useFormInstance,
+  FormLayout,
+} from '@carefrees/form-utils-react';
+import React, { useState, useMemo } from 'react';
+
+const Demo = () => {
+  const [formData] = useState({
+    a: '',
+    b: '',
+    c: '',
+    d: '',
+    e: '',
+    f: '',
+    g: '',
+    h: '',
+    j: '',
+    k: '',
+    l: '',
+    m: '',
+    address: '',
+  });
+  const form = useForm();
+  const [state, setState] = useState<{ row?: number; col?: number }>({ row: undefined, col: undefined });
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form gap={14} colCount={4} formData={formData} form={form}>
+      <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="标题1">
+        <FormItem rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入18,显示address表单项" />
+        </FormItem>
+        <FormItem name="address" label="address">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+      </FormLayout>
+      <FormLayout
+        onGapRow={(row, col) => {
+          console.log(row, col);
+          setState({ row, col });
+        }}
+        isAllColSpan
+        labelMode="top"
+        bordered
+        title="标题2"
+      >
+        <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
+          <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="c" label="测试3">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="d" label="测试4">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="e" label="测试5">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="f" label="测试6">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="g" label="测试7">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="h" label="测试8">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="j" label="测试9">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="k" label="测试10">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <div style={{ gridColumn: state.col, gridRow: state.row, padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            验😁😝证
+          </button>
+        </div>
+      </FormLayout>
+      <FormLayout isAllColSpan labelMode="top" title="标题2">
+        <FormItem rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="address" label="address">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+      </FormLayout>
+    </Form>
+  );
+};
+export default Demo;
+```
 
 ## 类型
 

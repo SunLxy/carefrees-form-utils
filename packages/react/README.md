@@ -1,4 +1,4 @@
-# React中使用
+# React 中使用
 
 ## 安装
 
@@ -10,54 +10,414 @@ npm install @carefrees/form-utils-react # yarn add @carefrees/form-utils-react #
 
 ### 基本使用
 
-```ts
-import { Form, FormItem } from '@carefrees/form-utils-react';
-import React ,{ useState } from 'react';
+```tsx preview
+import { Form, FormItem, useForm } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
 
-const Demo = ()=>{
-  const [formData]= useState({ name: '张三', age: 18 })
+const Demo = () => {
+  const [formData] = useState({ name: '', age: 18 });
   const form = useForm();
 
-  const onSubmit = async () =>{
-      try {
+  const onSubmit = async () => {
+    try {
       console.log(form);
       const result = await form.validate();
       console.log(result);
     } catch (error) {
       console.log(error);
     }
-  }
-
-  return (<Form formData={formData} form={form} >
-        <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>
-        <FormItem name="age" label="age">
-          <input style={{ width: '100%' }} placeholder="请输入" />
-        </FormItem>  
+  };
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="address" label="address">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
         <button type="button" onClick={onSubmit}>
-           验😁😝证
+          验😁😝证
         </button>
-  </Form>)
-}
+      </div>
+    </Form>
+  );
+};
 
+export default Demo;
 ```
 
 ### 控制隐藏
 
+```tsx preview
+import { Form, FormItem, FormHideItem, useForm } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
+
+const Demo = () => {
+  const [formData] = useState({ name: '张三', age: '' });
+  const form = useForm();
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onValuesChange = (item: any) => {
+    console.log('item', item);
+    if (Reflect.has(item, 'age')) {
+      if (item.age === '18') {
+        form.updatedFieldHideValue({ address: false });
+      } else {
+        form.updatedFieldHideValue({ address: true });
+      }
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form} onValuesChange={onValuesChange} hideData={{ address: true }}>
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <input style={{ width: '100%' }} placeholder="请输入18,显示address表单项" />
+      </FormItem>
+      <FormHideItem name="address" label="address">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormHideItem>
+      <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
+        <button type="button" onClick={onSubmit}>
+          验😁😝证
+        </button>
+      </div>
+    </Form>
+  );
+};
+export default Demo;
+```
+
 ### 表单字段监听
 
-### list表单项
+```tsx preview
+import { Form, FormItem, useWatch, useForm, FormLayoutRows } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
 
-### 表单项之间联动校验
+// 子节点
+const Child = () => {
+  // 第一次监听可以获取到值
+  const [value] = useWatch('name');
+  return <div>表单内部监听name值：{value}</div>;
+};
 
-### 表单输入框属性联动设置
+const Demo = () => {
+  const [formData] = useState({ name: '张三', age: 18 });
+  const form = useForm();
+
+  // 在表单包裹内,第一次监听获取不到值
+  const [age] = useWatch('age', form);
+  // console.log(age);
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormLayoutRows>
+        <Child />
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            表单外部监听age字段值:{age}
+          </button>
+        </div>
+      </FormLayoutRows>
+    </Form>
+  );
+};
+export default Demo;
+```
+
+### list 表单项
+
+```tsx preview
+import { Form, FormItem, useWatch, useForm, FormList, FormLayoutRows, FormLayout } from '@carefrees/form-utils-react';
+import React, { useState } from 'react';
+
+// 子节点
+const Child = () => {
+  // 第一次监听可以获取到值
+  const [value] = useWatch('list');
+  return <div>list值：{JSON.stringify(value)}</div>;
+};
+
+const Demo = () => {
+  const [formData] = useState({
+    name: '张三',
+    age: 18,
+    list: [{ name: '张三' }, { name: '李四' }],
+  });
+  const form = useForm();
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem rules={[{ required: true, message: '必填' }]} name="name" label="name">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="age" label="age">
+        <input style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormLayoutRows>
+        <FormList name="list">
+          {(options) => {
+            const fields = options.fields;
+            return (
+              <div>
+                <button type="button" onClick={() => options.onAdd({})}>
+                  添加一项数据
+                </button>
+                {fields.map((item, index) => {
+                  return (
+                    <FormLayout key={item.key}>
+                      <FormItem name={`[${item.name}].name`} label="子项name">
+                        <input style={{ width: '100%' }} placeholder="请输入" />
+                      </FormItem>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-end',
+                          padding: 8,
+                        }}
+                      >
+                        <button type="button" onClick={() => options.onDelete(index)}>
+                          删除数据
+                        </button>
+                      </div>
+                    </FormLayout>
+                  );
+                })}
+              </div>
+            );
+          }}
+        </FormList>
+      </FormLayoutRows>
+      <FormLayoutRows>
+        <Child />
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            提交
+          </button>
+        </div>
+      </FormLayoutRows>
+    </Form>
+  );
+};
+export default Demo;
+```
+
+### 表单项依赖更新(dependencies 参数)
+
+```tsx preview
+import { Form, FormItem, useWatch, useForm, FormLayoutRows, useFormInstance } from '@carefrees/form-utils-react';
+import React, { useState, useMemo } from 'react';
+
+// 子节点
+const ChildInput = () => {
+  const form = useFormInstance();
+  const a = form.getFieldValue('a');
+  const b = form.getFieldValue('b');
+  const value = useMemo(() => {
+    if (a && b) {
+      return a * b;
+    }
+    return 0;
+  }, [a, b]);
+  // 第一次监听可以获取到值
+  return <input placeholder="请输入a和b" disabled value={value} />;
+};
+
+const Demo = () => {
+  const [formData] = useState({ a: 0, b: 0 });
+  const form = useForm();
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form formData={formData} form={form}>
+      <FormItem name="a" label="a">
+        <input type="number" style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem name="b" label="b">
+        <input type="number" style={{ width: '100%' }} placeholder="请输入" />
+      </FormItem>
+      <FormItem dependencies={['a', 'b']} name="c" label="c">
+        <ChildInput />
+      </FormItem>
+      <FormLayoutRows>
+        <div style={{ display: 'flex', alignItems: 'flex-end', padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            提交
+          </button>
+        </div>
+      </FormLayoutRows>
+    </Form>
+  );
+};
+export default Demo;
+```
 
 ### 布局组件
 
+```tsx preview
+import {
+  Form,
+  FormItem,
+  useWatch,
+  useForm,
+  FormLayoutRows,
+  useFormInstance,
+  FormLayout,
+} from '@carefrees/form-utils-react';
+import React, { useState, useMemo } from 'react';
+
+const Demo = () => {
+  const [formData] = useState({
+    a: '',
+    b: '',
+    c: '',
+    d: '',
+    e: '',
+    f: '',
+    g: '',
+    h: '',
+    j: '',
+    k: '',
+    l: '',
+    m: '',
+    address: '',
+  });
+  const form = useForm();
+  const [state, setState] = useState<{ row?: number; col?: number }>({ row: undefined, col: undefined });
+
+  const onSubmit = async () => {
+    try {
+      console.log(form);
+      const result = await form.validate();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Form gap={14} colCount={4} formData={formData} form={form}>
+      <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="标题1">
+        <FormItem rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入18,显示address表单项" />
+        </FormItem>
+        <FormItem name="address" label="address">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+      </FormLayout>
+      <FormLayout
+        onGapRow={(row, col) => {
+          console.log(row, col);
+          setState({ row, col });
+        }}
+        isAllColSpan
+        labelMode="top"
+        bordered
+        title="标题2"
+      >
+        <FormItem colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem rowSpan={2} rules={[{ required: true, message: '必填' }]} name="b" label="测试2">
+          <textarea style={{ width: '100%', height: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="c" label="测试3">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="d" label="测试4">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="e" label="测试5">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="f" label="测试6">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="g" label="测试7">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="h" label="测试8">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="j" label="测试9">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="k" label="测试10">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <div style={{ gridColumn: state.col, gridRow: state.row, padding: 8 }}>
+          <button type="button" onClick={onSubmit}>
+            验😁😝证
+          </button>
+        </div>
+      </FormLayout>
+      <FormLayout isAllColSpan labelMode="top" title="标题2">
+        <FormItem rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+        <FormItem name="address" label="address">
+          <input style={{ width: '100%' }} placeholder="请输入" />
+        </FormItem>
+      </FormLayout>
+    </Form>
+  );
+};
+export default Demo;
+```
+
 ## 类型
 
-### Form表单
+### Form 表单
 
 ```ts
 import React from 'react';
@@ -65,83 +425,91 @@ import { FormInstanceBase, ValidateErrorEntity } from '@carefrees/form-utils';
 import { FormLayoutProps } from '@carefrees/form-utils-react/esm/layout';
 
 export interface FormProps<T = any> extends FormLayoutProps {
-    children?: React.ReactNode;
-    form?: FormInstanceBase;
-    style?: React.CSSProperties;
-    className?: string;
-    layoutClassName?: string;
-    layoutStyle?: React.CSSProperties;
-    /**表单数据*/
-    formData?: any;
-    /**值更新触发*/
-    onValuesChange?: (changedValues: Partial<T>, values: T) => void;
-    /**提交保存 验证成功*/
-    onFinish?: (values: T) => void;
-    /**提交保存 验证失败*/
-    onFinishFailed?: (errorInfo: ValidateErrorEntity<T>) => void;
-    /**隐藏表单项初始值*/
-    hideData?: Record<string, boolean>;
-    /**表单名称*/
-    name?: string;
-    /**隐藏规则校验*/
-    hideRuleData?: Record<string, boolean>;
-    /**自动重置更新formData数据*/
-    isAutoUpdatedFormData?: boolean;
-    /**背景颜色*/
-    bgcolor?: string
+  children?: React.ReactNode;
+  form?: FormInstanceBase;
+  style?: React.CSSProperties;
+  className?: string;
+  layoutClassName?: string;
+  layoutStyle?: React.CSSProperties;
+  /**表单数据*/
+  formData?: any;
+  /**值更新触发*/
+  onValuesChange?: (changedValues: Partial<T>, values: T) => void;
+  /**提交保存 验证成功*/
+  onFinish?: (values: T) => void;
+  /**提交保存 验证失败*/
+  onFinishFailed?: (errorInfo: ValidateErrorEntity<T>) => void;
+  /**隐藏表单项初始值*/
+  hideData?: Record<string, boolean>;
+  /**表单名称*/
+  name?: string;
+  /**隐藏规则校验*/
+  hideRuleData?: Record<string, boolean>;
+  /**自动重置更新formData数据*/
+  isAutoUpdatedFormData?: boolean;
+  /**背景颜色*/
+  bgcolor?: string;
 }
-export declare function Form<T = any>(props: FormProps<T>): import("react/jsx-runtime").JSX.Element;
-
+export declare function Form<T = any>(props: FormProps<T>): import('react/jsx-runtime').JSX.Element;
 ```
 
-### FormItem表单项
+### FormItem 表单项
 
 ```ts
 import { LayoutFormItemProps } from '@carefrees/form-utils-react/esm/layout/layout.formItem';
 import { FormItemAttrOptions } from '@carefrees/form-utils-react/esm/hooks/attr/attr.FormItem';
 import React from 'react';
 export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps {
-    /**不进行样式渲染*/
-    noStyle?: boolean;
+  /**不进行样式渲染*/
+  noStyle?: boolean;
 }
 /**表单项*/
-export declare const FormItem: React.MemoExoticComponent<(props: Partial<FormItemProps>) => import("react/jsx-runtime").JSX.Element>;
+export declare const FormItem: React.MemoExoticComponent<
+  (props: Partial<FormItemProps>) => import('react/jsx-runtime').JSX.Element
+>;
 /**隐藏表单项*/
-export declare const FormHideItem: React.MemoExoticComponent<(props: FormItemProps) => import("react/jsx-runtime").JSX.Element>;
-
+export declare const FormHideItem: React.MemoExoticComponent<
+  (props: FormItemProps) => import('react/jsx-runtime').JSX.Element
+>;
 ```
 
-### FormList表单List
+### FormList 表单 List
 
 ```ts
 import { RuleInstanceBase, FormItemInstanceBase, FormListInstanceBase } from '@carefrees/form-utils';
 import React from 'react';
 import { RegisterFormListOptions } from '@carefrees/form-utils-react-hooks';
 export interface FormListChildrenProps {
-    /**数据集合*/
-    fields: {
-        name: number;
-        key: number;
-    }[];
-    /**添加*/
-    onAdd: (initialValue?: Object) => void;
-    /**删除*/
-    onDelete: (index: number | number[]) => void;
-    /**移动*/
-    onMove: (from: number, to: number) => void;
+  /**数据集合*/
+  fields: {
+    name: number;
+    key: number;
+  }[];
+  /**添加*/
+  onAdd: (initialValue?: Object) => void;
+  /**删除*/
+  onDelete: (index: number | number[]) => void;
+  /**移动*/
+  onMove: (from: number, to: number) => void;
 }
 export interface FormListProps extends RegisterFormListOptions {
-    children: (options: FormListChildrenProps, instances: {
-        ruleInstance: RuleInstanceBase;
-        formItemInstance: FormItemInstanceBase;
-        formListInstance: FormListInstanceBase;
-    }) => React.ReactNode;
+  children: (
+    options: FormListChildrenProps,
+    instances: {
+      ruleInstance: RuleInstanceBase;
+      formItemInstance: FormItemInstanceBase;
+      formListInstance: FormListInstanceBase;
+    },
+  ) => React.ReactNode;
 }
 /**form list 组件*/
-export declare const FormList: React.MemoExoticComponent<(props: FormListProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const FormList: React.MemoExoticComponent<
+  (props: FormListProps) => import('react/jsx-runtime').JSX.Element
+>;
 /**隐藏 form list item 组件*/
-export declare const FormHideList: React.MemoExoticComponent<(props: FormListProps) => import("react/jsx-runtime").JSX.Element>;
-
+export declare const FormHideList: React.MemoExoticComponent<
+  (props: FormListProps) => import('react/jsx-runtime').JSX.Element
+>;
 ```
 
 ### 布局组件 类型
@@ -151,34 +519,37 @@ import React from 'react';
 import { AttrsOptions } from '@carefrees/form-utils-react-hooks';
 import { FormLayoutBodyProps } from '@carefrees/form-utils-react/esm/layout/layout.body';
 export interface FormLayoutProps extends AttrsOptions, FormLayoutBodyProps {
-    /**标题*/
-    title?: React.ReactNode;
-    /**额外内容*/
-    extra?: React.ReactNode;
-    /**内容*/
-    children?: React.ReactNode;
-    /**是否占据整行*/
-    isAllColSpan?: boolean;
-    className?: string;
-    /**头部ClassName*/
-    headerClassName?: string;
-    /**内容ClassName*/
-    bodyClassName?: string;
-    style?: React.CSSProperties;
-    /**头部样式*/
-    headerStyle?: React.CSSProperties;
-    /**内容样式*/
-    bodyStyle?: React.CSSProperties;
-    /**是否添加边框*/
-    bordered?: boolean;
+  /**标题*/
+  title?: React.ReactNode;
+  /**额外内容*/
+  extra?: React.ReactNode;
+  /**内容*/
+  children?: React.ReactNode;
+  /**是否占据整行*/
+  isAllColSpan?: boolean;
+  className?: string;
+  /**头部ClassName*/
+  headerClassName?: string;
+  /**内容ClassName*/
+  bodyClassName?: string;
+  style?: React.CSSProperties;
+  /**头部样式*/
+  headerStyle?: React.CSSProperties;
+  /**内容样式*/
+  bodyStyle?: React.CSSProperties;
+  /**是否添加边框*/
+  bordered?: boolean;
 }
 /**布局组件*/
-export declare const FormLayout: React.MemoExoticComponent<(props: FormLayoutProps) => import("react/jsx-runtime").JSX.Element>;
-export interface FormLayoutRowsProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-}
+export declare const FormLayout: React.MemoExoticComponent<
+  (props: FormLayoutProps) => import('react/jsx-runtime').JSX.Element
+>;
+export interface FormLayoutRowsProps
+  extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 /**布局组件 占据一整行*/
-export declare const FormLayoutRows: React.ForwardRefExoticComponent<Omit<FormLayoutRowsProps, "ref"> & React.RefAttributes<HTMLDivElement>>;
-
+export declare const FormLayoutRows: React.ForwardRefExoticComponent<
+  Omit<FormLayoutRowsProps, 'ref'> & React.RefAttributes<HTMLDivElement>
+>;
 ```
 
 ### 布局组件内容 类型
@@ -187,25 +558,27 @@ export declare const FormLayoutRows: React.ForwardRefExoticComponent<Omit<FormLa
 import React from 'react';
 import { SizeInfo } from '@carefrees/form-utils-react/esm/hooks/useResizeObserver';
 export interface FormLayoutBodyProps {
-    className?: string;
-    style?: React.CSSProperties;
-    /**列数据*/
-    colCount?: number;
-    /**
-     * @description gap 属性是用来设置网格行与列之间的间隙，该属性是row-gap and column-gap的简写形式。
-     */
-    gap?: string | number;
-    /**
-     * 获取多少行
-     */
-    onGapRow?: (row: number, col: number, target: HTMLDivElement) => void;
-    /**内容大小变化*/
-    onResize?: (size: SizeInfo, target: HTMLDivElement) => void;
-    /**内容*/
-    children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  /**列数据*/
+  colCount?: number;
+  /**
+   * @description gap 属性是用来设置网格行与列之间的间隙，该属性是row-gap and column-gap的简写形式。
+   */
+  gap?: string | number;
+  /**
+   * 获取多少行
+   */
+  onGapRow?: (row: number, col: number, target: HTMLDivElement) => void;
+  /**内容大小变化*/
+  onResize?: (size: SizeInfo, target: HTMLDivElement) => void;
+  /**内容*/
+  children?: React.ReactNode;
 }
 /**布局组件-内容区域*/
-export declare const FormLayoutBody: React.MemoExoticComponent<(props: FormLayoutBodyProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const FormLayoutBody: React.MemoExoticComponent<
+  (props: FormLayoutBodyProps) => import('react/jsx-runtime').JSX.Element
+>;
 ```
 
 ### 表单项布局组件类型
@@ -213,44 +586,46 @@ export declare const FormLayoutBody: React.MemoExoticComponent<(props: FormLayou
 ```ts
 import React from 'react';
 export interface LayoutFormItemProps {
-    /**规则校验失败错误提示位置*/
-    errorLayout?: 'left-bottom' | 'right-bottom' | 'top-right' | 'top-left';
-    /**必填样式*/
-    required?: boolean;
-    /**label显示模式*/
-    labelMode?: 'left' | 'top' | 'between' | 'hide';
-    /**内容*/
-    children?: React.ReactNode;
-    /**只进行规则样式*/
-    onlyRuleStyle?: boolean;
-    label?: React.ReactNode;
-    /**底部提示内容*/
-    helpText?: React.ReactNode;
-    /**额外内容*/
-    extra?: React.ReactNode;
-    /**是否显示label后的冒号*/
-    showColon?: boolean;
-    /**
-     * 表单项占据列数
-     * @default 1
-     */
-    colSpan?: number;
-    /**
-     * 表单项占据行数
-     * @default 1
-     */
-    rowSpan?: number;
-    htmlFor?: string;
-    /**规则验证结果*/
-    validateResult?: {
-        tip: string | (string | undefined)[];
-        isInvalid: boolean;
-    };
-    style?: React.CSSProperties;
-    className?: string;
-    labelStyle?: React.CSSProperties;
-    labelClassName?: string;
+  /**规则校验失败错误提示位置*/
+  errorLayout?: 'left-bottom' | 'right-bottom' | 'top-right' | 'top-left';
+  /**必填样式*/
+  required?: boolean;
+  /**label显示模式*/
+  labelMode?: 'left' | 'top' | 'between' | 'hide';
+  /**内容*/
+  children?: React.ReactNode;
+  /**只进行规则样式*/
+  onlyRuleStyle?: boolean;
+  label?: React.ReactNode;
+  /**底部提示内容*/
+  helpText?: React.ReactNode;
+  /**额外内容*/
+  extra?: React.ReactNode;
+  /**是否显示label后的冒号*/
+  showColon?: boolean;
+  /**
+   * 表单项占据列数
+   * @default 1
+   */
+  colSpan?: number;
+  /**
+   * 表单项占据行数
+   * @default 1
+   */
+  rowSpan?: number;
+  htmlFor?: string;
+  /**规则验证结果*/
+  validateResult?: {
+    tip: string | (string | undefined)[];
+    isInvalid: boolean;
+  };
+  style?: React.CSSProperties;
+  className?: string;
+  labelStyle?: React.CSSProperties;
+  labelClassName?: string;
 }
 /**布局组件 表单项*/
-export declare const LayoutFormItem: React.MemoExoticComponent<(props: LayoutFormItemProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const LayoutFormItem: React.MemoExoticComponent<
+  (props: LayoutFormItemProps) => import('react/jsx-runtime').JSX.Element
+>;
 ```
