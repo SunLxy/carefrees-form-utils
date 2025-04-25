@@ -45,6 +45,8 @@ npm install @carefrees/form-utils-react-hooks # yarn add @carefrees/form-utils-r
 
 ### useForm
 
+初始化表单实例
+
 ```ts
 import { FormInstanceBase } from '@carefrees/form-utils';
 /**表单实例 Context */
@@ -56,6 +58,8 @@ export declare function useForm<T = any>(form?: FormInstanceBase<T>): FormInstan
 ```
 
 ### useFormItem
+
+初始化表单项实例
 
 ```ts
 import { FormItemInstanceBase } from '@carefrees/form-utils';
@@ -69,6 +73,8 @@ export declare const useFormItem: (formItem?: FormItemInstanceBase) => FormItemI
 
 ### useFormList
 
+初始化表单List实例
+
 ```ts
 import { FormListInstanceBase } from '@carefrees/form-utils';
 /**表单List实例 Context */
@@ -81,6 +87,8 @@ export declare const useFormList: (formList?: FormListInstanceBase) => FormListI
 ```
 
 ### useMultipleForm
+
+初始化 多表单收集 实例
 
 ```ts
 import { MultipleInstanceBase } from '@carefrees/form-utils';
@@ -99,6 +107,8 @@ export declare const MultipleFormProvider: (props: MultipleFormProviderProps) =>
 ```
 
 ### useWatch
+
+监听表单某个值变化
 
 ```ts
 import { FormInstanceBase } from '@carefrees/form-utils';
@@ -123,7 +133,9 @@ export declare const useWatch: (name: string, form: FormInstanceBase, callBack?:
 
 ```
 
-### useAttrs
+### useAttrs(pc、h5、taro)
+
+获取布局公共属性,在react-native中移除了className属性
 
 ```ts
 export interface AttrsOptions {
@@ -160,6 +172,8 @@ export declare const useAttrs: () => AttrsOptions;
 
 ### useFormItemParentName
 
+获取表单父级name
+
 ```ts
 export declare const FormItemParentNameContext: import("react").Context<{
     name: string;
@@ -194,11 +208,15 @@ export declare const useFormItemParentName: (options: FormItemParentNamOptions) 
 
 ### useHtmlFor
 
+生成label标签的for属性
+
 ```ts
 export declare const useHtmlFor: (suffix: string) => string;
 ```
 
 ### useRegisterForm
+
+注册表单实例到多表单收集实例中
 
 ```ts
 import { FormInstanceBase } from '@carefrees/form-utils';
@@ -208,6 +226,8 @@ export declare const useRegisterForm: (form: FormInstanceBase, name?: string) =>
 ```
 
 ### useRegisterFormHideItem
+
+注册表单隐藏表单项到表单实例中
 
 ```ts
 import { RegisterFormItemOptions } from './register.FormItem';
@@ -221,6 +241,8 @@ export declare const useRegisterFormHideItem: (options: RegisterFormHideItemOpti
 ```
 
 ### useRegisterFormItem
+
+注册表单项到表单实例中
 
 ```ts
 /**
@@ -249,6 +271,8 @@ export declare const useRegisterFormItem: (options: RegisterFormItemOptions) => 
 ```
 
 ### useRegisterFormList
+
+注册表单List到表单实例中
 
 ```ts
 import { RegisterFormItemOptions } from './register.FormItem';
