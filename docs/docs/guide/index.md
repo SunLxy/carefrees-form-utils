@@ -2,8 +2,6 @@
 
 用于`react`技术相关的表单组件
 
-整体布局使用`display: grid`(除react-native使用flex布局)进行布局，使其可以进行跨行渲染。
-
 ## 安装
 
 ### pc&h5
@@ -23,6 +21,14 @@ npm install @carefrees/form-utils-react-taro # yarn add @carefrees/form-utils-re
 ```bash
 npm install @carefrees/form-utils-react-native # yarn add @carefrees/form-utils-react-native # pnpm add @carefrees/form-utils-react-native
 ```
+
+## 区别
+
+`react-native`和其他的平台的区别在于：
+
+- `react-native`不支持`display: grid`,仅使用`display: flex`进行布局
+- `react-native`的`style`类型为`StyleProp<ViewStyle>`，而不是`React.CSSProperties`
+- `react-native`不存在`className`,只能使用`style`进行样式的控制
 
 ## 其他
 
