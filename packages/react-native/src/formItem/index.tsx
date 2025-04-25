@@ -21,7 +21,6 @@ const FormItemInstance = memo((props: FormItemProps) => {
     required,
     showColon,
     colSpan,
-    rowSpan,
     ...rest
   } = props;
   const { children, ruleInstance, formItemInstance, htmlFor, validateResult } = useFormItemAttr({ ...rest });
@@ -44,7 +43,6 @@ const FormItemInstance = memo((props: FormItemProps) => {
         errorLayout={errorLayout}
         showColon={showColon}
         colSpan={colSpan}
-        rowSpan={rowSpan}
         htmlFor={htmlFor}
         validateResult={validateResult}
       >
@@ -60,19 +58,8 @@ export const FormItem = memo((props: Partial<FormItemProps>) => {
   if (name) {
     return <FormItemInstance {...props} name={name} />;
   }
-  const {
-    labelMode,
-    onlyRuleStyle,
-    label,
-    helpText,
-    extra,
-    errorLayout,
-    required,
-    showColon,
-    colSpan,
-    rowSpan,
-    children,
-  } = props;
+  const { labelMode, onlyRuleStyle, label, helpText, extra, errorLayout, required, showColon, colSpan, children } =
+    props;
   return (
     <LayoutFormItem
       labelMode={labelMode}
@@ -84,7 +71,6 @@ export const FormItem = memo((props: Partial<FormItemProps>) => {
       errorLayout={errorLayout}
       showColon={showColon}
       colSpan={colSpan}
-      rowSpan={rowSpan}
     >
       {children}
     </LayoutFormItem>

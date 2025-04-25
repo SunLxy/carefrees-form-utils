@@ -26,12 +26,6 @@ export interface LayoutFormItemProps {
    * @default 1
    */
   colSpan?: number;
-  /**
-   * 表单项占据行数
-   * @default 1
-   */
-  rowSpan?: number;
-
   htmlFor?: string;
   /**规则验证结果*/
   validateResult?: {
