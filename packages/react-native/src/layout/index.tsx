@@ -12,11 +12,6 @@ export interface FormLayoutProps extends AttrsOptions {
   children?: React.ReactNode;
   /**是否占据整行*/
   isAllColSpan?: boolean;
-  className?: string;
-  /**头部ClassName*/
-  headerClassName?: string;
-  /**内容ClassName*/
-  bodyClassName?: string;
   style?: ViewProps['style'];
   /**头部样式*/
   headerStyle?: ViewProps['style'];
@@ -39,9 +34,7 @@ export const FormLayout = memo((props: FormLayoutProps) => {
     errorLayout: p_errorLayout = 'left-bottom',
     labelMode: p_labelMode = 'left',
     showColon: p_showColon = true,
-    formItemClassName: p_formItemClassName,
     formItemStyle: p_formItemStyle,
-    formItemLabelClassName: p_formItemLabelClassName,
     formItemLabelStyle: p_formItemLabelStyle,
   } = useAttrs();
   const {
@@ -50,18 +43,13 @@ export const FormLayout = memo((props: FormLayoutProps) => {
     extra,
     children,
     isAllColSpan,
-    className,
-    headerClassName,
-    bodyClassName,
     style,
     headerStyle,
     bodyStyle,
     errorLayout = p_errorLayout,
     labelMode = p_labelMode,
     showColon = p_showColon,
-    formItemClassName = p_formItemClassName,
     formItemStyle = p_formItemStyle,
-    formItemLabelClassName = p_formItemLabelClassName,
     formItemLabelStyle = p_formItemLabelStyle,
     bordered = false,
     gap,
@@ -75,21 +63,10 @@ export const FormLayout = memo((props: FormLayoutProps) => {
       errorLayout,
       labelMode,
       showColon,
-      formItemClassName,
       formItemStyle,
-      formItemLabelClassName,
       formItemLabelStyle,
     };
-  }, [
-    colCount,
-    errorLayout,
-    labelMode,
-    showColon,
-    formItemClassName,
-    formItemStyle,
-    formItemLabelClassName,
-    formItemLabelStyle,
-  ]);
+  }, [colCount, errorLayout, labelMode, showColon, formItemStyle, formItemLabelStyle]);
 
   const styleBase = useMemo(() => {
     const css: ViewProps['style'] = {};

@@ -14,12 +14,8 @@ export interface AttrsOptions {
   labelMode?: 'left' | 'top' | 'between' | 'hide';
   /**是否显示label后的冒号*/
   showColon?: boolean;
-  /**表单项 className*/
-  formItemClassName?: string;
   /**表单项 style*/
   formItemStyle?: ViewProps['style'];
-  /**表单项 label  className*/
-  formItemLabelClassName?: string;
   /**表单项 label  style*/
   formItemLabelStyle?: ViewProps['style'];
   /**

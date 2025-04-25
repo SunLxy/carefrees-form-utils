@@ -15,8 +15,6 @@ export interface FormProps<T = any> extends FormLayoutProps {
   children?: React.ReactNode;
   form?: FormInstanceBase;
   style?: ViewProps['style'];
-  className?: string;
-  layoutClassName?: string;
   layoutStyle?: ViewProps['style'];
   /**表单数据*/
   formData?: any;
@@ -41,7 +39,6 @@ export function Form<T = any>(props: FormProps<T>) {
     children,
     form,
     style,
-    className,
     formData,
     hideData,
     hideRuleData,
@@ -51,7 +48,6 @@ export function Form<T = any>(props: FormProps<T>) {
     onFinishFailed,
     onValuesChange,
     layoutStyle,
-    layoutClassName,
     ...rest
   } = props;
   const formInstance = useForm(form);
@@ -71,7 +67,7 @@ export function Form<T = any>(props: FormProps<T>) {
   return (
     <FormInstanceContext.Provider value={formInstance}>
       <View style={style}>
-        <FormLayout {...rest} className={layoutClassName} style={layoutStyle}>
+        <FormLayout {...rest} style={layoutStyle}>
           {children}
         </FormLayout>
       </View>

@@ -40,9 +40,7 @@ export interface LayoutFormItemProps {
   };
   // 样式部分
   style?: ViewProps['style'];
-  className?: string;
   labelStyle?: ViewProps['style'];
-  labelClassName?: string;
   /**底部边框*/
   inputBordered?: boolean;
 }
@@ -50,8 +48,6 @@ export interface LayoutFormItemProps {
 /**布局组件 表单项*/
 export const LayoutFormItem = memo((props: LayoutFormItemProps) => {
   const {
-    formItemClassName,
-    formItemLabelClassName,
     formItemLabelStyle,
     formItemStyle,
     labelMode: p_labelMode = 'top',
@@ -75,8 +71,6 @@ export const LayoutFormItem = memo((props: LayoutFormItemProps) => {
     required,
     errorLayout = p_errorLayout,
     style,
-    className,
-    labelClassName,
     labelStyle,
     inputBordered = p_inputBordered,
   } = props;
