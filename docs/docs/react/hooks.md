@@ -145,7 +145,7 @@ export interface AttrsOptions {
     errorLayout?: 'left-bottom' | 'right-bottom' | 'top-right' | 'top-left';
     /**
      * label显示模式
-     * @platform taro 支持 between
+     * @platform taro、react-native 支持 between
      */
     labelMode?: 'left' | 'top' | 'between' | 'hide';
     /**是否显示label后的冒号*/
@@ -160,7 +160,7 @@ export interface AttrsOptions {
     formItemLabelStyle?: React.CSSProperties;
     /**
      * 输入框底部边框
-     * @platform taro
+     * @platform taro、react-native
      */
     inputBordered?: boolean;
 }
