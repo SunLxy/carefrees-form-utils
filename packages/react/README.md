@@ -629,3 +629,57 @@ export declare const LayoutFormItem: React.MemoExoticComponent<
   (props: LayoutFormItemProps) => import('react/jsx-runtime').JSX.Element
 >;
 ```
+
+### 表单项参数
+
+```ts
+import { RuleInstanceBase, FormInstanceBase, FormItemInstanceBase } from '@carefrees/form-utils';
+import { RegisterFormItemOptions } from '@carefrees/form-utils-react-hooks';
+import React from 'react';
+export interface FormItemAttrOptions extends RegisterFormItemOptions {
+    /**依赖更新项*/
+    dependencies?: string[];
+    /**通知 只用于校验规则提示 字段 */
+    noticeOnlyRuleDataField?: string[];
+    /**通知父级字段监听方法更新*/
+    isNoticeParentField?: boolean;
+    /**通知watch监听方法更新*/
+    noticeWatchField?: string[];
+    /**是否保护值(不进行表单项组件卸载重置初始值)*/
+    preserve?: boolean;
+    /**重写规则*/
+    useRules?: (ruleInstance: RuleInstanceBase, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => void;
+    /**输入框属性重写*/
+    useAttrs?: (attrs: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
+    /**输入框属性*/
+    attrs?: any;
+    /**传递组件字段*/
+    valuePropName?: string;
+    /**取值字段(默认和valuePropName值相同)*/
+    getValuePath?: string;
+    /**自定义获取值*/
+    getValueFromEvent?: (event: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
+    /**值格式化*/
+    formatValue?: (value: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase, event: any) => any;
+    /**触发数据更新之后触发（用于数据联动之类的）*/
+    onAfterUpdate?: (value: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase, event: any) => void;
+    /**事件名称*/
+    trigger?: string;
+    /**子元素*/
+    children?: React.ReactNode;
+}
+/**表单项参数*/
+export declare const useFormItemAttr: (options: FormItemAttrOptions) => {
+    children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode>;
+    form: FormInstanceBase<any>;
+    formItemInstance: FormItemInstanceBase;
+    ruleInstance: RuleInstanceBase;
+    onChange: (event: any) => void;
+    htmlFor: string;
+    validateResult: {
+        tip: string | (string | undefined)[];
+        isInvalid: boolean;
+    };
+};
+
+```
