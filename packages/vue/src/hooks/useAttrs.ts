@@ -1,43 +1,66 @@
-
 /**公共属性*/
-import { provide, inject, computed, StyleValue, reactive } from "vue"
+import { provide, inject, computed, StyleValue, ComputedRef, ref, toRefs, reactive } from 'vue';
+import { ComputedRefBase } from '../interface';
 
-export interface AttrsOptions {
+export type AttrsOptions = {
   /**列数据*/
-  colCount?: number
+  colCount?: ComputedRefBase<number | undefined>;
   /**规则校验失败错误提示位置*/
-  errorLayout?: 'left-bottom' | "right-bottom" | 'top-right' | 'top-left'
+  errorLayout?: ComputedRefBase<'left-bottom' | 'right-bottom' | 'top-right' | 'top-left' | undefined>;
   /**label显示模式*/
-  labelMode?: "left" | "top" | "hide";
+  labelMode?: ComputedRefBase<'left' | 'top' | 'hide' | undefined>;
   /**是否显示label后的冒号*/
-  showColon?: boolean
+  showColon?: ComputedRefBase<boolean | undefined>;
   /**表单项 className*/
-  formItemClassName?: string
+  formItemClass?: ComputedRefBase<string | undefined>;
   /**表单项 style*/
-  formItemStyle?: StyleValue
+  formItemStyle?: ComputedRefBase<StyleValue | undefined>;
   /**表单项 label  className*/
-  formItemLabelClassName?: string
+  formItemLabelClass?: ComputedRefBase<string | undefined>;
   /**表单项 label  style*/
-  formItemLabelStyle?: StyleValue
-}
+  formItemLabelStyle?: ComputedRefBase<StyleValue | undefined>;
+};
 
-const attrsProvideSymbol = Symbol("carefrees-attrs")
+const attrsProvideSymbol = Symbol('carefrees-attrs');
 
 /**公共属性 Context */
 export function useAttrsProvide(options: AttrsOptions) {
-  const { colCount = 4, errorLayout = 'left-bottom', labelMode = 'top', showColon = true, formItemClassName, formItemStyle, formItemLabelClassName, formItemLabelStyle } = options
+  const {
+    colCount = ref(4),
+    errorLayout = ref('left-bottom'),
+    labelMode = ref('top'),
+    showColon = ref(true),
+    formItemClass,
+    formItemStyle,
+    formItemLabelClass,
+    formItemLabelStyle,
+  } = options;
   const data = computed(() => {
-    return { colCount, errorLayout, labelMode, showColon, formItemClassName, formItemStyle, formItemLabelClassName, formItemLabelStyle }
-  })
-  provide(attrsProvideSymbol, reactive(data))
+    return {
+      colCount,
+      errorLayout,
+      labelMode,
+      showColon,
+      formItemClass,
+      formItemStyle,
+      formItemLabelClass,
+      formItemLabelStyle,
+    };
+  });
+  provide(attrsProvideSymbol, reactive(data));
 }
 /**子项中获取公共属性*/
 export function useAttrsInject() {
-  const attrs = inject<AttrsOptions>(attrsProvideSymbol, reactive({
-    colCount: 4,
-    errorLayout: "left-bottom",
-    labelMode: "top",
-    showColon: true,
-  }))
-  return attrs
+  const attrs = inject<ComputedRef<AttrsOptions>>(
+    attrsProvideSymbol,
+    computed(() =>
+      toRefs({
+        colCount: 4,
+        errorLayout: 'left-bottom',
+        labelMode: 'top',
+        showColon: true,
+      }),
+    ),
+  );
+  return attrs;
 }

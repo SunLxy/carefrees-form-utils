@@ -6,6 +6,7 @@ esm
 cjs
 lib
 es
+types
 package-lock.json
 __snapshots__
 .DS_Store

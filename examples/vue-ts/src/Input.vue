@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-// import { InputHTMLAttributes } from 'vue'
+// import { watch } from 'vue'
+// import { useAttrsInject } from "@carefrees/form-utils-vue";
+
 interface InputProps {
   // attrs?: InputHTMLAttributes;
   type?: string;
@@ -9,6 +11,7 @@ interface InputProps {
 };
 
 const props = defineProps<InputProps>();
+
 
 const emits = defineEmits(['change'])
 const onChange = (event: any) => {

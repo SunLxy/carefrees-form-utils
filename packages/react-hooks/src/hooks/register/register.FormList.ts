@@ -19,9 +19,9 @@ export const useRegisterFormList = (options: RegisterFormListOptions) => {
   formListInstance.parentDataField = parentName;
 
   useEffect(() => {
-    const unMount = form.registerFormList(options.name, formListInstance);
+    const unMount = form.registerFormList(newName, formListInstance);
     return () => unMount();
-  }, [options.name, formListInstance]);
+  }, [newName, formListInstance]);
 
   return {
     ruleInstance,

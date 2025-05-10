@@ -6,7 +6,7 @@
   "description": "",
   "main": "lib/index.js",
   "module": "esm/index.mjs",
-  "types": "lib/index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "saqu-vue build",
     "watch": "saqu-vue build --watch"
@@ -15,9 +15,11 @@
     "access": "public"
   },
   "files": [
+    "assets",
     "src",
     "lib",
-    "esm"
+    "esm",
+    "types"
   ],
   "keywords": [],
   "license": "ISC",

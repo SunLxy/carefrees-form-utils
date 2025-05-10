@@ -11,7 +11,10 @@
 // }
 // // 定义 props
 // const props = defineProps<Props<Component>>();
-import type { Component, ComponentPublicInstance } from 'vue'
+import type { Component, ComponentPublicInstance, } from 'vue'
+import { useAttrsInject } from "@carefrees/form-utils-vue";
+import { watch } from "vue";
+
 // 获取组件实例类型
 type ComponentInstance<T> = T extends new (...args: any[]) => infer R
   ? R extends ComponentPublicInstance
@@ -24,6 +27,14 @@ interface Props<T extends Component> {
   attrs?: ComponentInstance<T>;
 }
 const props = defineProps<Props<Component>>();
+
+const attrs = useAttrsInject();
+// @ts-ignore
+console.log("attrs===>", attrs.value.colCount)
+watch(() => attrs?.value?.colCount?.value, (newVal, oldVal) => {
+  console.log("colCount===>", newVal, oldVal)
+})
+
 
 // const props = defineProps<FormitemProps>()
 const emit = defineEmits(['change']);
