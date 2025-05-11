@@ -6,7 +6,7 @@
   "description": "",
   "main": "lib/index.js",
   "module": "esm/index.mjs",
-  "types": "types/index.d.ts",
+  "types": "esm/index.d.ts",
   "scripts": {
     "build": "saqu-vue build",
     "watch": "saqu-vue build --watch"
@@ -18,13 +18,12 @@
     "assets",
     "src",
     "lib",
-    "esm",
-    "types"
+    "esm"
   ],
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
-    "@saqu-vue/core": "^0.0.8",
+    "@saqu-vue/core": "^1.0.1",
     "vue": "^3.5.13"
   },
   "dependencies": {

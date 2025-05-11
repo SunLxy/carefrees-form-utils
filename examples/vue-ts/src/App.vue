@@ -25,7 +25,17 @@ const onSetValue = () => {
 <template>
   <Form :form='form'>
     <FormItem label='内容' input='input' name='a' :rules='[{ required: true, message: "必填" }]' />
-    <FormItem label='内容2' input='input' name='b' />
+    <FormItem input='input' name='b'>
+      <template #label>
+        <span>s内容2</span>
+      </template>
+      <template #helpText>
+        <span>helpText</span>
+      </template>
+      <template #extra>
+        <span>extra</span>
+      </template>
+    </FormItem>
     <FormItem label='内容3' input='input' name='c' />
     <button type='button' @click='onSubmit'>点击</button>
     <button type='button' @click='onSetValue'>设置值</button>

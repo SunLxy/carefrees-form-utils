@@ -68,7 +68,6 @@
   font-size: 14px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   padding: 8px;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.88);

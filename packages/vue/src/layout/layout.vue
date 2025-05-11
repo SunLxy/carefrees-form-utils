@@ -20,7 +20,6 @@
         </div>
       </div>
     </template>
-    <div></div>
     <div :style='bodyStyle' :class='bodyCls'>
       <slot />
     </div>
@@ -32,7 +31,8 @@ import clx from 'classnames';
 import { defineProps, withDefaults, toValue, computed, StyleValue } from "vue"
 import type { FormLayoutProps } from "../interface/layout"
 import { useAttrsInject, useAttrsProvide } from "../hooks/useAttrs"
-const preCls = 'carefrees-form-item';
+const preCls = 'carefrees-form-layout';
+
 const attrs = useAttrsInject();
 const props = withDefaults(defineProps<FormLayoutProps>(), {})
 
@@ -81,8 +81,8 @@ const bodyStyle = computed(() => {
   if (typeof props.gap === 'number') {
     css.gap = `${props.gap}px`;
   }
-  if (colCount) {
-    css.gridTemplateColumns = `repeat(${colCount}, auto)`;
+  if (colCount.value) {
+    css.gridTemplateColumns = `repeat(${colCount.value}, auto)`;
   }
   return [css, props.bodyStyle];
 });
