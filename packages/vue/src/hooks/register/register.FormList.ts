@@ -1,7 +1,6 @@
 import { watch, toValue } from 'vue';
 import { RegisterFormItemOptions, useRegisterFormItem } from './register.FormItem';
 import { useFormList } from '../useFormList';
-import { RuleInstanceBase } from '@carefrees/form-utils';
 import { useEffect } from '../useEffect';
 
 export interface RegisterFormListOptions extends RegisterFormItemOptions {}
@@ -24,7 +23,7 @@ export const useRegisterFormList = (options: RegisterFormListOptions) => {
     () => {
       formListInstance.instance = form;
       formListInstance.formItemInstance = formItemInstance;
-      formListInstance.rule = ruleInstance.value as RuleInstanceBase;
+      formListInstance.rule = ruleInstance.value as any;
     },
     { immediate: true },
   );

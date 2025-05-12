@@ -3,12 +3,12 @@
  */
 
 import { ref, toValue, watch } from 'vue';
-import { RuleInstanceBase } from '@carefrees/form-utils';
 import type { RuleItem } from 'async-validator';
 import { useFormInject } from '../useForm';
 import { useFormItem } from '../useFormItem';
 import { useFormItemParentNameInject } from '../useFormItemParentName';
 import { useEffect } from '../useEffect';
+import { RuleInstanceBase2 } from '../../instance/ruleIntsnace';
 
 export interface RegisterFormItemOptions {
   /**字段*/
@@ -29,7 +29,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   const { newName, newSort, parentItem } = useFormItemParentNameInject({ name, sort, isJoinParentField });
   // 注册规则
   // 注册单个实例
-  const ruleInstance = ref(new RuleInstanceBase());
+  const ruleInstance = ref(new RuleInstanceBase2());
   const formItemInstance = useFormItem();
 
   watch(
@@ -45,7 +45,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
     [newName.value],
     () => {
       ruleInstance.value.ctor(newName.value, rules || []);
-      formItemInstance.ctor(newName.value, ruleInstance.value as RuleInstanceBase);
+      formItemInstance.ctor(newName.value, ruleInstance.value as any);
     },
     { immediate: true },
   );

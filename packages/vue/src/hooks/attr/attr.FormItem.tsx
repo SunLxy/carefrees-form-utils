@@ -1,7 +1,8 @@
-import { RuleInstanceBase, FormInstanceBase, FormItemInstanceBase, get } from '@carefrees/form-utils';
+import { FormInstanceBase, FormItemInstanceBase, get } from '@carefrees/form-utils';
 import { useHtmlFor } from './../useHtmlFor';
 import { useRegisterFormItem, RegisterFormItemOptions } from './../register/register.FormItem';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, toValue, watch } from 'vue';
+import type { RuleInstanceBase2 } from '../../instance/ruleIntsnace';
 
 export interface FormItemAttrOptions extends RegisterFormItemOptions {
   /**依赖更新项*/
@@ -15,7 +16,7 @@ export interface FormItemAttrOptions extends RegisterFormItemOptions {
   /**是否保护值(不进行表单项组件卸载重置初始值)*/
   preserve?: boolean;
   /**重写规则*/
-  useRules?: (ruleInstance: RuleInstanceBase, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => void;
+  useRules?: (ruleInstance: RuleInstanceBase2, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => void;
   /**输入框属性重写*/
   useAttrs?: (attrs: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
   /**输入框属性*/
@@ -61,9 +62,10 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   formItemInstance.noticeWatchField = noticeWatchField;
   formItemInstance.preserve = preserve;
   /**获取值*/
-  const oldValue = ref(form.getFieldValue(newName.value));
+  const oldValue = ref(get(form.formData, toValue(newName)));
+
   watch(
-    () => [form.getFieldValue(newName.value), newName.value, deepRefData.value],
+    () => [get(form.formData, toValue(newName)), toValue(newName)],
     () => {
       oldValue.value = form.getFieldValue(newName.value);
     },
@@ -101,8 +103,10 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
       console.log(error);
     }
   };
+
   formItemInstance.onChange = onValueChange;
   const htmlFor = useHtmlFor(newName);
+
   watch(
     () => htmlFor,
     () => {
@@ -117,15 +121,16 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
     return {
       ..._attr,
       [trigger]: onValueChange,
-      name: newName.value,
-      id: htmlFor.value,
-      [valuePropName]: oldValue.value,
+      name: toValue(newName),
+      id: toValue(htmlFor),
+      [valuePropName]: toValue(oldValue),
     };
   });
 
-  const attrsLastData = ref(newAttrs.value);
+  const attrsLastData = ref(toValue(newAttrs));
+
   watch(
-    () => [newAttrs.value, deepRefData.value, oldValue.value],
+    () => [toValue(newAttrs), toValue(deepRefData), toValue(oldValue)],
     () => {
       attrsLastData.value = useAttrs?.(newAttrs.value, form, formItemInstance) || newAttrs.value;
     },
@@ -134,15 +139,16 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
 
   /**规则处理**/
   const validateResult = ref(ruleInstance.value.getValidateResult());
+
   watch(
-    () => [deepRefData.value, oldValue.value],
+    () => [toValue(deepRefData), toValue(oldValue)],
     () => {
-      useRules?.(ruleInstance.value as RuleInstanceBase, form, formItemInstance);
+      useRules?.(ruleInstance.value as any, form, formItemInstance);
     },
   );
 
   watch(
-    () => [ruleInstance.value.messages, ruleInstance.value.rules, deepRefData.value],
+    () => [ruleInstance.value.messages, ruleInstance.value.rules, toValue(oldValue)],
     () => {
       validateResult.value = ruleInstance.value.getValidateResult();
     },

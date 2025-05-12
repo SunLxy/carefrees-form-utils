@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, watch, withDefaults } from "vue"
+import { computed, defineProps, withDefaults, reactive } from "vue"
 import type { FormProps } from "../interface/index"
 import { useRegisterForm } from "../hooks/register/register.form"
 import { useForm, useFormProvide } from "./../hooks/useForm"
@@ -28,7 +28,6 @@ const {
   formData,
   hideData,
   hideRuleData,
-  isAutoUpdatedFormData = false,
   name,
   onFinish,
   onFinishFailed,
@@ -41,18 +40,12 @@ const {
 const cls = computed(() => clx('carefrees-form', props.class));
 
 const formInstance = useForm(props.form);
-formInstance.value.ctor(props.formData, props.hideData, props.hideRuleData);
+formInstance.value.ctor(reactive(props.formData || {}), reactive(props.hideData || {}), reactive(props.hideRuleData || {}));
 formInstance.value.onFinish = props.onFinish;
 formInstance.value.onValuesChange = props.onValuesChange;
 formInstance.value.onFinishFailed = props.onFinishFailed;
 
 useRegisterForm(formInstance.value, props.name)
-
-if (props.isAutoUpdatedFormData) {
-  watch(() => props.formData, () => {
-    formInstance.value.resetFormValues(props.formData);
-  })
-}
 
 const onSubmit = (event: Event) => {
   event?.preventDefault?.();

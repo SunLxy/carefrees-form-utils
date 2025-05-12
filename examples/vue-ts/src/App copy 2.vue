@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
 import { Form, useForm, FormItem } from "@carefrees/form-utils-vue";
 import "@carefrees/form-utils-vue/assets/index.css"
-
-const formData = reactive({})
 
 const form = useForm();
 
 const onSubmit = async () => {
   try {
-    console.log(form, formData)
+    console.log(form)
     const result = await form.value.validate()
     if (result) {
       console.log(result)
@@ -26,7 +23,7 @@ const onSetValue = () => {
 </script>
 
 <template>
-  <Form :formData='formData' :form='form'>
+  <Form :form='form'>
     <FormItem label='内容' input='input' name='a' :rules='[{ required: true, message: "必填" }]' />
     <FormItem input='input' name='b'>
       <template #label>

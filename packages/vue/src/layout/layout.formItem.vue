@@ -75,9 +75,6 @@ const tips = computed(() => {
   }
   return v
 });
-watch(() => [props.validateResult?.value], () => {
-  console.log(props.validateResult)
-})
 
 const cls = computed(() => clx(preCls, props.class, toValue(attrs.value.formItemClass), { 'dx-invalid': !!toValue(props.validateResult)?.isInvalid }))
 const containerCls = computed(() => clx(`${preCls}-container`, { [`${labelMode.value}`]: !!labelMode.value }));

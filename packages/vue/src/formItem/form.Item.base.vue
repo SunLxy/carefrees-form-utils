@@ -47,7 +47,7 @@ const slots = defineSlots<{
 }>()
 
 const isRequired = computed(() => {
-  return !!props.required || !!formAttrs.ruleInstance?.value?.rules?.find((item) => {
+  return !!props.required || !!(toValue(formAttrs.ruleInstance?.value?.rules) || [])?.find((item) => {
     return item.required;
   })
 })

@@ -1,7 +1,6 @@
 {
   "name": "@carefrees/form-utils-vue",
   "author": "SunLxy <1011771396@qq.com>",
-  "private": true,
   "version": "0.0.8",
   "description": "",
   "main": "lib/index.js",
@@ -27,6 +26,7 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
+    "async-validator": "~4.2.5",
     "@carefrees/form-utils": "^0.0.8",
     "classnames": "2.5.1"
   }

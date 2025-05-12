@@ -37,6 +37,4 @@ export interface FormProps<T = any> extends FormLayoutProps {
   name?: string;
   /**隐藏规则校验*/
   hideRuleData?: Record<string, boolean>;
-  /**自动重置更新formData数据*/
-  isAutoUpdatedFormData?: boolean;
 }

@@ -1,17 +1,8 @@
 {
+  "extends": "@saqu-vue/core/ts_config/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "jsx": "preserve",
-    "strict": true,
-    "target": "ES2015",
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
-    "lib": ["esnext", "dom"],
-    "resolveJsonModule": true,
-    "types": ["unplugin-vue-define-options/macros-global"]
+    "baseUrl": "./src"
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
