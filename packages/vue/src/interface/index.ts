@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, VNodeChild, StyleValue } from 'vue';
+import { ComputedRef, Ref, VNodeChild, StyleValue, UnwrapNestedRefs } from 'vue';
 import { FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
 import { LayoutFormItemProps } from './layout.formItem';
 import { FormLayoutProps } from './layout';
@@ -26,7 +26,7 @@ export interface FormProps<T = any> extends FormLayoutProps {
   /**表单数据*/
   formData?: any;
   /**值更新触发*/
-  onValuesChange?: (changedValues: Partial<T>, values: T) => void;
+  onValuesChange?: (changedValues: Partial<T>, values: UnwrapNestedRefs<T>) => void;
   /**提交保存 验证成功*/
   onFinish?: (values: T) => void;
   /**提交保存 验证失败*/

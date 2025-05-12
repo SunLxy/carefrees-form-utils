@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, withDefaults, reactive } from "vue"
+import { computed, defineProps, withDefaults, reactive, defineEmits } from "vue"
 import type { FormProps } from "../interface/index"
 import { useRegisterForm } from "../hooks/register/register.form"
 import { useForm, useFormProvide } from "./../hooks/useForm"
@@ -41,10 +41,18 @@ const cls = computed(() => clx('carefrees-form', props.class));
 
 const formInstance = useForm(props.form);
 formInstance.value.ctor(reactive(props.formData || {}), reactive(props.hideData || {}), reactive(props.hideRuleData || {}));
-formInstance.value.onFinish = props.onFinish;
-formInstance.value.onValuesChange = props.onValuesChange;
-formInstance.value.onFinishFailed = props.onFinishFailed;
 
+const emits = defineEmits(["finish", 'valuesChange', 'finishFailed'])
+
+formInstance.value.onFinish = (...rest) => {
+  emits("finish", ...rest)
+};
+formInstance.value.onValuesChange = (...rest) => {
+  emits("valuesChange", ...rest)
+};
+formInstance.value.onFinishFailed = (...rest) => {
+  emits("finishFailed", ...rest)
+};
 useRegisterForm(formInstance.value, props.name)
 
 const onSubmit = (event: Event) => {
