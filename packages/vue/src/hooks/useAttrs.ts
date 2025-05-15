@@ -53,14 +53,12 @@ export function useAttrsProvide(options: AttrsOptions) {
 export function useAttrsInject() {
   const attrs = inject<ComputedRef<AttrsOptions>>(
     attrsProvideSymbol,
-    computed(() =>
-      toRefs({
-        colCount: 4,
-        errorLayout: 'left-bottom',
-        labelMode: 'top',
-        showColon: true,
-      }),
-    ),
+    computed(() => ({
+      colCount: ref(4),
+      errorLayout: ref('left-bottom'),
+      labelMode: ref('top'),
+      showColon: ref(true),
+    })),
   );
   return attrs;
 }

@@ -33,7 +33,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   const formItemInstance = useFormItem();
 
   watch(
-    [form],
+    () => [form],
     () => {
       ruleInstance.value.instance = form;
       formItemInstance.instance = form;
@@ -42,27 +42,27 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   );
 
   watch(
-    [newName.value],
+    () => [toValue(newName)],
     () => {
-      ruleInstance.value.ctor(newName.value, rules || []);
-      formItemInstance.ctor(newName.value, ruleInstance.value as any);
+      ruleInstance.value.ctor(toValue(newName), rules || []);
+      formItemInstance.ctor(toValue(newName), toValue(ruleInstance) as any);
     },
     { immediate: true },
   );
 
   watch(
-    [newSort.value],
+    () => [toValue(newSort)],
     () => {
-      ruleInstance.value.sort = newSort.value;
-      formItemInstance.sort = newSort.value;
+      ruleInstance.value.sort = toValue(newSort);
+      formItemInstance.sort = toValue(newSort);
     },
     { immediate: true },
   );
 
   watch(
-    [parentItem.value],
+    () => [toValue(parentItem)],
     () => {
-      formItemInstance.parentDataField = toValue(parentItem.value.name);
+      formItemInstance.parentDataField = toValue(toValue(parentItem).name);
     },
     { immediate: true },
   );

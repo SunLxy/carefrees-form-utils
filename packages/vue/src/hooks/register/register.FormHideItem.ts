@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue';
+import { ref, toValue, watch } from 'vue';
 import { RegisterFormItemOptions } from './register.FormItem';
 import { FormHideItemInstanceBase } from '@carefrees/form-utils';
 import { useFormItemParentNameInject } from '../useFormItemParentName';
@@ -15,7 +15,7 @@ export const useRegisterFormHideItem = (options: RegisterFormHideItemOptions) =>
   const hideItemInstance = ref<FormHideItemInstanceBase>(new FormHideItemInstanceBase().ctor(newName.value));
   const isHide = ref(form.getFieldHideValue(newName.value));
   watch(
-    [isHide.value],
+    () => [toValue(isHide)],
     () => {
       hideItemInstance.value.preHideValue = isHide.value;
     },
@@ -29,16 +29,16 @@ export const useRegisterFormHideItem = (options: RegisterFormHideItemOptions) =>
   hideItemInstance.value.updatedItem = setValue;
 
   watch(
-    [form, newSort.value],
+    () => [form, toValue(newSort)],
     () => {
       hideItemInstance.value.instance = form;
-      hideItemInstance.value.sort = newSort.value;
+      hideItemInstance.value.sort = toValue(newSort);
     },
     { immediate: true },
   );
 
   useEffect(() => {
-    return form.registerFormHideItem(hideItemInstance.value as FormHideItemInstanceBase);
+    return form.registerFormHideItem(toValue(hideItemInstance) as FormHideItemInstanceBase);
   });
 
   return { form, isHide };

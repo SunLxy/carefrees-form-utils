@@ -11,7 +11,7 @@
 import { computed, defineProps, withDefaults, reactive, defineEmits } from "vue"
 import type { FormProps } from "../interface/index"
 import { useRegisterForm } from "../hooks/register/register.form"
-import { useForm, useFormProvide } from "./../hooks/useForm"
+import { useForm, useFormProvide } from "../hooks/useForm"
 import FormLayout from "../layout/layout.vue"
 import clx from 'classnames';
 

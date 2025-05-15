@@ -11,25 +11,25 @@ export const useRegisterFormList = (options: RegisterFormListOptions) => {
   const formListInstance = useFormList();
 
   watch(
-    [newName.value],
+    () => [toValue(newName)],
     () => {
-      formListInstance.ctor(newName.value);
+      formListInstance.ctor(toValue(newName));
     },
     { immediate: true },
   );
 
   watch(
-    [form, formItemInstance, ruleInstance.value],
+    () => [form, formItemInstance, toValue(ruleInstance)],
     () => {
       formListInstance.instance = form;
       formListInstance.formItemInstance = formItemInstance;
-      formListInstance.rule = ruleInstance.value as any;
+      formListInstance.rule = toValue(ruleInstance) as any;
     },
     { immediate: true },
   );
 
   watch(
-    [options.sort, parentItem.value],
+    () => [options.sort, toValue(parentItem)],
     () => {
       formListInstance.sort = toValue(parentItem.value.sort);
       formListInstance.parentDataField = toValue(parentItem.value.name);

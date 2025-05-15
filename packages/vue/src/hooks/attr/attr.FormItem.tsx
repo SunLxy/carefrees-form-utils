@@ -67,7 +67,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   watch(
     () => [get(form.formData, toValue(newName)), toValue(newName)],
     () => {
-      oldValue.value = form.getFieldValue(newName.value);
+      oldValue.value = form.getFieldValue(toValue(newName));
     },
     { immediate: true },
   );
@@ -132,25 +132,25 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   watch(
     () => [toValue(newAttrs), toValue(deepRefData), toValue(oldValue)],
     () => {
-      attrsLastData.value = useAttrs?.(newAttrs.value, form, formItemInstance) || newAttrs.value;
+      attrsLastData.value = useAttrs?.(toValue(newAttrs), form, formItemInstance) || toValue(newAttrs);
     },
     { immediate: true },
   );
 
   /**规则处理**/
-  const validateResult = ref(ruleInstance.value.getValidateResult());
+  const validateResult = ref(toValue(ruleInstance).getValidateResult());
 
   watch(
     () => [toValue(deepRefData), toValue(oldValue)],
     () => {
-      useRules?.(ruleInstance.value as any, form, formItemInstance);
+      useRules?.(toValue(ruleInstance) as RuleInstanceBase2, form, formItemInstance);
     },
   );
 
   watch(
-    () => [ruleInstance.value.messages, ruleInstance.value.rules, toValue(oldValue)],
+    () => [toValue(ruleInstance).messages, toValue(ruleInstance).rules, toValue(oldValue)],
     () => {
-      validateResult.value = ruleInstance.value.getValidateResult();
+      validateResult.value = toValue(ruleInstance).getValidateResult();
     },
   );
 
