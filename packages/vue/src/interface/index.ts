@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, VNodeChild, StyleValue, UnwrapNestedRefs } from 'vue';
+import { ComputedRef, Ref, VNode, Component, StyleValue, UnwrapNestedRefs } from 'vue';
 import { FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
 import { LayoutFormItemProps } from './layout.formItem';
 import { FormLayoutProps } from './layout';
@@ -14,7 +14,7 @@ export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps 
   /**不进行样式渲染*/
   noStyle?: boolean;
   /**输入框组件*/
-  input?: VNodeChild;
+  input?: Component | string;
 }
 
 export interface FormProps<T = any> extends FormLayoutProps {

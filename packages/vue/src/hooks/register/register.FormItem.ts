@@ -68,7 +68,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   );
 
   const updated = () => {
-    deepRefData.value = { a: new Date().valueOf() };
+    deepRefData.value = { __temp: new Date().valueOf() };
   };
 
   formItemInstance.updated = updated;

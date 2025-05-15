@@ -1,18 +1,11 @@
 <script lang="ts" setup>
-// import { watch } from 'vue'
-// import { useAttrsInject } from "@carefrees/form-utils-vue";
-
+import { defineProps, defineEmits, withDefaults } from "vue";
 interface InputProps {
-  // attrs?: InputHTMLAttributes;
   type?: string;
   placeholder?: string;
   value?: string;
-  // ... 其他输入框相关的属性
 };
-
-const props = defineProps<InputProps>();
-
-
+const props = withDefaults(defineProps<InputProps>(), {});
 const emits = defineEmits(['change'])
 const onChange = (event: any) => {
   console.log("Input", event)
@@ -22,7 +15,7 @@ const onChange = (event: any) => {
 
 <template>
   <div>
-    <input @input='onChange' />
+    <input :value='props.value' @input='onChange' />
   </div>
 </template>
 

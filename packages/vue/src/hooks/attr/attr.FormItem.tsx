@@ -1,7 +1,7 @@
 import { FormInstanceBase, FormItemInstanceBase, get } from '@carefrees/form-utils';
 import { useHtmlFor } from './../useHtmlFor';
 import { useRegisterFormItem, RegisterFormItemOptions } from './../register/register.FormItem';
-import { computed, ref, toValue, watch } from 'vue';
+import { computed, Ref, ref, toValue, watch } from 'vue';
 import type { RuleInstanceBase2 } from '../../instance/ruleIntsnace';
 
 export interface FormItemAttrOptions extends RegisterFormItemOptions {
@@ -16,7 +16,11 @@ export interface FormItemAttrOptions extends RegisterFormItemOptions {
   /**是否保护值(不进行表单项组件卸载重置初始值)*/
   preserve?: boolean;
   /**重写规则*/
-  useRules?: (ruleInstance: RuleInstanceBase2, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => void;
+  useRules?: (
+    ruleInstance: Ref<RuleInstanceBase2>,
+    form: FormInstanceBase,
+    formItemInstance: FormItemInstanceBase,
+  ) => void;
   /**输入框属性重写*/
   useAttrs?: (attrs: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
   /**输入框属性*/
@@ -84,7 +88,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
         value = formatValue(value, form, formItemInstance, event);
       }
       if (oldValue.value !== value) {
-        form.updatedFieldValue(newName.value, value, 'validate');
+        form.updatedFieldValue(toValue(newName), value, 'validate');
         formItemInstance.onAfterUpdate?.(value, form, formItemInstance, event);
         if (Array.isArray(formItemInstance.noticeWatchField) && formItemInstance.noticeWatchField.length) {
           form.noticeWatch(formItemInstance.noticeWatchField);
@@ -143,7 +147,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   watch(
     () => [toValue(deepRefData), toValue(oldValue)],
     () => {
-      useRules?.(toValue(ruleInstance) as RuleInstanceBase2, form, formItemInstance);
+      useRules?.(ruleInstance as any, form, formItemInstance);
     },
   );
 
