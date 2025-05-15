@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
 import clx from 'classnames';
-import { defineProps, withDefaults, toValue, computed, StyleValue, watch } from "vue"
+import { defineProps, withDefaults, toValue, computed, StyleValue } from "vue"
 import type { LayoutFormItemProps } from "../interface/layout.formItem"
 import { useAttrsInject } from "../hooks/useAttrs"
 const preCls = 'carefrees-form-item';
