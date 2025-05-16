@@ -2,7 +2,7 @@
  * @description 注册组件
  */
 
-import { ref, toValue, watch } from 'vue';
+import { Ref, ref, toValue, watch } from 'vue';
 import type { RuleItem } from 'async-validator';
 import { useFormInject } from '../useForm';
 import { useFormItem } from '../useFormItem';
@@ -29,7 +29,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   const { newName, newSort, parentItem } = useFormItemParentNameInject({ name, sort, isJoinParentField });
   // 注册规则
   // 注册单个实例
-  const ruleInstance = ref(new RuleInstanceBase2());
+  const ruleInstance: Ref<RuleInstanceBase2> = ref<any>(new RuleInstanceBase2());
   const formItemInstance = useFormItem();
 
   watch(
