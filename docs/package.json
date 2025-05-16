@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": true,
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
   "description": "文档",
@@ -10,9 +10,9 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "@carefrees/form-utils": "^0.0.8",
-    "@carefrees/form-utils-react": "^0.0.8",
-    "@carefrees/form-utils-react-hooks": "^0.0.8"
+    "@carefrees/form-utils": "^0.0.9",
+    "@carefrees/form-utils-react": "^0.0.9",
+    "@carefrees/form-utils-react-hooks": "^0.0.9"
   },
   "devDependencies": {
     "@rspress/plugin-preview": "~1.43.11",

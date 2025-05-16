@@ -3,7 +3,7 @@
   "author": "SunLxy <1011771396@qq.com>",
   "description": "表单组件公共hooks",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "module": "esm/index.js",
@@ -21,7 +21,7 @@
     "esm"
   ],
   "dependencies": {
-    "@carefrees/form-utils": "^0.0.8"
+    "@carefrees/form-utils": "^0.0.9"
   },
   "devDependencies": {
     "@types/react": "18.2.21",

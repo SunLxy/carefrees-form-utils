@@ -3,7 +3,7 @@
   "author": "SunLxy <1011771396@qq.com>",
   "description": "react-native 表单组件",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "esm/index.js",
   "types": "esm/index.d.ts",
   "module": "esm/index.js",
@@ -20,8 +20,8 @@
     "esm"
   ],
   "dependencies": {
-    "@carefrees/form-utils": "^0.0.8",
-    "@carefrees/form-utils-react-hooks": "^0.0.8"
+    "@carefrees/form-utils": "^0.0.9",
+    "@carefrees/form-utils-react-hooks": "^0.0.9"
   },
   "devDependencies": {
     "@types/react": "18.2.21",

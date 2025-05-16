@@ -1,6 +1,6 @@
 {
   "name": "example_taro_react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": true,
   "description": "",
   "templateInfo": {
@@ -36,7 +36,7 @@
   "author": "",
   "dependencies": {
     "@babel/runtime": "^7.24.4",
-    "@carefrees/form-utils-react-taro": "^0.0.8",
+    "@carefrees/form-utils-react-taro": "^0.0.9",
     "@tarojs/components": "4.0.5",
     "@tarojs/helper": "4.0.5",
     "@tarojs/plugin-framework-react": "4.0.5",
