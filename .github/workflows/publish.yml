@@ -58,6 +58,7 @@ jobs:
           npm i @carefrees/form-utils-react-taro@${{ steps.create_tag.outputs.version }}
           npm i @carefrees/form-utils-react-hooks@${{ steps.create_tag.outputs.version }}
           npm i @carefrees/form-utils-react-native@${{ steps.create_tag.outputs.version }}
+          npm i @carefrees/form-utils-vue@${{ steps.create_tag.outputs.version }}
           ```
           ${{ steps.changelog.outputs.compareurl }}
           ${{ steps.changelog.outputs.changelog }}
