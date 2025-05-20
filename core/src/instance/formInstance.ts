@@ -83,11 +83,8 @@ export class FormInstanceBase<T = any> {
   /**注册一个 formItem 实例*/
   registerFormItem = (itemInstance: FormItemInstanceBase) => {
     this.formItemInstances.push(itemInstance);
-    console.log(1, itemInstance);
     return () => {
-      console.log(2, itemInstance);
       this.formItemInstances = this.formItemInstances.filter((ite) => ite !== itemInstance);
-      console.log(3, this.formItemInstances);
       let preserve = this.preserve;
       if (itemInstance.preserve === false) {
         preserve = itemInstance.preserve;
@@ -115,7 +112,7 @@ export class FormInstanceBase<T = any> {
       /**触发传递的 onValuesChange 事件*/
       const values = this.getFieldValue();
       if (typeof name === 'string') {
-        const newValue = this.getFieldValue(name);
+        const newValue = cloneByNamePathList(values, [name]);
         this.onValuesChange?.(newValue, values);
       } else {
         this.onValuesChange?.(name, values);
