@@ -115,7 +115,7 @@ export class FormInstanceBase<T = any> {
       /**触发传递的 onValuesChange 事件*/
       const values = this.getFieldValue();
       if (typeof name === 'string') {
-        const newValue = cloneByNamePathList(values, [name]);
+        const newValue = this.getFieldValue(name);
         this.onValuesChange?.(newValue, values);
       } else {
         this.onValuesChange?.(name, values);
