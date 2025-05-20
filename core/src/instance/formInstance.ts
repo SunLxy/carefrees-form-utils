@@ -339,9 +339,9 @@ export class FormInstanceBase<T = any> {
     try {
       /**校验数据*/
       if (Array.isArray(name)) {
-        await this.validate(name);
+        await this.validate(name, false);
       } else {
-        await this.validate([name]);
+        await this.validate([name], false);
       }
     } catch (err) {
       console.log(err);
@@ -402,7 +402,7 @@ export class FormInstanceBase<T = any> {
   };
 
   /**规则验证 ，默认不传递验证所有 */
-  validate = (names?: string[]): Promise<T> => {
+  validate = (names?: string[], isGetAllData: boolean = true): Promise<T> => {
     return new Promise(async (resolve, reject) => {
       const errorFields: ErrorDataField[] = [];
       const notErrorFields: ErrorDataField[] = [];
@@ -445,7 +445,7 @@ export class FormInstanceBase<T = any> {
         }
       }
       /**所有值*/
-      const values = cloneByNamePathList(this.getFieldValue(), nameListPath) as T;
+      const values = isGetAllData ? (cloneByNamePathList(this.getFieldValue(), nameListPath) as T) : ({} as T);
       /**判断是否存在验证失败的*/
       if (errorFields.length) {
         reject({ errorFields, values: values });
