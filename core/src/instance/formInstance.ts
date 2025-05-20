@@ -83,13 +83,15 @@ export class FormInstanceBase<T = any> {
   /**注册一个 formItem 实例*/
   registerFormItem = (itemInstance: FormItemInstanceBase) => {
     this.formItemInstances.push(itemInstance);
+    console.log(1, itemInstance);
     return () => {
+      console.log(2, itemInstance);
       this.formItemInstances = this.formItemInstances.filter((ite) => ite !== itemInstance);
+      console.log(3, this.formItemInstances);
       let preserve = this.preserve;
       if (itemInstance.preserve === false) {
         preserve = itemInstance.preserve;
       }
-
       const name = `${itemInstance.name}`;
       // 判断路径是否存在
       if (name && has(this.formData, name) && !preserve) {

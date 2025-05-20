@@ -21,6 +21,8 @@ function baseSet(object: any, path: PropertyPath, value: any, customizer?: Funct
   }
   path = castPath(path, object);
 
+  // 一般都是数组，或者对象进行处理，其他的不进行处理
+
   const length = path.length;
   const lastIndex = length - 1;
 
@@ -35,7 +37,14 @@ function baseSet(object: any, path: PropertyPath, value: any, customizer?: Funct
       const objValue = nested[key];
       newValue = customizer ? customizer(objValue, key, nested) : undefined;
       if (newValue === undefined) {
-        newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
+        // 对数据进行数组还是对象进行判断处理
+        if (Array.isArray(objValue)) {
+          newValue = [...objValue];
+        } else if (Object.prototype.toString.call(objValue) === '[object Object]') {
+          newValue = { ...objValue };
+        } else {
+          newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
+        }
       }
     }
     assignValue(nested, key, newValue);

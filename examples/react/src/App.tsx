@@ -3,6 +3,7 @@
 import { Form, FormItem, useForm, useWatch, FormLayout, FormHideItem } from '@carefrees/form-utils-react';
 import { FormInstanceBase } from '@carefrees/form-utils';
 import { useState } from 'react';
+import FormListDemo from './form-list';
 
 const Demo = (props: { form: FormInstanceBase }) => {
   const [value] = useWatch('a', props.form);
@@ -52,7 +53,8 @@ function App() {
   return (
     <div>
       <button onClick={onSubmit}>打印</button>
-      <Demo form={form} />
+      <FormListDemo />
+      {/* <Demo form={form} />
       <Form
         gap={14}
         colCount={4}
@@ -147,7 +149,7 @@ function App() {
             </button>
           </div>
         </FormLayout>
-      </Form>
+      </Form> */}
     </div>
   );
   // return (

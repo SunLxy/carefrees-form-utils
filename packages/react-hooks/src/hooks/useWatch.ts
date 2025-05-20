@@ -35,7 +35,7 @@ export class WatchInstanceBase {
  */
 export const useWatch = (
   name: string,
-  form: FormInstanceBase,
+  form?: FormInstanceBase,
   callBack?: (value: any, form: FormInstanceBase) => void,
 ) => {
   const formInstance = form || useFormInstance();
