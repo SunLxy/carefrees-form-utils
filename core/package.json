@@ -1,6 +1,6 @@
 {
   "name": "@carefrees/form-utils",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "表单实例类",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
   "main": "lib/index.js",
