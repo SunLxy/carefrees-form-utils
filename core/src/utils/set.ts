@@ -40,7 +40,7 @@ function baseSet(object: any, path: PropertyPath, value: any, customizer?: Funct
         // 对数据进行数组还是对象进行判断处理
         if (Array.isArray(objValue)) {
           newValue = [...objValue];
-        } else if (Object.prototype.toString.call(objValue) === '[object Object]') {
+        } else if (objValue !== null && Object.prototype.toString.call(objValue) === '[object Object]') {
           newValue = { ...objValue };
         } else {
           newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
