@@ -1,8 +1,23 @@
 {
-  "extends": "@saqu-vue/core/ts_config/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src"
+    "lib": ["DOM", "ES2020"],
+    "jsx": "preserve",
+    "target": "ES2020",
+    "skipLibCheck": true,
+    "jsxImportSource": "vue",
+    "useDefineForClassFields": true,
+    "outDir": "types",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    /* modules */
+    "module": "ESNext",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    /* type checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }

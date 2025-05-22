@@ -3,12 +3,12 @@
   "author": "SunLxy <1011771396@qq.com>",
   "version": "0.0.11",
   "description": "",
-  "main": "lib/index.js",
-  "module": "esm/index.mjs",
-  "types": "esm/index.d.ts",
+  "main": "esm/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "build": "saqu-vue build",
-    "watch": "saqu-vue build --watch"
+    "build": "carefrees-rslib build --vue --esm",
+    "watch": "carefrees-rslib build --watch --vue --esm"
   },
   "publishConfig": {
     "access": "public"
@@ -16,13 +16,12 @@
   "files": [
     "assets",
     "src",
-    "lib",
+    "types",
     "esm"
   ],
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
-    "@saqu-vue/core": "^1.0.1",
     "vue": "^3.5.13"
   },
   "dependencies": {
