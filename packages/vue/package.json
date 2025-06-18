@@ -5,7 +5,7 @@
   "description": "",
   "main": "esm/index.js",
   "module": "esm/index.js",
-  "types": "types/index.d.ts",
+  "types": "esm/index.d.ts",
   "scripts": {
     "build": "carefrees-rslib build --vue --esm",
     "watch": "carefrees-rslib build --watch --vue --esm"
@@ -16,7 +16,6 @@
   "files": [
     "assets",
     "src",
-    "types",
     "esm"
   ],
   "keywords": [],

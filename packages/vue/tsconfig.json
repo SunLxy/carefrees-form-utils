@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
-    "outDir": "types",
+    "outDir": "esm",
     "declaration": true,
     "emitDeclarationOnly": true,
     /* modules */
