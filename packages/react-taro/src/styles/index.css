@@ -85,10 +85,9 @@
 .carefrees-form-item-container.left {
   flex-direction: row;
   gap: 8px;
-  text-align: left;
 }
-.carefrees-form-item-container.left .carefrees-form-item-label {
-  justify-content: flex-end;
+.carefrees-form-item-container.left .carefrees-form-item-label-warp {
+  text-align: right;
 }
 .carefrees-form-item-container.between {
   gap: 8px;

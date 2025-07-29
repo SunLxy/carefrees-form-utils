@@ -5,6 +5,7 @@ html.dark .carefrees-form {
   --form-font-size: 14px;
   --form-border-color: #e0e0e0;
 }
+
 /* 表单 */
 .carefrees-form {
   --form-color: rgba(0, 0, 0, 0.88);
@@ -55,13 +56,13 @@ html.dark .carefrees-form {
 .carefrees-form-layout-header-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--form-header-color, #1d2129);
+  color: #1d2129;
   box-sizing: border-box;
 }
 .carefrees-form-layout-header-extra {
   font-size: 14px;
   font-weight: 500;
-  color: var(--form-header-color, #1d2129);
+  color: #1d2129;
   box-sizing: border-box;
 }
 
@@ -80,9 +81,10 @@ html.dark .carefrees-form {
   font-size: 14px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   padding: 8px;
   box-sizing: border-box;
-  color: var(--form-color, rgba(0, 0, 0, 0.88));
+  color: var(--form-header-color, #1d2129);
 }
 
 .carefrees-form-item-container {
@@ -124,7 +126,7 @@ html.dark .carefrees-form {
   justify-content: flex-start;
   position: relative;
   font-size: 14px;
-  color: var(--form-color, rgba(0, 0, 0, 0.88));
+  color: var(--form-header-color, #1d2129);
   min-height: 1.4rem;
 }
 
@@ -162,7 +164,7 @@ html.dark .carefrees-form {
   flex: 1;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: row;
 }
 

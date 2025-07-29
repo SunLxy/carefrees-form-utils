@@ -1,10 +1,4 @@
 import React, { Fragment, useMemo, useRef } from 'react';
-import {
-  LayoutBaseStyled,
-  LayoutHeaderBaseStyled,
-  LayoutHeaderExtraBaseStyled,
-  LayoutHeaderTextBaseStyled,
-} from '../styles/styles.layout';
 import clx from 'classnames';
 import { AttrsOptions, AttrsContext, useAttrs } from '@carefrees/form-utils-react-hooks';
 import { FormLayoutBody, FormLayoutBodyProps } from './layout.body';
@@ -72,11 +66,19 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
   const propsRef = useRef(props);
   propsRef.current = props;
 
-  const cls = useMemo(() => clx(preCls, className), [className]);
   const bodyCls = useMemo(() => clx(`${preCls}-body`, bodyClassName), [bodyClassName]);
   const headerCls = useMemo(() => clx(`${preCls}-header`, headerClassName), [headerClassName]);
   const headerTitleCls = useMemo(() => clx(`${preCls}-header-title`), []);
   const headerExtraCls = useMemo(() => clx(`${preCls}-header-extra`), []);
+
+  const cls = useMemo(
+    () =>
+      clx(preCls, className, {
+        'all-colspan': isAllColSpan,
+        bordered: bordered,
+      }),
+    [className],
+  );
 
   const value = useMemo(() => {
     return {
@@ -102,12 +104,12 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
 
   return (
     <AttrsContext.Provider value={value}>
-      <LayoutBaseStyled $bordered={bordered} style={style} className={cls} $isAllColSpan={isAllColSpan}>
+      <div style={style} className={cls}>
         {title || extra ? (
-          <LayoutHeaderBaseStyled style={headerStyle} className={headerCls}>
-            <LayoutHeaderTextBaseStyled className={headerTitleCls}>{title}</LayoutHeaderTextBaseStyled>
-            <LayoutHeaderExtraBaseStyled className={headerExtraCls}>{extra}</LayoutHeaderExtraBaseStyled>
-          </LayoutHeaderBaseStyled>
+          <div style={headerStyle} className={headerCls}>
+            <div className={headerTitleCls}>{title}</div>
+            <div className={headerExtraCls}>{extra}</div>
+          </div>
         ) : (
           <Fragment />
         )}
@@ -121,7 +123,7 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
         >
           {children}
         </FormLayoutBody>
-      </LayoutBaseStyled>
+      </div>
     </AttrsContext.Provider>
   );
 });
@@ -131,5 +133,12 @@ export interface FormLayoutRowsProps
 
 /**布局组件 占据一整行*/
 export const FormLayoutRows = React.forwardRef<HTMLDivElement, FormLayoutRowsProps>((props, ref) => {
-  return <LayoutBaseStyled {...props} $isAllColSpan ref={ref} />;
+  const cls = useMemo(
+    () =>
+      clx(preCls, props.className, {
+        'all-colspan': true,
+      }),
+    [props.className],
+  );
+  return <div {...props} ref={ref} className={cls} />;
 });

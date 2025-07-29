@@ -3,7 +3,6 @@ import { FormInstanceBase, ValidateErrorEntity } from '@carefrees/form-utils';
 import clx from 'classnames';
 import { FormLayout, FormLayoutProps } from './layout';
 import { useForm, FormInstanceContext, useRegisterForm } from '@carefrees/form-utils-react-hooks';
-import { FormBaseStyled } from './styles';
 export * from './formItem';
 export * from './formList';
 export * from './layout';
@@ -44,7 +43,7 @@ export function Form<T = any>(props: FormProps<T>) {
   const {
     children,
     form,
-    style,
+    style = {},
     className,
     formData,
     hideData,
@@ -80,14 +79,21 @@ export function Form<T = any>(props: FormProps<T>) {
     event?.stopPropagation?.();
     formInstance.submit();
   };
+  const formStyle = useMemo(() => {
+    if (bgcolor)
+      return {
+        backgroundColor: bgcolor,
+      };
+    return {};
+  }, [bgcolor]);
 
   return (
     <FormInstanceContext.Provider value={formInstance}>
-      <FormBaseStyled $bgcolor={bgcolor} className={cls} style={style} onSubmit={onSubmit}>
+      <form className={cls} style={{ ...formStyle, ...style }} onSubmit={onSubmit}>
         <FormLayout {...rest} className={layoutClassName} style={layoutStyle}>
           {children}
         </FormLayout>
-      </FormBaseStyled>
+      </form>
     </FormInstanceContext.Provider>
   );
 }

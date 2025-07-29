@@ -1,5 +1,5 @@
 <template>
-  <form :class='cls' :style='style' @submit='onSubmit'>
+  <form :class='cls' :style='formStyle' @submit='onSubmit'>
     <FormLayout v-bind='rest' :class='layoutClass' :style='layoutStyle'>
       <slot />
     </FormLayout>
@@ -34,10 +34,17 @@ const {
   onValuesChange,
   layoutStyle,
   layoutClass,
+  bgcolor,
   ...rest
 } = props
 
 const cls = computed(() => clx('carefrees-form', props.class));
+
+const formStyle = computed(() => {
+  if (bgcolor)
+    return [{ backgroundColor: bgcolor }, props.style];
+  return [props.style]
+});
 
 const formInstance = useForm(props.form);
 formInstance.value.ctor(reactive(props.formData || {}), reactive(props.hideData || {}), reactive(props.hideRuleData || {}));

@@ -18,7 +18,8 @@
   "files": [
     "src",
     "lib",
-    "esm"
+    "esm",
+    "assets"
   ],
   "dependencies": {
     "@carefrees/form-utils": "^0.0.11",

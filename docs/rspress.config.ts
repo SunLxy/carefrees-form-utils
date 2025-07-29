@@ -7,6 +7,7 @@ export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'Form表单工具',
   icon: '/logo.jpg',
+  globalStyles: path.join(__dirname, 'styles/index.css'),
   logo: {
     light: '/logo.jpg',
     dark: '/logo.jpg',
@@ -20,11 +21,7 @@ export default defineConfig({
       },
     ],
   },
-  plugins: [
-    pluginPreview({
-      defaultRenderMode: 'pure',
-    }),
-  ],
+  plugins: [pluginPreview({ defaultRenderMode: 'pure' }) as any],
   builderConfig: {
     html: {
       tags: [

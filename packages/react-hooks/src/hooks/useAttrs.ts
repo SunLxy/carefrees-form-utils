@@ -22,7 +22,6 @@ export interface AttrsOptions {
   formItemLabelStyle?: React.CSSProperties;
   /**
    * 输入框底部边框
-   * @platform taro
    */
   inputBordered?: boolean;
 }

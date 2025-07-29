@@ -37,4 +37,6 @@ export interface FormProps<T = any> extends FormLayoutProps {
   name?: string;
   /**隐藏规则校验*/
   hideRuleData?: Record<string, boolean>;
+  /**背景颜色*/
+  bgcolor?: string;
 }

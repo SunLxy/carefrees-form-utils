@@ -1,9 +1,8 @@
-// import { LayoutFormItem } from "@carefrees/form-utils-react/esm/layout/layout.formItem"
-// import { LayoutBaseStyled } from "@carefrees/form-utils-react/esm/styles/styles.layout"
 import { Form, FormItem, useForm, useWatch, FormLayout, FormHideItem } from '@carefrees/form-utils-react';
 import { FormInstanceBase } from '@carefrees/form-utils';
 import { useState } from 'react';
 import FormListDemo from './form-list';
+import '@carefrees/form-utils-react/assets/index.css';
 
 const Demo = (props: { form: FormInstanceBase }) => {
   const [value] = useWatch('a', props.form);

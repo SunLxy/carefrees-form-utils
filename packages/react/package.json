@@ -18,13 +18,13 @@
   "files": [
     "src",
     "lib",
-    "esm"
+    "esm",
+    "assets"
   ],
   "dependencies": {
     "@carefrees/form-utils": "^0.0.11",
     "@carefrees/form-utils-react-hooks": "^0.0.11",
-    "classnames": "2.5.1",
-    "styled-components": "~6.1.17"
+    "classnames": "2.5.1"
   },
   "devDependencies": {
     "@types/react": "18.2.21",

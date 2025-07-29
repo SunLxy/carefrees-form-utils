@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { LayoutBodyBaseStyled } from '../styles/styles.layout';
 import clx from 'classnames';
 import { useResizeObserver, SizeInfo } from './../hooks/useResizeObserver';
 export interface FormLayoutBodyProps {
@@ -25,7 +24,7 @@ const preCls = 'carefrees-form-layout-body';
 
 /**布局组件-内容区域*/
 export const FormLayoutBody = React.memo((props: FormLayoutBodyProps) => {
-  const { colCount = 4, children, className, style, gap, onResize, onGapRow } = props;
+  const { colCount = 4, children, className, style = {}, gap, onResize, onGapRow } = props;
 
   const propsRef = useRef(props);
   propsRef.current = props;
@@ -86,15 +85,28 @@ export const FormLayoutBody = React.memo((props: FormLayoutBodyProps) => {
     calculateGapRow();
   }, [colCount, resizeObserverInstance.dom]);
 
+  const styleBase = useMemo(() => {
+    const css: React.CSSProperties = {};
+    if (colCount) {
+      css.gridColumnEnd = `repeat(${colCount}, auto)`;
+    }
+    if (typeof gap === 'number') {
+      css.gap = `${gap}px`;
+    } else if (gap) {
+      css.gap = gap;
+    }
+    return css;
+  }, [colCount, gap]);
+
   return (
-    <LayoutBodyBaseStyled
+    <div
       ref={resizeObserverInstance.dom}
-      $gap={gap}
-      style={style}
+      // $gap={gap}
+      // $colCount={colCount}
+      style={{ ...styleBase, ...style }}
       className={bodyCls}
-      $colCount={colCount}
     >
       {children}
-    </LayoutBodyBaseStyled>
+    </div>
   );
 });
