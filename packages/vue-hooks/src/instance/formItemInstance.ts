@@ -24,9 +24,9 @@ export class FormItemInstanceBase extends FormItemBaseInstance {
     instanceAttr: Ref<FormItemInstanceBase>,
     event: any,
   ) => void;
-  ctor = (name: string, rule?: Ref<RuleInstanceBase>) => {
-    this.name = name;
-    this.rule = rule;
-    return this;
-  };
+  // ctor = (name: string, rule?: Ref<RuleInstanceBase>) => {
+  //   this.name = name;
+  //   this.rule = rule;
+  //   return this;
+  // };
 }

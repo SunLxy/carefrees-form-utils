@@ -1,14 +1,7 @@
-import { ComputedRef, Ref, VNode, Component, StyleValue, UnwrapNestedRefs } from 'vue';
-import { FormItemAttrOptions } from '../hooks/attr/attr.FormItem';
+import { Ref, Component, StyleValue, UnwrapNestedRefs } from 'vue';
 import { LayoutFormItemProps } from './layout.formItem';
 import { FormLayoutProps } from './layout';
-import { FormInstanceBase, ValidateErrorEntity } from '@carefrees/form-utils';
-
-export type ComputedRefBase<T> = ComputedRef<T> | Ref<T>;
-
-export type PartialComputedRefs<T> = {
-  [K in keyof T]: ComputedRefBase<T[K]>;
-};
+import type { FormInstanceBase, ValidateErrorEntity, FormItemAttrOptions } from '@carefrees/form-utils-vue-hooks';
 
 export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps {
   /**不进行样式渲染*/
@@ -18,13 +11,13 @@ export interface FormItemProps extends FormItemAttrOptions, LayoutFormItemProps 
 }
 
 export interface FormProps<T = any> extends FormLayoutProps {
-  form?: FormInstanceBase;
+  form?: FormInstanceBase<T>;
   style?: StyleValue;
   class?: string;
   layoutClass?: string;
   layoutStyle?: StyleValue;
   /**表单数据*/
-  formData?: any;
+  formData?: Object;
   /**值更新触发*/
   onValuesChange?: (changedValues: Partial<T>, values: UnwrapNestedRefs<T>) => void;
   /**提交保存 验证成功*/
@@ -35,8 +28,6 @@ export interface FormProps<T = any> extends FormLayoutProps {
   hideData?: Record<string, boolean>;
   /**表单名称*/
   name?: string;
-  /**隐藏规则校验*/
-  hideRuleData?: Record<string, boolean>;
   /**背景颜色*/
   bgcolor?: string;
 }

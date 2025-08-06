@@ -1,4 +1,5 @@
-import { AttrsOptions } from '../hooks/useAttrs';
+import type { AttrsOptions } from '@carefrees/form-utils-vue-hooks';
+
 import { VNodeChild, StyleValue } from 'vue';
 
 export interface FormLayoutProps extends Omit<AttrsOptions, 'colCount'> {

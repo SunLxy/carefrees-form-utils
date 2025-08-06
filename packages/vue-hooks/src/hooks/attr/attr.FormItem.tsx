@@ -56,9 +56,9 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   const {
     trigger = 'onChange',
     dependencies,
-    noticeOnlyRuleDataField,
-    isNoticeParentField,
-    noticeWatchField,
+    // noticeOnlyRuleDataField,
+    // isNoticeParentField,
+    // noticeWatchField,
     preserve,
     valuePropName = 'value',
     getValuePath = valuePropName,
@@ -68,9 +68,9 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
     useAttrs,
     useRules,
     inputAttrs,
-    ...rest
   } = options;
-  const { formItemInstance, form, ruleInstance, newName, newSort } = useRegisterFormItem({ ...rest });
+
+  const { formItemInstance, form, ruleInstance, newName, newSort } = useRegisterFormItem(options);
   formItemInstance.value.dependencies = dependencies;
   // formItemInstance.value.noticeOnlyRuleDataField = noticeOnlyRuleDataField;
   // formItemInstance.value.isNoticeParentField = isNoticeParentField;
@@ -157,7 +157,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   const validateResult = ref(toValue(ruleInstance).getValidateResult());
 
   watch(
-    () => [toValue(oldValue)],
+    () => [toValue(oldValue), toValue(ruleInstance.value.rules)],
     () => {
       useRules?.(ruleInstance, form, formItemInstance);
       ruleInstance.value.validate();
@@ -165,7 +165,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   );
 
   watch(
-    () => [toValue(ruleInstance).messages, toValue(ruleInstance).rules],
+    () => [ruleInstance.value.messages.value, ruleInstance.value.rules.value],
     () => {
       validateResult.value = toValue(ruleInstance).getValidateResult();
     },

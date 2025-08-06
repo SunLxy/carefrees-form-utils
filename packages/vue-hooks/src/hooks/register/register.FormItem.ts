@@ -35,10 +35,16 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   // 注册单个实例
   const formItemInstance = useFormItem();
   const ruleInstance = useRules();
-  const ruleItems = computed(() => rules || []);
+  const ruleItems = ref(rules || []);
 
   watch(
-    () => [form],
+    () => options.rules,
+    (newVal) => {
+      ruleItems.value = newVal || [];
+    },
+  );
+  watch(
+    () => [form.value],
     () => {
       ruleInstance.value.instance = form;
       formItemInstance.value.instance = form;
@@ -47,10 +53,12 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   );
 
   watch(
-    () => [toValue(newName)],
+    () => [toValue(newName), ruleInstance.value],
     () => {
-      ruleInstance.value.ctor(toValue(newName), ruleItems);
-      formItemInstance.value.ctor(toValue(newName), ruleInstance);
+      ruleInstance.value.name = toValue(newName);
+      ruleInstance.value.rules = ruleItems;
+      formItemInstance.value.name = toValue(newName);
+      formItemInstance.value.rule = ruleInstance;
     },
     { immediate: true },
   );
@@ -71,7 +79,6 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
     },
     { immediate: true },
   );
-
   useEffect(() => form.value.registerFormItem(formItemInstance));
 
   return {

@@ -12,7 +12,8 @@
 import { defineProps, withDefaults, } from "vue"
 import type { FormItemProps } from "../interface/index"
 import FormItemBase from "./form.Item.base.vue"
-import { useRegisterFormHideItem } from "../hooks/register/register.FormHideItem"
+import { useRegisterFormHideItem } from "@carefrees/form-utils-vue-hooks"
+
 defineOptions({
   name: 'FormHideItem',
   inheritAttrs: false, // 可选，防止属性自动应用到根元素

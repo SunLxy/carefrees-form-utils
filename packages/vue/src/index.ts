@@ -1,5 +1,5 @@
 import * as components from './component';
-export * from './hooks';
+export * from '@carefrees/form-utils-vue-hooks';
 export * from './component';
 export * from './utils';
 export * from './interface';

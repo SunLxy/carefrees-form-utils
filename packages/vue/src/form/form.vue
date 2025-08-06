@@ -8,12 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, withDefaults, reactive, defineEmits } from "vue"
+import { computed, defineProps, withDefaults, defineEmits, ref, watch } from "vue"
 import type { FormProps } from "../interface/index"
-import { useRegisterForm } from "../hooks/register/register.form"
-import { useForm, useFormProvide } from "../hooks/useForm"
 import FormLayout from "../layout/layout.vue"
 import clx from 'classnames';
+import { useRegisterForm, useForm, useFormProvide } from "@carefrees/form-utils-vue-hooks"
 
 defineOptions({
   name: 'Form',
@@ -27,7 +26,6 @@ const {
   style,
   formData,
   hideData,
-  hideRuleData,
   name,
   onFinish,
   onFinishFailed,
@@ -47,7 +45,16 @@ const formStyle = computed(() => {
 });
 
 const formInstance = useForm(props.form);
-formInstance.value.ctor(reactive(props.formData || {}), reactive(props.hideData || {}), reactive(props.hideRuleData || {}));
+formInstance.value.formData = ref(props.formData || {});
+formInstance.value.hideState = ref(props.hideData || {});
+
+watch(() => props.formData, (newVal) => {
+  formInstance.value.formData = ref(newVal || {});
+})
+
+watch(() => props.hideData, (newVal) => {
+  formInstance.value.hideState = ref(newVal || {});
+})
 
 const emits = defineEmits(["finish", 'valuesChange', 'finishFailed'])
 
@@ -60,7 +67,7 @@ formInstance.value.onValuesChange = (...rest) => {
 formInstance.value.onFinishFailed = (...rest) => {
   emits("finishFailed", ...rest)
 };
-useRegisterForm(formInstance.value, props.name)
+useRegisterForm(formInstance, props.name)
 
 const onSubmit = (event: Event) => {
   event?.preventDefault?.();

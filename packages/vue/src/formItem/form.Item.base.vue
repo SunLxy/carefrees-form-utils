@@ -21,9 +21,8 @@
 <script lang="ts" setup>
 import { defineProps, withDefaults, computed, toValue } from "vue"
 import type { FormItemProps } from "../interface/index"
-import { useFormItemAttr } from "../hooks/attr/attr.FormItem"
 import LayoutFormItem from "../layout/layout.formItem.vue";
-import { useFormItemParentNameProvide } from "../hooks/useFormItemParentName"
+import { useFormItemParentNameProvide, useFormItemAttr } from "@carefrees/form-utils-vue-hooks"
 
 defineOptions({
   name: 'FormItemBase',

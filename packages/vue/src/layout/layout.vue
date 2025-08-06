@@ -30,7 +30,8 @@
 import clx from 'classnames';
 import { defineProps, withDefaults, toValue, computed, StyleValue } from "vue"
 import type { FormLayoutProps } from "../interface/layout"
-import { useAttrsInject, useAttrsProvide } from "../hooks/useAttrs"
+import { useAttrsInject, useAttrsProvide } from "@carefrees/form-utils-vue-hooks"
+
 const preCls = 'carefrees-form-layout';
 
 const attrs = useAttrsInject();

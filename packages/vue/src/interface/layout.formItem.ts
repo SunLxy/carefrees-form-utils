@@ -1,6 +1,5 @@
 import { VNodeChild, StyleValue } from 'vue';
-import { ComputedRefBase } from '.';
-
+import type { ComputedRefBase } from '@carefrees/form-utils-vue-hooks';
 export interface LayoutFormItemProps {
   /**规则校验失败错误提示位置*/
   errorLayout?: 'left-bottom' | 'right-bottom' | 'top-right' | 'top-left';

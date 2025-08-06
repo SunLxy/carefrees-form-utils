@@ -2,7 +2,7 @@ import { FormListInstanceBase } from './formListInstance';
 import { FormItemInstanceBase } from './formItemInstance';
 import { ErrorDataField, ValidateErrorEntity } from '../interface';
 import { get, set, cloneByNamePathList, has } from './../utils';
-import { Ref, ref } from 'vue';
+import { Ref, ref, toValue } from 'vue';
 
 /**基础实例*/
 export class FormInstanceBase<T = any> {
@@ -28,13 +28,6 @@ export class FormInstanceBase<T = any> {
   /**提交保存 验证失败*/
   onFinishFailed?: (errorInfo: ValidateErrorEntity<T>) => void;
 
-  /**初始化*/
-  ctor = (initial: Ref<Partial<T>> = ref({}), hideState?: Ref<Record<string, boolean>>) => {
-    this.formData = initial || ref({});
-    this.hideState = hideState || ref({});
-    return this;
-  };
-
   /**
    * 重置字段数据值
    */
@@ -55,15 +48,17 @@ export class FormInstanceBase<T = any> {
   registerFormItem = (itemInstance: Ref<FormItemInstanceBase>) => {
     this.formItemInstances.push(itemInstance);
     return () => {
+      const instanceItem = toValue(itemInstance);
       this.formItemInstances = this.formItemInstances.filter((ite) => ite !== itemInstance);
       let preserve = this.preserve;
-      if (itemInstance.value.preserve === false) {
-        preserve = itemInstance.value.preserve;
+      if (instanceItem?.preserve === false) {
+        preserve = instanceItem.preserve;
       }
-      const name = `${itemInstance.value.name}`;
+      const name = `${instanceItem?.name}`;
+      const formData = toValue(this.formData);
       // 判断路径是否存在
-      if (name && has(this.formData, name) && !preserve) {
-        this.formData = set(this.formData, itemInstance.value.name, undefined);
+      if (name && has(formData, name) && !preserve) {
+        this.formData.value = set(formData, instanceItem.name, undefined);
       }
     };
   };
@@ -95,8 +90,10 @@ export class FormInstanceBase<T = any> {
     } else if (validateType === 'clear') {
       /**清空验证提示信息*/
       const formItemInstance = this.formItemInstances.find((ite) => ite.value.name === name);
-      if (formItemInstance && formItemInstance.value?.rule?.value) {
-        formItemInstance.value.rule.value?.updatedMessages?.([]);
+      const instanceItem = toValue(formItemInstance);
+      const instanceItemRule = toValue(instanceItem?.rule);
+      if (instanceItemRule) {
+        instanceItemRule?.updatedMessages?.([]);
       }
     }
     return this;
@@ -109,21 +106,23 @@ export class FormInstanceBase<T = any> {
 
   /**获取字段值*/
   getFieldValue = (name?: string) => {
+    const fromData = toValue(this.formData);
     if (name) {
-      if (has(this.formData.value, name)) {
-        return get(this.formData.value, name);
+      if (has(fromData, name)) {
+        return get(fromData, name);
       }
       return undefined;
     }
-    return this.formData;
+    return fromData;
   };
 
   /**获取字段隐藏值*/
   getFieldHideValue = (name?: string) => {
+    const hideData = toValue(this.hideState);
     if (name) {
-      return get(this.hideState.value, name);
+      return get(hideData, name);
     }
-    return this.hideState.value;
+    return hideData;
   };
 
   /**
@@ -153,17 +152,17 @@ export class FormInstanceBase<T = any> {
       const newFormItemInstances = this.formItemInstances;
       const nameListPath = newFormItemInstances.map((item) => item.value.name);
       const lg = newFormItemInstances.length;
-
       const isNames = Array.isArray(names) && names.length;
-
       for (let index = 0; index < lg; index++) {
-        const instanceItem = newFormItemInstances[index];
+        const instanceItemRef = newFormItemInstances[index];
+        const instanceItem = toValue(instanceItemRef);
+        const rule = toValue(instanceItem.rule);
         /**判断实例是否存在 & 是否需要验证规则*/
-        if (instanceItem.value.rule && instanceItem.value.rule.value && instanceItem.value.rule.value.isValidate()) {
+        if (rule && rule.isValidate()) {
           let isValidate = true;
           if (isNames) {
             /**判断是否存在当前需要验证的项*/
-            const findx = names.find((name) => name === instanceItem.value.name);
+            const findx = names.find((name) => name === instanceItem.name);
             if (!findx) {
               isValidate = false;
             }
@@ -171,26 +170,26 @@ export class FormInstanceBase<T = any> {
           try {
             /**判断是否需要进行验证*/
             if (isValidate) {
-              await instanceItem.value.rule.value.validate();
+              await rule.validate();
               notErrorFields.push({
                 errors: [],
-                sort: instanceItem.value.sort,
-                name: instanceItem.value.name,
+                sort: instanceItem.sort,
+                name: instanceItem.name,
               });
             }
           } catch (errors: any) {
             if (errors)
               errorFields.push({
                 errors,
-                sort: instanceItem.value.sort,
-                name: instanceItem.value.name,
+                sort: instanceItem.sort,
+                name: instanceItem.name,
               });
           }
         } else {
           notErrorFields.push({
             errors: [],
-            sort: instanceItem.value.sort,
-            name: instanceItem.value.name,
+            sort: instanceItem.sort,
+            name: instanceItem.name,
           });
         }
       }

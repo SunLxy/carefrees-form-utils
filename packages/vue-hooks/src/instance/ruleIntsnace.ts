@@ -33,15 +33,15 @@ export class RuleInstanceBase {
     return !!findItem;
   };
 
-  /**初始化*/
-  ctor = (name: string, rules: Ref<RuleItem[]>) => {
-    this.name = name;
-    this.rules = rules;
-    return this;
-  };
+  // /**初始化*/
+  // ctor = (name: string, rules: Ref<RuleItem[]>) => {
+  //   this.name = name;
+  //   this.rules = rules;
+  //   return this;
+  // };
   /**判断是否需要验证*/
   isValidate = () => {
-    return Array.isArray(this.rules) && this.rules.length;
+    return Array.isArray(this.rules.value) && this.rules.value.length;
   };
   /**更新提示信息*/
   updatedMessages = (messages?: MessageType[]) => {
@@ -57,20 +57,20 @@ export class RuleInstanceBase {
   };
 
   /**验证规则
-   * @param {boolean} isOnly 仅判断是否校验通过
    */
-  validate = (isOnly: boolean = false) => {
+  validate = () => {
     return new Promise((resolve, reject) => {
       const value = this.instance?.value?.getFieldValue?.(this.name);
+      console.log(1);
       new AsyncValidator({ [this.name]: this.rules.value || [] })
         .validate({ [this.name]: value })
         .then((values) => {
-          if (!isOnly) this.updatedMessages([]);
+          this.updatedMessages([]);
           resolve(values);
         })
         .catch(({ errors }) => {
           if (Array.isArray(errors)) {
-            if (!isOnly) this.updatedMessages(errors);
+            this.updatedMessages(errors);
             reject(errors);
           } else {
             reject();
@@ -81,8 +81,10 @@ export class RuleInstanceBase {
 
   /**获取校验结果*/
   getValidateResult = () => {
+    console.log(2);
     const tip = Array.isArray(this.messages.value) ? this.messages.value.map((it) => it.message) : '';
     const isInvalid = Array.isArray(tip) ? !!tip.length : !!tip;
+
     return {
       tip,
       isInvalid,

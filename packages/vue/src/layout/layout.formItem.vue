@@ -49,7 +49,8 @@
 import clx from 'classnames';
 import { defineProps, withDefaults, toValue, computed, StyleValue } from "vue"
 import type { LayoutFormItemProps } from "../interface/layout.formItem"
-import { useAttrsInject } from "../hooks/useAttrs"
+import { useAttrsInject } from "@carefrees/form-utils-vue-hooks"
+
 const preCls = 'carefrees-form-item';
 defineOptions({
   name: 'LayoutFormItem',

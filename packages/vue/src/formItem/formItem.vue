@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, withDefaults } from "vue"
+import { defineProps, withDefaults, } from "vue"
 import type { FormItemProps } from "../interface/index"
 import LayoutFormItem from "../layout/layout.formItem.vue";
 import FormItemBase from "./form.Item.base.vue"
@@ -29,6 +29,7 @@ defineOptions({
 });
 const props = withDefaults(defineProps<Partial<FormItemProps>>(), {
 })
+
 const slots = defineSlots<{
   default: (params: any) => any,
   label: (params: any) => any,
