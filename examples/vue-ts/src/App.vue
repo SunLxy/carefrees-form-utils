@@ -41,9 +41,11 @@ const onSetValue3 = () => {
 }
 
 const rules1 = ref([{ required: true, message: "必填" }])
+const rules2 = ref([{ required: true, message: "必填" }])
 
 const onUpdateRules = () => {
   rules1.value = [{ required: true, message: "必填2" }]
+  rules2.value = [{ required: false, message: "不必填" }]
 }
 
 const onValuesChange = (...rest: any[]) => {
@@ -53,7 +55,7 @@ const onValuesChange = (...rest: any[]) => {
 <template>
   <Form @valuesChange='onValuesChange' :formData='formData' :form='form'>
     <FormItem label='内容' input='input' name='a' :rules='rules1' />
-    <FormItem :input='Input' name='b'>
+    <FormItem :input='Input' name='b' :rules='rules2'>
       <template #label>
         <span>s内容2</span>
       </template>
@@ -79,7 +81,7 @@ const onValuesChange = (...rest: any[]) => {
         <span>extra</span>
       </template>
     </FormItem>
-    <button type='button' @click='onSubmit'>点击</button>
+    <button type='button' @click='onSubmit'>验证</button>
     <button type='button' @click='onSetValue'>设置值</button>
     <button type='button' @click='onSetValue2'>设置值2</button>
     <button type='button' @click='onSetValue3'>设置值3</button>

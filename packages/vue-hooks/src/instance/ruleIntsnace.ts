@@ -1,7 +1,7 @@
 import AsyncValidator, { RuleItem } from 'async-validator';
 import { FormInstanceBase } from './formInstance';
 import { MessageType } from '../interface';
-import { Ref, ref } from 'vue';
+import { Ref, ref, toValue } from 'vue';
 
 export class RuleInstanceBase {
   /**
@@ -29,19 +29,14 @@ export class RuleInstanceBase {
   messages: Ref<MessageType[] | undefined> = ref([]);
   /**判断是否必填*/
   isRequired = () => {
-    const findItem = (this.rules?.value || []).find((item) => item?.required);
+    const findItem = (toValue(this.rules) || []).find((item) => item?.required);
     return !!findItem;
   };
 
-  // /**初始化*/
-  // ctor = (name: string, rules: Ref<RuleItem[]>) => {
-  //   this.name = name;
-  //   this.rules = rules;
-  //   return this;
-  // };
   /**判断是否需要验证*/
   isValidate = () => {
-    return Array.isArray(this.rules.value) && this.rules.value.length;
+    const rules = toValue(this.rules);
+    return Array.isArray(rules) && rules.length;
   };
   /**更新提示信息*/
   updatedMessages = (messages?: MessageType[]) => {
@@ -60,9 +55,10 @@ export class RuleInstanceBase {
    */
   validate = () => {
     return new Promise((resolve, reject) => {
-      const value = this.instance?.value?.getFieldValue?.(this.name);
-      console.log(1);
-      new AsyncValidator({ [this.name]: this.rules.value || [] })
+      const rules = toValue(this.rules);
+      const form = toValue(this.instance);
+      const value = form?.getFieldValue?.(this.name);
+      new AsyncValidator({ [this.name]: rules || [] })
         .validate({ [this.name]: value })
         .then((values) => {
           this.updatedMessages([]);
@@ -81,8 +77,8 @@ export class RuleInstanceBase {
 
   /**获取校验结果*/
   getValidateResult = () => {
-    console.log(2);
-    const tip = Array.isArray(this.messages.value) ? this.messages.value.map((it) => it.message) : '';
+    const msg = toValue(this.messages);
+    const tip = Array.isArray(msg) ? msg.map((it) => it.message) : '';
     const isInvalid = Array.isArray(tip) ? !!tip.length : !!tip;
 
     return {

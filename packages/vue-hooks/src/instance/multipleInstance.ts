@@ -1,7 +1,7 @@
 import type { FormInstanceBase } from './formInstance';
 import { cloneByNamePathList } from '../utils';
 import { ValidateErrorEntity } from '../interface';
-import { Ref } from 'vue';
+import { Ref, toValue } from 'vue';
 
 export class MultipleInstanceBase {
   instanceMap: Map<string, Ref<FormInstanceBase>> = new Map([]);
@@ -56,10 +56,11 @@ export class MultipleInstanceBase {
       for (let index = 0; index < lg; index++) {
         const name = nameKeys[index];
         const form = this.instanceMap.get(name);
+        const formInstacne = toValue(form);
         try {
-          if (form) {
+          if (formInstacne) {
             const paths = isObject ? (namePath as Record<string, string[]>)[name] : undefined;
-            const result = await form.value.validate(paths);
+            const result = await formInstacne.validate(paths);
             listFormErrors[name] = { errorFields: [], values: result };
           }
         } catch (errs: any) {
@@ -91,12 +92,14 @@ export class MultipleInstanceBase {
       return data;
     }
     const form = this.instanceMap.get(name);
-    if (form) {
+    const formInstacne = toValue(form);
+
+    if (formInstacne) {
       if (typeof dataField === 'string') {
-        return { [name]: form.value.getFieldValue(dataField) };
+        return { [name]: formInstacne.getFieldValue(dataField) };
       }
       if (dataField) {
-        const formData = form.value.getFieldValue();
+        const formData = formInstacne.getFieldValue();
         const data = cloneByNamePathList(formData, dataField);
         return { [name]: data };
       }

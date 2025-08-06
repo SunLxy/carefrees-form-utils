@@ -38,13 +38,13 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   const ruleItems = ref(rules || []);
 
   watch(
-    () => options.rules,
+    () => toValue(options.rules),
     (newVal) => {
       ruleItems.value = newVal || [];
     },
   );
   watch(
-    () => [form.value],
+    () => [toValue(form)],
     () => {
       ruleInstance.value.instance = form;
       formItemInstance.value.instance = form;
@@ -53,7 +53,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   );
 
   watch(
-    () => [toValue(newName), ruleInstance.value],
+    () => [toValue(newName), toValue(ruleInstance)],
     () => {
       ruleInstance.value.name = toValue(newName);
       ruleInstance.value.rules = ruleItems;

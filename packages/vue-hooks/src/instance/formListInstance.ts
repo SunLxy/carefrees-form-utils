@@ -1,7 +1,7 @@
 import { FormItemBaseInstance } from './formItemBaseInstance';
 import { RuleInstanceBase } from './ruleIntsnace';
 import { FormItemInstanceBase } from './formItemInstance';
-import { Ref } from 'vue';
+import { Ref, toValue } from 'vue';
 
 export class FormListInstanceBase extends FormItemBaseInstance {
   /**规则*/
@@ -25,7 +25,8 @@ export class FormListInstanceBase extends FormItemBaseInstance {
 
   /**获取值*/
   getLastValue = () => {
-    const value = this.instance?.value?.getFieldValue?.(this.name);
+    const form = toValue(this.instance);
+    const value = form?.getFieldValue?.(this.name);
     /**对值进行处理*/
     const lastValue = Array.isArray(value) ? value : [];
     return lastValue;
@@ -37,18 +38,19 @@ export class FormListInstanceBase extends FormItemBaseInstance {
    * @param unshift 是否加入数组前面
    */
   onAdd = (initialValue: Object = {}, unshift?: boolean) => {
+    const form = toValue(this.instance);
     /**获取值*/
     const value = this.getLastValue();
     if (unshift) {
       const listData = [initialValue || {}, ...value];
       this.keys = [this.id, ...this.keys];
       this.id++; // 累加
-      this.instance?.value?.updatedFieldValue?.(this.name, listData);
+      form?.updatedFieldValue?.(this.name, listData);
     } else {
       const listData = [...value, initialValue || {}];
       this.keys = [...this.keys, this.id];
       this.id++; // 累加
-      this.instance?.value?.updatedFieldValue?.(this.name, listData);
+      form?.updatedFieldValue?.(this.name, listData);
     }
   };
 
@@ -57,31 +59,34 @@ export class FormListInstanceBase extends FormItemBaseInstance {
    * @param index 删除数据下标
    */
   onDelete = (index: number | number[]) => {
+    const form = toValue(this.instance);
     /**获取值*/
     const value = this.getLastValue();
     const newIndexs = Array.isArray(index) ? index : [index];
     this.keys = this.keys.filter((_, index) => !newIndexs.includes(index));
     const listData = value.filter((_, index) => !newIndexs.includes(index));
-    this.instance?.value?.updatedFieldValue?.(this.name, listData);
+    form?.updatedFieldValue?.(this.name, listData);
   };
 
   /**移动*/
   onMove = (from: number, to: number) => {
+    const form = toValue(this.instance);
     /**从那个移动到那个*/
     const newList = this.getLastValue();
     const fromItem = newList[from];
     const toItem = newList[to];
     newList[from] = toItem;
     newList[to] = fromItem;
-    this.instance?.value?.updatedFieldValue?.(this.name, [...newList]);
+    form?.updatedFieldValue?.(this.name, [...newList]);
   };
 
   /**更新某个item数据*/
   updatedItem = (index: number, item: any) => {
+    const form = toValue(this.instance);
     const newList = this.getLastValue();
     const newItem = newList[index];
     newList[index] = { ...newItem, ...item };
-    this.instance?.value?.updatedFieldValue?.(this.name, [...newList]);
+    form?.updatedFieldValue?.(this.name, [...newList]);
   };
 
   /**获取渲染 list 字段拼接*/

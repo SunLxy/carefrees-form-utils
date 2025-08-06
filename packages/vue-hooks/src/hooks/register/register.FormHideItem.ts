@@ -17,9 +17,9 @@ export const useRegisterFormHideItem = (options: RegisterFormHideItemOptions) =>
   const isHide = ref(form.value.getFieldHideValue(newName.value));
 
   watch(
-    () => [form, toValue(newName)],
+    () => [toValue(form), toValue(newName)],
     () => {
-      isHide.value = form.value.getFieldHideValue(newName.value);
+      isHide.value = form.value.getFieldHideValue(toValue(newName));
     },
     { immediate: true },
   );

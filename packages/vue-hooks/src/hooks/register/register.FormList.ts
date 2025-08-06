@@ -19,7 +19,7 @@ export const useRegisterFormList = (options: RegisterFormListOptions) => {
   );
 
   watch(
-    () => [form, formItemInstance, ruleInstance],
+    () => [toValue(form), formItemInstance, ruleInstance],
     () => {
       formListInstance.value.instance = form;
       formListInstance.value.formItemInstance = formItemInstance;

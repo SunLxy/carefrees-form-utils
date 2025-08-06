@@ -18,8 +18,6 @@ export class FormItemBaseInstance {
    * 嵌套字段："name.a[2].doc"
    */
   name: string = '';
-  /**依赖更新项*/
-  dependencies?: string[] = [];
   /**表单实例*/
   instance?: Ref<FormInstanceBase>;
 }
