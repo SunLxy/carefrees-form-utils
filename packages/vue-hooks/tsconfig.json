@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "strict": true,
+    "target": "ES2015",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "outDir": "lib",
+    "baseUrl": "./src",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

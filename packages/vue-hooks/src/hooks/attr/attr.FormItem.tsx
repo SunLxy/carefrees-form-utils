@@ -1,8 +1,10 @@
-import { FormInstanceBase, FormItemInstanceBase, get } from '@carefrees/form-utils';
+import { FormInstanceBase } from '../../instance/formInstance';
+import { FormItemInstanceBase } from '../../instance/formItemInstance';
+import { get } from '../../utils';
 import { useHtmlFor } from './../useHtmlFor';
 import { useRegisterFormItem, RegisterFormItemOptions } from './../register/register.FormItem';
 import { computed, Ref, ref, toValue, watch } from 'vue';
-import type { RuleInstanceBase2 } from '../../instance/ruleIntsnace';
+import type { RuleInstanceBase } from '../../instance/ruleIntsnace';
 
 export interface FormItemAttrOptions extends RegisterFormItemOptions {
   /**依赖更新项*/
@@ -17,12 +19,12 @@ export interface FormItemAttrOptions extends RegisterFormItemOptions {
   preserve?: boolean;
   /**重写规则*/
   useRules?: (
-    ruleInstance: Ref<RuleInstanceBase2>,
-    form: FormInstanceBase,
-    formItemInstance: FormItemInstanceBase,
+    ruleInstance: Ref<RuleInstanceBase>,
+    form: Ref<FormInstanceBase>,
+    formItemInstance: Ref<FormItemInstanceBase>,
   ) => void;
   /**输入框属性重写*/
-  useAttrs?: (attrs: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
+  useAttrs?: (attrs: any, form: Ref<FormInstanceBase>, formItemInstance: Ref<FormItemInstanceBase>) => any;
   /**输入框属性*/
   inputAttrs?: Object;
   /**传递组件字段*/
@@ -30,11 +32,21 @@ export interface FormItemAttrOptions extends RegisterFormItemOptions {
   /**取值字段(默认和valuePropName值相同)*/
   getValuePath?: string;
   /**自定义获取值*/
-  getValueFromEvent?: (event: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase) => any;
+  getValueFromEvent?: (event: any, form: Ref<FormInstanceBase>, formItemInstance: Ref<FormItemInstanceBase>) => any;
   /**值格式化*/
-  formatValue?: (value: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase, event: any) => any;
+  formatValue?: (
+    value: any,
+    form: Ref<FormInstanceBase>,
+    formItemInstance: Ref<FormItemInstanceBase>,
+    event: any,
+  ) => any;
   /**触发数据更新之后触发（用于数据联动之类的）*/
-  onAfterUpdate?: (value: any, form: FormInstanceBase, formItemInstance: FormItemInstanceBase, event: any) => void;
+  onAfterUpdate?: (
+    value: any,
+    form: Ref<FormInstanceBase>,
+    formItemInstance: Ref<FormItemInstanceBase>,
+    event: any,
+  ) => void;
   /**事件名称*/
   trigger?: string;
 }
@@ -59,20 +71,19 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
     ...rest
   } = options;
   const { formItemInstance, form, ruleInstance, newName, newSort } = useRegisterFormItem({ ...rest });
-  formItemInstance.dependencies = dependencies;
-  formItemInstance.noticeOnlyRuleDataField = noticeOnlyRuleDataField;
-  formItemInstance.isNoticeParentField = isNoticeParentField;
-  formItemInstance.onAfterUpdate = onAfterUpdate;
-  formItemInstance.noticeWatchField = noticeWatchField;
-  formItemInstance.preserve = preserve;
+  formItemInstance.value.dependencies = dependencies;
+  // formItemInstance.value.noticeOnlyRuleDataField = noticeOnlyRuleDataField;
+  // formItemInstance.value.isNoticeParentField = isNoticeParentField;
+  formItemInstance.value.onAfterUpdate = onAfterUpdate;
+  // formItemInstance.value.noticeWatchField = noticeWatchField;
+  formItemInstance.value.preserve = preserve;
   /**获取值*/
-  const oldValue = ref(get(form.formData, toValue(newName)));
+  const oldValue = ref(get(toValue(form.value.formData), toValue(newName)));
 
   watch(
-    () => [get(form.formData, toValue(newName)), toValue(newName)],
+    () => [get(toValue(form.value.formData), toValue(newName)), toValue(newName)],
     () => {
-      oldValue.value = form.getFieldValue(toValue(newName));
-      console.log('1');
+      oldValue.value = form.value.getFieldValue(toValue(newName));
     },
     { immediate: true },
   );
@@ -89,33 +100,33 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
         value = formatValue(value, form, formItemInstance, event);
       }
       if (oldValue.value !== value) {
-        form.updatedFieldValue(toValue(newName), value, 'validate');
-        formItemInstance.onAfterUpdate?.(value, form, formItemInstance, event);
-        if (Array.isArray(formItemInstance.noticeWatchField) && formItemInstance.noticeWatchField.length) {
-          form.noticeWatch(formItemInstance.noticeWatchField);
-        }
-        if (
-          Array.isArray(formItemInstance.noticeOnlyRuleDataField) &&
-          formItemInstance.noticeOnlyRuleDataField.length
-        ) {
-          form.onlyValidate(formItemInstance.noticeOnlyRuleDataField);
-        }
-        if (formItemInstance.isNoticeParentField && formItemInstance.parentDataField) {
-          form.notice(formItemInstance.parentDataField);
-        }
+        form.value.updatedFieldValue(toValue(newName), value, 'validate');
+        formItemInstance.value.onAfterUpdate?.(value, form, formItemInstance, event);
+        // 联动数据 需要再进行调整
+        // if (Array.isArray(formItemInstance.value.noticeWatchField) && formItemInstance.value.noticeWatchField.length) {
+        //   form.value.noticeWatch(formItemInstance.value.noticeWatchField);
+        // }
+        // if (
+        //   Array.isArray(formItemInstance.noticeOnlyRuleDataField) &&
+        //   formItemInstance.noticeOnlyRuleDataField.length
+        // ) {
+        //   form.onlyValidate(formItemInstance.noticeOnlyRuleDataField);
+        // }
+        // if (formItemInstance.isNoticeParentField && formItemInstance.parentDataField) {
+        //   form.notice(formItemInstance.parentDataField);
+        // }
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  formItemInstance.onChange = onValueChange;
   const htmlFor = useHtmlFor(newName);
 
   watch(
-    () => htmlFor,
+    () => htmlFor.value,
     () => {
-      formItemInstance.htmlFor = htmlFor.value;
+      formItemInstance.value.htmlFor = htmlFor.value;
     },
     { immediate: true },
   );
@@ -123,7 +134,6 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   /**属性处理*/
   const newAttrs = computed(() => {
     const _attr = inputAttrs || {};
-    console.log('2');
     return {
       ..._attr,
       [trigger]: onValueChange,
@@ -138,7 +148,6 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   watch(
     () => [toValue(newAttrs), toValue(oldValue)],
     () => {
-      console.log('3');
       attrsLastData.value = useAttrs?.(toValue(newAttrs), form, formItemInstance) || toValue(newAttrs);
     },
     { immediate: true },
@@ -150,8 +159,7 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
   watch(
     () => [toValue(oldValue)],
     () => {
-      useRules?.(ruleInstance as any, form, formItemInstance);
-      console.log('4');
+      useRules?.(ruleInstance, form, formItemInstance);
       ruleInstance.value.validate();
     },
   );
@@ -160,7 +168,6 @@ export const useFormItemAttr = (options: FormItemAttrOptions) => {
     () => [toValue(ruleInstance).messages, toValue(ruleInstance).rules],
     () => {
       validateResult.value = toValue(ruleInstance).getValidateResult();
-      console.log('5');
     },
   );
 

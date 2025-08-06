@@ -3,7 +3,7 @@ import { reactive } from "vue";
 import { Form, useForm, FormItem } from "@carefrees/form-utils-vue";
 import "@carefrees/form-utils-vue/assets/index.css"
 import Input from './Input.vue';
-const formData = reactive({})
+const formData = reactive<any>({})
 const form = useForm();
 const onSubmit = async () => {
   try {
@@ -17,8 +17,21 @@ const onSubmit = async () => {
   }
 }
 const onSetValue = () => {
-  form.value.updatedFieldValue('b', '123')
+  formData.a = '123'
+  formData.b = '456'
+  // form.value.updatedFieldValue('b', '123')
 }
+
+const onSetValue2 = () => {
+  formData.a = ''
+  formData.b = ''
+  // form.value.updatedFieldValue('b', '123')
+}
+
+const onSetValue3 = () => {
+  form.value.updatedFieldValue('b', '')
+}
+
 const onValuesChange = (...rest: any[]) => {
   console.log(rest)
 }
@@ -40,6 +53,8 @@ const onValuesChange = (...rest: any[]) => {
     <FormItem label='Input' input='input' name='c' />
     <button type='button' @click='onSubmit'>点击</button>
     <button type='button' @click='onSetValue'>设置值</button>
+    <button type='button' @click='onSetValue2'>设置值2</button>
+    <button type='button' @click='onSetValue3'>设置值3</button>
   </Form>
 </template>
 <style scoped></style>

@@ -2,13 +2,13 @@
  * @description 注册组件
  */
 
-import { Ref, ref, toValue, watch } from 'vue';
+import { computed, ref, toValue, watch } from 'vue';
 import type { RuleItem } from 'async-validator';
 import { useFormInject } from '../useForm';
 import { useFormItem } from '../useFormItem';
 import { useFormItemParentNameInject } from '../useFormItemParentName';
 import { useEffect } from '../useEffect';
-import { RuleInstanceBase2 } from '../../instance/ruleIntsnace';
+import { useRules } from './../useRule';
 
 export interface RegisterFormItemOptions {
   /**字段*/
@@ -33,14 +33,15 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   });
   // 注册规则
   // 注册单个实例
-  const ruleInstance: Ref<RuleInstanceBase2> = ref<any>(new RuleInstanceBase2());
   const formItemInstance = useFormItem();
+  const ruleInstance = useRules();
+  const ruleItems = computed(() => rules || []);
 
   watch(
     () => [form],
     () => {
       ruleInstance.value.instance = form;
-      formItemInstance.instance = form;
+      formItemInstance.value.instance = form;
     },
     { immediate: true },
   );
@@ -48,8 +49,8 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   watch(
     () => [toValue(newName)],
     () => {
-      ruleInstance.value.ctor(toValue(newName), rules || []);
-      formItemInstance.ctor(toValue(newName), toValue(ruleInstance) as any);
+      ruleInstance.value.ctor(toValue(newName), ruleItems);
+      formItemInstance.value.ctor(toValue(newName), ruleInstance);
     },
     { immediate: true },
   );
@@ -58,7 +59,7 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
     () => [toValue(newSort)],
     () => {
       ruleInstance.value.sort = toValue(newSort);
-      formItemInstance.sort = toValue(newSort);
+      formItemInstance.value.sort = toValue(newSort);
     },
     { immediate: true },
   );
@@ -66,19 +67,12 @@ export const useRegisterFormItem = (options: RegisterFormItemOptions) => {
   watch(
     () => [toValue(parentItem)],
     () => {
-      formItemInstance.parentDataField = toValue(toValue(parentItem).name);
+      formItemInstance.value.parentDataField = toValue(toValue(parentItem).name);
     },
     { immediate: true },
   );
 
-  const updated = () => {
-    // deepRefData.value = { __temp: new Date().valueOf() };
-  };
-
-  formItemInstance.updated = updated;
-  ruleInstance.value.updated = updated;
-
-  useEffect(() => form.registerFormItem(formItemInstance));
+  useEffect(() => form.value.registerFormItem(formItemInstance));
 
   return {
     ruleInstance,

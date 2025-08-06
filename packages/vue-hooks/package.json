@@ -1,0 +1,31 @@
+{
+  "name": "@carefrees/form-utils-vue-hooks",
+  "version": "0.0.12",
+  "description": "vue表单hooks",
+  "homepage": "https://github.com/SunLxy/carefrees-form-utils",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "esm/index.js",
+  "private": true,
+  "scripts": {
+    "build": "carefrees-rslib build --node",
+    "watch": "carefrees-rslib build --watch --node"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "lib",
+    "esm"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async-validator": "~4.2.5"
+  },
+  "devDependencies": {
+    "vue": "^3.5.13"
+  }
+}
