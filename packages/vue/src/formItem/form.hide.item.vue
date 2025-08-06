@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<FormItemProps>(), {
 })
 const slots = defineSlots<{
   label: (params: any) => any,
+  default: (params: any) => any,
   helpText: (params: any) => any,
   extra: (params: any) => any,
 }>()

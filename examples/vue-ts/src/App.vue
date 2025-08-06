@@ -65,6 +65,20 @@ const onValuesChange = (...rest: any[]) => {
       </template>
     </FormItem>
     <FormItem label='Input' input='input' name='c' />
+    <FormItem name='d'>
+      <template #label>
+        <span>d</span>
+      </template>
+      <template #helpText>
+        <span>helpText</span>
+      </template>
+      <template #default>
+        <input placeholder='输入内容' v-model='formData.a' />
+      </template>
+      <template #extra>
+        <span>extra</span>
+      </template>
+    </FormItem>
     <button type='button' @click='onSubmit'>点击</button>
     <button type='button' @click='onSetValue'>设置值</button>
     <button type='button' @click='onSetValue2'>设置值2</button>

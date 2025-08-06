@@ -8,11 +8,11 @@
       :col-span='props.colSpan' :row-span='props.rowSpan' :html-for='formAttrs.htmlFor' :style='props.style'
       :class='props.class' :label-style='props.labelStyle' :label-class='props.labelClass'
       :validate-result='formAttrs.validateResult'>
-      <template v-for="(item, name) in slots" #[name]="slotProps">
-        <slot :name="name" v-bind="slotProps"></slot>
-      </template>
       <template v-slot:default>
         <component :is="props.input" v-bind='toValue(formAttrs.attrsLastData)' />
+      </template>
+      <template v-for="(item, name) in slots" #[name]="slotProps">
+        <slot :name="name" v-bind="slotProps"></slot>
       </template>
     </LayoutFormItem>
   </template>
@@ -41,6 +41,7 @@ useFormItemParentNameProvide({
 
 const slots = defineSlots<{
   label: (params: any) => any,
+  default: (params: any) => any,
   helpText: (params: any) => any,
   extra: (params: any) => any,
 }>()
