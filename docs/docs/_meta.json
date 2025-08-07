@@ -13,5 +13,10 @@
     "text": "React",
     "link": "/react/react",
     "activeMatch": "/react/"
+  },
+  {
+    "text": "Vue",
+    "link": "/vue/vue",
+    "activeMatch": "/vue/"
   }
 ]

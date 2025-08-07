@@ -19,6 +19,9 @@ features:
   - title: React 多平台支持
     details: 支持 taro、react、react-native 平台
     icon: 🎨
+  - title: Vue 多平台支持
+    details: 支持在vue中使用，提供hooks、组件等
+    icon: 🎨
   - title: 开箱即用
     details: 直接进行使用，无需额外配置
     icon: 📦
