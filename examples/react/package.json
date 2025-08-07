@@ -1,7 +1,7 @@
 {
   "name": "example_react",
   "private": true,
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@carefrees/form-utils-react": "^0.0.13",
+    "@carefrees/form-utils-react": "^0.0.14",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

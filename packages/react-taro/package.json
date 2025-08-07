@@ -3,7 +3,7 @@
   "author": "SunLxy <1011771396@qq.com>",
   "description": "taro react 表单组件",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "module": "esm/index.js",
@@ -22,8 +22,8 @@
     "assets"
   ],
   "dependencies": {
-    "@carefrees/form-utils": "^0.0.13",
-    "@carefrees/form-utils-react-hooks": "^0.0.13",
+    "@carefrees/form-utils": "^0.0.14",
+    "@carefrees/form-utils-react-hooks": "^0.0.14",
     "classnames": "2.5.1"
   },
   "devDependencies": {
