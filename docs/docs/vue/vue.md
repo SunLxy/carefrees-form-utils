@@ -61,12 +61,9 @@ const onUpdateRules = () => {
   rules2.value = [{ required: false, message: "不必填" }]
 }
 
-const onValuesChange = (...rest: any[]) => {
-  console.log(rest)
-}
 </script>
 <template>
-  <Form @valuesChange='onValuesChange' :formData='formData' :form='form'>
+  <Form :formData='formData' :form='form'>
     <FormItem label='内容' input='input' name='a' :rules='rules1' />
     <FormItem :input='Input' name='b' :rules='rules2'>
       <template #label>

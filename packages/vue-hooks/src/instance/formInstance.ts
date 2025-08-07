@@ -21,8 +21,6 @@ export class FormInstanceBase<T = any> {
   preserve?: boolean = true;
 
   //===================================挂载方法====================================================
-  /**值更新触发*/
-  onValuesChange?: (changedValues: any, values: T) => void;
   /**提交保存 验证成功*/
   onFinish?: (values: T) => void;
   /**提交保存 验证失败*/

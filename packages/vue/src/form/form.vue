@@ -29,7 +29,6 @@ const {
   name,
   onFinish,
   onFinishFailed,
-  onValuesChange,
   layoutStyle,
   layoutClass,
   bgcolor,
@@ -61,20 +60,17 @@ const emits = defineEmits(["finish", 'valuesChange', 'finishFailed'])
 formInstance.value.onFinish = (...rest) => {
   emits("finish", ...rest)
 };
-formInstance.value.onValuesChange = (...rest) => {
-  emits("valuesChange", ...rest)
-};
+
 formInstance.value.onFinishFailed = (...rest) => {
   emits("finishFailed", ...rest)
 };
 useRegisterForm(formInstance, props.name)
-
 const onSubmit = (event: Event) => {
   event?.preventDefault?.();
   event?.stopPropagation?.();
   formInstance.value.submit?.();
 }
 
-useFormProvide(formInstance.value);
+useFormProvide(formInstance);
 
 </script>

@@ -1,4 +1,4 @@
-import { Component, StyleValue, UnwrapNestedRefs } from 'vue';
+import { Component, StyleValue } from 'vue';
 import { LayoutFormItemProps } from './layout.formItem';
 import { FormLayoutProps } from './layout';
 import type { FormInstanceBase, ValidateErrorEntity, FormItemAttrOptions } from '@carefrees/form-utils-vue-hooks';
@@ -18,8 +18,6 @@ export interface FormProps<T = any> extends FormLayoutProps {
   layoutStyle?: StyleValue;
   /**表单数据*/
   formData?: Object;
-  /**值更新触发*/
-  onValuesChange?: (changedValues: Partial<T>, values: UnwrapNestedRefs<T>) => void;
   /**提交保存 验证成功*/
   onFinish?: (values: T) => void;
   /**提交保存 验证失败*/
