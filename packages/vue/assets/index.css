@@ -98,7 +98,9 @@ html.dark .carefrees-form {
   gap: 8px;
 }
 .carefrees-form-item-container.left .carefrees-form-item-label-warp {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 .carefrees-form-item-container.between {
   gap: 8px;
@@ -182,7 +184,7 @@ html.dark .carefrees-form {
   top: auto;
   left: 0;
   right: 0;
-  bottom: -16px;
+  bottom: -20px;
   padding-top: 2px;
   font-size: 12px;
   box-sizing: border-box;
@@ -197,18 +199,18 @@ html.dark .carefrees-form {
   top: auto;
   left: 0;
   right: 0;
-  bottom: -16px;
+  bottom: -20px;
 }
 .carefrees-form-item-body-error.top-left {
   justify-content: start;
-  top: -16px;
+  top: -20px;
   left: 0px;
   right: 0px;
   bottom: auto;
 }
 .carefrees-form-item-body-error.top-right {
   justify-content: flex-end;
-  top: -16px;
+  top: -20px;
   left: 0px;
   right: 0px;
   bottom: auto;

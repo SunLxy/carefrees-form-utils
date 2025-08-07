@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { useLaunch } from '@tarojs/taro';
-
+import '@carefrees/form-utils-react-taro/assets/index.css';
 import './app.css';
 
 function App({ children }: PropsWithChildren<any>) {

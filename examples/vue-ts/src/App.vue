@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Form, useForm, FormItem } from "@carefrees/form-utils-vue";
 import "@carefrees/form-utils-vue/assets/index.css"
+import './app.css'
 import Input from './Input.vue';
 const formData = ref<{ a: string, b: string }>({
   a: '',

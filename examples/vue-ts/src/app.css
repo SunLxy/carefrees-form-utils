@@ -1,12 +1,9 @@
-@import '@carefrees/form-utils-react/assets/index.css';
-
 .carefrees-form-item input {
   width: 100%;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   outline: none;
   padding: 4px 8px;
-  box-sizing: border-box;
 }
 
 .carefrees-form button {
