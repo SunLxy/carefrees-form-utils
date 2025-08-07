@@ -6,6 +6,12 @@
 npm install @carefrees/form-utils-react-taro # yarn add @carefrees/form-utils-react-taro # pnpm add @carefrees/form-utils-react-taro
 ```
 
+## 加载样式
+
+```tsx
+import '@carefrees/form-utils-react-taro/assets/index.css';
+```
+
 ## 使用
 
 ### 基本使用

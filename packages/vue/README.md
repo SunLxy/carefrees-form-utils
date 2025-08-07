@@ -6,6 +6,12 @@
 npm install @carefrees/form-utils-vue # yarn add @carefrees/form-utils-vue # pnpm add @carefrees/form-utils-vue
 ```
 
+## 加载样式
+
+```tsx
+import '@carefrees/form-utils-vue/assets/index.css';
+```
+
 ## 使用
 
 ### 基本使用
@@ -15,7 +21,6 @@ npm install @carefrees/form-utils-vue # yarn add @carefrees/form-utils-vue # pnp
 import { ref } from "vue";
 import { Form, useForm, FormItem } from "@carefrees/form-utils-vue";
 import "@carefrees/form-utils-vue/assets/index.css"
-import Input from './Input.vue';
 const formData = ref<{ a: string, b: string }>({
   a: '',
   b: ''
@@ -76,7 +81,6 @@ const onUpdateRules = () => {
         <span>extra</span>
       </template>
     </FormItem>
-    <FormItem label='Input' input='input' name='c' />
     <FormItem name='d'>
       <template #label>
         <span>d</span>

@@ -6,6 +6,12 @@
 npm install @carefrees/form-utils-react # yarn add @carefrees/form-utils-react # pnpm add @carefrees/form-utils-react
 ```
 
+## 加载样式
+
+```tsx
+import '@carefrees/form-utils-react/assets/index.css';
+```
+
 ## 使用
 
 ### 基本使用
