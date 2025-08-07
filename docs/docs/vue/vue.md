@@ -10,7 +10,7 @@ npm install @carefrees/form-utils-vue # yarn add @carefrees/form-utils-vue # pnp
 
 ### 基本使用
 
-```vue
+```html
 <script lang="ts" setup>
 import { ref } from "vue";
 import { Form, useForm, FormItem } from "@carefrees/form-utils-vue";
