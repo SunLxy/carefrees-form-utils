@@ -30,6 +30,8 @@ export interface FormLayoutProps extends AttrsOptions {
    * @description gap 属性是用来设置网格行与列之间的间隙，该属性是row-gap and column-gap的简写形式。
    */
   gap?: string | number;
+  /**是否添加输入框边框*/
+  inputBordered?: boolean;
 }
 
 const preCls = 'carefrees-form-layout';
@@ -45,6 +47,7 @@ export const FormLayout = memo((props: FormLayoutProps) => {
     formItemStyle: p_formItemStyle,
     formItemLabelClassName: p_formItemLabelClassName,
     formItemLabelStyle: p_formItemLabelStyle,
+    inputBordered: p_inputBordered,
   } = useAttrs();
   const {
     colCount = p_colCount,
@@ -66,6 +69,7 @@ export const FormLayout = memo((props: FormLayoutProps) => {
     formItemLabelClassName = p_formItemLabelClassName,
     formItemLabelStyle = p_formItemLabelStyle,
     bordered = false,
+    inputBordered = p_inputBordered,
     gap,
   } = props;
   const propsRef = useRef(props);
@@ -95,6 +99,7 @@ export const FormLayout = memo((props: FormLayoutProps) => {
       formItemStyle,
       formItemLabelClassName,
       formItemLabelStyle,
+      inputBordered,
     };
   }, [
     colCount,
@@ -105,6 +110,7 @@ export const FormLayout = memo((props: FormLayoutProps) => {
     formItemStyle,
     formItemLabelClassName,
     formItemLabelStyle,
+    inputBordered,
   ]);
   const styleBase = useMemo(() => {
     const css: React.CSSProperties = {};

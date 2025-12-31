@@ -23,6 +23,8 @@ export interface FormLayoutProps extends AttrsOptions, FormLayoutBodyProps {
   bodyStyle?: React.CSSProperties;
   /**是否添加边框*/
   bordered?: boolean;
+  /**是否添加输入框边框*/
+  inputBordered?: boolean;
 }
 
 const preCls = 'carefrees-form-layout';
@@ -38,6 +40,7 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
     formItemStyle: p_formItemStyle,
     formItemLabelClassName: p_formItemLabelClassName,
     formItemLabelStyle: p_formItemLabelStyle,
+    inputBordered: p_inputBordered,
   } = useAttrs();
   const {
     colCount = p_colCount,
@@ -59,6 +62,7 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
     formItemLabelClassName = p_formItemLabelClassName,
     formItemLabelStyle = p_formItemLabelStyle,
     bordered = false,
+    inputBordered = p_inputBordered,
     gap,
     onResize,
     onGapRow,
@@ -90,6 +94,7 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
       formItemStyle,
       formItemLabelClassName,
       formItemLabelStyle,
+      inputBordered,
     };
   }, [
     colCount,
@@ -100,6 +105,7 @@ export const FormLayout = React.memo((props: FormLayoutProps) => {
     formItemStyle,
     formItemLabelClassName,
     formItemLabelStyle,
+    inputBordered,
   ]);
 
   return (
