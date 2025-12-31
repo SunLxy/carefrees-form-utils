@@ -15,6 +15,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SunLxy/carefrees-form-utils.git"
+  },
   "files": [
     "src",
     "esm"
