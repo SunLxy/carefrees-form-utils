@@ -5,7 +5,6 @@ import { FormLayout, FormLayoutProps } from './layout';
 import { useRegisterForm, useForm, FormInstanceContext } from '@carefrees/form-utils-react-hooks';
 import { Form as TaroForm } from '@tarojs/components';
 import type { CommonEventFunction, FormProps as TaroFormProps } from '@tarojs/components';
-import './styles/index.css';
 export * from './formItem';
 export * from './formList';
 export * from './layout';
