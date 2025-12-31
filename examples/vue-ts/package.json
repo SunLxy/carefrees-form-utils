@@ -1,7 +1,7 @@
 {
   "name": "example_vue",
   "private": true,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@carefrees/form-utils-vue": "^0.0.14",
+    "@carefrees/form-utils-vue": "^0.0.15",
     "vue": "^3.5.13"
   },
   "devDependencies": {

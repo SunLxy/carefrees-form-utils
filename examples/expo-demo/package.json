@@ -1,7 +1,7 @@
 {
   "name": "expo-demo",
   "main": "expo-router/entry",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "scripts": {
     "start": "expo start",
@@ -16,7 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@carefrees/form-utils-react-native": "^0.0.14",
+    "@carefrees/form-utils-react-native": "^0.0.15",
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
