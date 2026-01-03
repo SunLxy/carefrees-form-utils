@@ -1,4 +1,4 @@
-import { View, Button, Input, Textarea } from '@tarojs/components';
+import { View, Button, Input, Textarea, Text } from '@tarojs/components';
 import { useState } from 'react';
 import { Form, FormItem, useForm, useWatch, FormLayout } from '@carefrees/form-utils-react-taro';
 import { FormInstanceBase } from '@carefrees/form-utils';
@@ -8,6 +8,16 @@ const Demo = (props: { form: FormInstanceBase }) => {
   const [value] = useWatch('a', props.form);
   console.log(222);
   return <View>监听a的值：{value}</View>;
+};
+
+const RenderDemo1 = () => {
+  return (
+    <View>
+      <View className="fairys-taro-popup-search-text-container">
+        <Text>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+      </View>
+    </View>
+  );
 };
 
 export default function Index() {
@@ -26,6 +36,11 @@ export default function Index() {
     <View>
       <Button onClick={onSubmit}>打印</Button>
       <Demo form={form} />
+      <Form labelMode="between" colCount={1} inputBordered={false}>
+        <FormItem trigger="onInput" name="a1" label="内容占据">
+          <RenderDemo1 />
+        </FormItem>
+      </Form>
       <Form
         gap={14}
         colCount={2}
@@ -46,6 +61,9 @@ export default function Index() {
         }}
       >
         <FormLayout formItemLabelStyle={{ width: 60 }} isAllColSpan labelMode="left" bordered title="222">
+          <FormItem trigger="onInput" colSpan={2} name="a1" label="内容占据">
+            <RenderDemo1 />
+          </FormItem>
           <FormItem trigger="onInput" colSpan={2} rules={[{ required: true, message: '必填' }]} name="a" label="测试1">
             <Input style={{ width: '100%' }} placeholder="请输入" />
           </FormItem>

@@ -92,6 +92,7 @@ html.dark .carefrees-form {
   padding: 0.4rem;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.88);
+  word-break: break-all;
 }
 
 .carefrees-form-item-container {
