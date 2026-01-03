@@ -1,6 +1,6 @@
 {
   "name": "@carefrees/form-utils-vue-hooks",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "vue表单hooks",
   "homepage": "https://github.com/SunLxy/carefrees-form-utils",
   "main": "lib/index.js",
